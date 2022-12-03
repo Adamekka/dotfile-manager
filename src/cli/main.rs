@@ -1,20 +1,45 @@
 #[path = "../lib.rs"]
 mod lib;
 
-use std::env::{self};
+use clap::{Arg, ArgMatches, Command};
 
 fn main() {
-    lib::test();
+    let args = arguments();
+}
 
-    // Get args
-    let args: Vec<String> = env::args().collect();
-
-    // Put args to variables
-    let command: &String = &args[1];
-    let option: &String = &args[2];
-    let arg: &String = &args[3];
-
-    println!("command: {}", command);
-    println!("option: {}", option);
-    println!("argument: {}", arg);
+fn arguments() -> ArgMatches {
+    Command::new("dman")
+        .about("Manage your dotfiles")
+        .subcommand_required(true)
+        .arg_required_else_help(true)
+        .author("Adamekka")
+        .subcommand(
+            Command::new("import")
+                .about("Import a config")
+                .arg(Arg::new("git-path").short('g').long("git-path"))
+                .arg(Arg::new("path").short('p').long("path"))
+                .arg(Arg::new("name").short('n').long("name")),
+        )
+        .subcommand(
+            Command::new("pull")
+                .about("Pull config from Git repo")
+                .arg(Arg::new("git-path").short('g').long("git-path"))
+                .arg(Arg::new("path").short('p').long("path"))
+                .arg(Arg::new("name").short('n').long("name")),
+        )
+        .subcommand(
+            Command::new("pull-all")
+                .about("Pull all configs from Git repo(s)")
+        )
+        .subcommand(
+            Command::new("push")
+                .about("Push config to Git repo")
+                .arg(Arg::new("git-path").short('g').long("git-path"))
+                .arg(Arg::new("path").short('p').long("path"))
+                .arg(Arg::new("name").short('n').long("name")),
+        ).subcommand(
+            Command::new("push-all")
+                .about("Push all configs to Git repo(s)")
+        )
+        .get_matches()
 }
