@@ -4,11 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [[bin]]
-name = "cli"
+name = "dman"
 path = "src/cli/main.rs"
 
 [[bin]]
-name = "gui"
+name = "dman-gui"
 path = "src/gui/main.rs"
 
 [dependencies]
