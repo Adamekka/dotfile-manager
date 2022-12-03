@@ -12,3 +12,4 @@ name = "gui"
 path = "src/gui/main.rs"
 
 [dependencies]
+clap = "4"
