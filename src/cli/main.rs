@@ -27,19 +27,14 @@ fn arguments() -> ArgMatches {
                 .arg(Arg::new("path").short('p').long("path"))
                 .arg(Arg::new("name").short('n').long("name")),
         )
-        .subcommand(
-            Command::new("pull-all")
-                .about("Pull all configs from Git repo(s)")
-        )
+        .subcommand(Command::new("pull-all").about("Pull all configs from Git repo(s)"))
         .subcommand(
             Command::new("push")
                 .about("Push config to Git repo")
                 .arg(Arg::new("git-path").short('g').long("git-path"))
                 .arg(Arg::new("path").short('p').long("path"))
                 .arg(Arg::new("name").short('n').long("name")),
-        ).subcommand(
-            Command::new("push-all")
-                .about("Push all configs to Git repo(s)")
         )
+        .subcommand(Command::new("push-all").about("Push all configs to Git repo(s)"))
         .get_matches()
 }
