@@ -1,6 +1,6 @@
-use clap::{Arg, ArgMatches, Command};
+use clap::{Arg, ArgAction, ArgMatches, Command};
 
-pub fn arguments() -> ArgMatches {
+fn arguments() -> ArgMatches {
     Command::new("dman")
         .about("Manage your dotfiles")
         .subcommand_required(true)
@@ -13,10 +13,20 @@ pub fn arguments() -> ArgMatches {
                     Arg::new("git-path")
                         .short('g')
                         .long("git-path")
-                        .value_name("git-path"),
+                        .action(ArgAction::Append),
                 )
-                .arg(Arg::new("path").short('p').long("path").value_name("path"))
-                .arg(Arg::new("name").short('n').long("name").value_name("name")),
+                .arg(
+                    Arg::new("path")
+                        .short('p')
+                        .long("path")
+                        .action(ArgAction::Append),
+                )
+                .arg(
+                    Arg::new("name")
+                        .short('n')
+                        .long("name")
+                        .action(ArgAction::Append),
+                ),
         )
         .subcommand(
             Command::new("pull")
@@ -25,10 +35,20 @@ pub fn arguments() -> ArgMatches {
                     Arg::new("git-path")
                         .short('g')
                         .long("git-path")
-                        .value_name("git-path"),
+                        .action(ArgAction::Append),
                 )
-                .arg(Arg::new("path").short('p').long("path").value_name("path"))
-                .arg(Arg::new("name").short('n').long("name").value_name("name")),
+                .arg(
+                    Arg::new("path")
+                        .short('p')
+                        .long("path")
+                        .action(ArgAction::Append),
+                )
+                .arg(
+                    Arg::new("name")
+                        .short('n')
+                        .long("name")
+                        .action(ArgAction::Append),
+                ),
         )
         .subcommand(Command::new("pull-all").about("Pull all configs from Git repo(s)"))
         .subcommand(
@@ -38,11 +58,46 @@ pub fn arguments() -> ArgMatches {
                     Arg::new("git-path")
                         .short('g')
                         .long("git-path")
-                        .value_name("git-path"),
+                        .action(ArgAction::Append),
                 )
-                .arg(Arg::new("path").short('p').long("path").value_name("path"))
-                .arg(Arg::new("name").short('n').long("name").value_name("name")),
+                .arg(
+                    Arg::new("path")
+                        .short('p')
+                        .long("path")
+                        .action(ArgAction::Append),
+                )
+                .arg(
+                    Arg::new("name")
+                        .short('n')
+                        .long("name")
+                        .action(ArgAction::Append),
+                ),
         )
         .subcommand(Command::new("push-all").about("Push all configs to Git repo(s)"))
         .get_matches()
+}
+
+pub fn match_args() {
+    let args = arguments();
+    match args.subcommand() {
+        Some(("import", set_matches)) => {
+            match_subcmd_flags("import");
+        }
+        Some(("pull", set_matches)) => {}
+        Some(("pull-all", set_matches)) => {}
+        Some(("push", set_matches)) => {}
+        Some(("push-all", set_matches)) => {}
+        _ => unreachable!(),
+    }
+}
+
+fn match_subcmd_flags(cmd: &str) {
+    let args = arguments();
+    if let Some(cmd) = args.subcommand_matches(cmd) {
+        let git_path = cmd.get_one::<String>("git-path").map(|s| s.as_str());
+        let path = cmd.get_one::<String>("path").map(|s| s.as_str());
+        let name = cmd.get_one::<String>("name").map(|s| s.as_str());
+
+        println!("git-path:{:?}, path:{:?}, name:{:?}", git_path, path, name);
+    }
 }
