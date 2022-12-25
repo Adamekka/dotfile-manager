@@ -83,9 +83,13 @@ pub fn match_args() {
         Some(("import", set_matches)) => {
             match_subcmd_flags("import");
         }
-        Some(("pull", set_matches)) => {}
+        Some(("pull", set_matches)) => {
+            match_subcmd_flags("import");
+        }
         Some(("pull-all", set_matches)) => {}
-        Some(("push", set_matches)) => {}
+        Some(("push", set_matches)) => {
+            match_subcmd_flags("import");
+        }
         Some(("push-all", set_matches)) => {}
         _ => unreachable!(),
     }
