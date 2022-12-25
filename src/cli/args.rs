@@ -9,14 +9,24 @@ pub fn arguments() -> ArgMatches {
         .subcommand(
             Command::new("import")
                 .about("Import a config")
-                .arg(Arg::new("git-path").short('g').long("git-path").value_name("git-path"))
+                .arg(
+                    Arg::new("git-path")
+                        .short('g')
+                        .long("git-path")
+                        .value_name("git-path"),
+                )
                 .arg(Arg::new("path").short('p').long("path").value_name("path"))
                 .arg(Arg::new("name").short('n').long("name").value_name("name")),
         )
         .subcommand(
             Command::new("pull")
                 .about("Pull config from Git repo")
-                .arg(Arg::new("git-path").short('g').long("git-path").value_name("git-path"))
+                .arg(
+                    Arg::new("git-path")
+                        .short('g')
+                        .long("git-path")
+                        .value_name("git-path"),
+                )
                 .arg(Arg::new("path").short('p').long("path").value_name("path"))
                 .arg(Arg::new("name").short('n').long("name").value_name("name")),
         )
@@ -24,7 +34,12 @@ pub fn arguments() -> ArgMatches {
         .subcommand(
             Command::new("push")
                 .about("Push config to Git repo")
-                .arg(Arg::new("git-path").short('g').long("git-path").value_name("git-path"))
+                .arg(
+                    Arg::new("git-path")
+                        .short('g')
+                        .long("git-path")
+                        .value_name("git-path"),
+                )
                 .arg(Arg::new("path").short('p').long("path").value_name("path"))
                 .arg(Arg::new("name").short('n').long("name").value_name("name")),
         )
