@@ -1,5 +1,6 @@
 use clap::{Arg, ArgAction, ArgMatches, Command};
 
+// TODO: pull, push - set number of required args to 1
 fn arguments() -> ArgMatches {
     Command::new("dman")
         .about("Manage your dotfiles")
@@ -13,19 +14,22 @@ fn arguments() -> ArgMatches {
                     Arg::new("git-path")
                         .short('g')
                         .long("git-path")
-                        .action(ArgAction::Append),
+                        .action(ArgAction::Append)
+                        .required(true),
                 )
                 .arg(
                     Arg::new("path")
                         .short('p')
                         .long("path")
-                        .action(ArgAction::Append),
+                        .action(ArgAction::Append)
+                        .required(true),
                 )
                 .arg(
                     Arg::new("name")
                         .short('n')
                         .long("name")
-                        .action(ArgAction::Append),
+                        .action(ArgAction::Append)
+                        .required(true),
                 ),
         )
         .subcommand(
