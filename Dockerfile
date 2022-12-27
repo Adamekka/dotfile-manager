@@ -8,7 +8,7 @@ RUN cargo install --path . --bin dman
 RUN cargo install --path . --bin dman-gui
 
 
-FROM debian
+FROM debian:latest
 
 WORKDIR /usr/bin
 
