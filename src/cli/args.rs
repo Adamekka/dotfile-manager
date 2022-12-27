@@ -11,9 +11,9 @@ fn arguments() -> ArgMatches {
             Command::new("import")
                 .about("Import a config")
                 .arg(
-                    Arg::new("git-path")
-                        .short('g')
-                        .long("git-path")
+                    Arg::new("name")
+                        .short('n')
+                        .long("name")
                         .action(ArgAction::Append)
                         .required(true),
                 )
@@ -25,9 +25,9 @@ fn arguments() -> ArgMatches {
                         .required(true),
                 )
                 .arg(
-                    Arg::new("name")
-                        .short('n')
-                        .long("name")
+                    Arg::new("git-path")
+                        .short('g')
+                        .long("git-path")
                         .action(ArgAction::Append)
                         .required(true),
                 ),
@@ -36,9 +36,9 @@ fn arguments() -> ArgMatches {
             Command::new("pull")
                 .about("Pull config from Git repo")
                 .arg(
-                    Arg::new("git-path")
-                        .short('g')
-                        .long("git-path")
+                    Arg::new("name")
+                        .short('n')
+                        .long("name")
                         .action(ArgAction::Append),
                 )
                 .arg(
@@ -48,9 +48,9 @@ fn arguments() -> ArgMatches {
                         .action(ArgAction::Append),
                 )
                 .arg(
-                    Arg::new("name")
-                        .short('n')
-                        .long("name")
+                    Arg::new("git-path")
+                        .short('g')
+                        .long("git-path")
                         .action(ArgAction::Append),
                 ),
         )
@@ -59,9 +59,9 @@ fn arguments() -> ArgMatches {
             Command::new("push")
                 .about("Push config to Git repo")
                 .arg(
-                    Arg::new("git-path")
-                        .short('g')
-                        .long("git-path")
+                    Arg::new("name")
+                        .short('n')
+                        .long("name")
                         .action(ArgAction::Append),
                 )
                 .arg(
@@ -71,9 +71,9 @@ fn arguments() -> ArgMatches {
                         .action(ArgAction::Append),
                 )
                 .arg(
-                    Arg::new("name")
-                        .short('n')
-                        .long("name")
+                    Arg::new("git-path")
+                        .short('g')
+                        .long("git-path")
                         .action(ArgAction::Append),
                 ),
         )
@@ -102,10 +102,11 @@ pub fn match_args() {
 fn match_subcmd_flags(cmd: &str) {
     let args = arguments();
     if let Some(cmd) = args.subcommand_matches(cmd) {
-        let git_path = cmd.get_one::<String>("git-path").map(|s| s.as_str());
-        let path = cmd.get_one::<String>("path").map(|s| s.as_str());
         let name = cmd.get_one::<String>("name").map(|s| s.as_str());
+        let path = cmd.get_one::<String>("path").map(|s| s.as_str());
+        let git_path = cmd.get_one::<String>("git-path").map(|s| s.as_str());
 
-        println!("git-path:{:?}, path:{:?}, name:{:?}", git_path, path, name);
+        println!("name:{:?}, path:{:?}, git-path:{:?}", name, path, git_path);
+
     }
 }
