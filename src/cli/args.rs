@@ -88,10 +88,11 @@ pub fn match_args() {
             match_subcmd_flags("import");
         }
         Some(("pull", set_matches)) => {
+            match_subcmd_flags("pull");
         }
         Some(("pull-all", set_matches)) => {}
         Some(("push", set_matches)) => {
-            match_subcmd_flags("import");
+            match_subcmd_flags("push");
         }
         Some(("push-all", set_matches)) => {}
         _ => unreachable!(),
