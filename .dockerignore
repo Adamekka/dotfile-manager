@@ -1,3 +1,8 @@
-.git*
-license
+LICENSE
+README.md
+
+# https://github.com/kpcyrd/mini-docker-rust/blob/main/.dockerignore
 target
+Dockerfile
+.dockerignore
+.git*
