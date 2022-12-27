@@ -88,7 +88,6 @@ pub fn match_args() {
             match_subcmd_flags("import");
         }
         Some(("pull", set_matches)) => {
-            match_subcmd_flags("import");
         }
         Some(("pull-all", set_matches)) => {}
         Some(("push", set_matches)) => {
@@ -115,17 +114,14 @@ fn match_subcmd_flags(
     if let Some(arg_match) = args.subcommand_matches(cmd) {
         name = arg_match
             .get_one::<String>("name")
-            .map(|s| s.as_str())
             .unwrap()
             .to_string();
         path = arg_match
             .get_one::<String>("path")
-            .map(|s| s.as_str())
             .unwrap()
             .to_string();
         git_path = arg_match
             .get_one::<String>("git-path")
-            .map(|s| s.as_str())
             .unwrap()
             .to_string();
     } else {
