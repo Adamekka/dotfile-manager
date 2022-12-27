@@ -99,14 +99,40 @@ pub fn match_args() {
     }
 }
 
-fn match_subcmd_flags(cmd: &str) {
+fn match_subcmd_flags(
+    cmd: &str,
+) -> (
+    std::string::String,
+    std::string::String,
+    std::string::String,
+) {
     let args = arguments();
-    if let Some(cmd) = args.subcommand_matches(cmd) {
-        let name = cmd.get_one::<String>("name").map(|s| s.as_str());
-        let path = cmd.get_one::<String>("path").map(|s| s.as_str());
-        let git_path = cmd.get_one::<String>("git-path").map(|s| s.as_str());
 
-        println!("name:{:?}, path:{:?}, git-path:{:?}", name, path, git_path);
+    let name;
+    let path;
+    let git_path;
 
+    if let Some(arg_match) = args.subcommand_matches(cmd) {
+        name = arg_match
+            .get_one::<String>("name")
+            .map(|s| s.as_str())
+            .unwrap()
+            .to_string();
+        path = arg_match
+            .get_one::<String>("path")
+            .map(|s| s.as_str())
+            .unwrap()
+            .to_string();
+        git_path = arg_match
+            .get_one::<String>("git-path")
+            .map(|s| s.as_str())
+            .unwrap()
+            .to_string();
+    } else {
+        // this never gets called
+        panic!("Clap somehow screwed up");
     }
+
+    println!("{}, {}, {}", name, path, git_path);
+    return (name, path, git_path);
 }
