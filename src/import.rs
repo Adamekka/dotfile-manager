@@ -12,7 +12,7 @@ struct Config {
 }
 
 pub fn import(name: Option<String>, path: Option<String>, git_path: Option<String>) {
-    let config_folder = set_folders();
+    let template_folder = set_folders();
 
     let config = Config {
         name: name,
@@ -20,7 +20,7 @@ pub fn import(name: Option<String>, path: Option<String>, git_path: Option<Strin
         git_path: git_path,
     };
 
-    write_config(config, config_folder);
+    write_config(config, template_folder);
 }
 
 fn check_if_already_exists(file_path: &Path) {
@@ -31,16 +31,7 @@ fn check_if_already_exists(file_path: &Path) {
     }
 }
 
-fn write_config(config: Config, config_folder: String) {
-    let template_folder = config_folder.clone() + "/templates";
-    let template_folder_path = Path::new(&template_folder);
-
-    // Create templates folder
-    if !template_folder_path.exists() {
-        fs::create_dir(template_folder_path)
-            .expect("Can't create '~/.config/dotfile-manager/templates/")
-    }
-
+fn write_config(config: Config, template_folder: String) {
     // Create file contents
     let toml = toml::to_string(&config).unwrap();
 

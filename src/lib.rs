@@ -10,5 +10,20 @@ pub fn set_folders() -> String {
         fs::create_dir(config_folder_path).expect("Can't create '~/.config/dotfile-manager/")
     }
 
-    config_folder
+    let template_folder = set_template_folder(&config_folder);
+
+    template_folder
+}
+
+fn set_template_folder(config_folder: &String) -> String {
+    let template_folder = config_folder.clone() + "/templates";
+    let template_folder_path = Path::new(&template_folder);
+
+    // Create templates folder
+    if !template_folder_path.exists() {
+        fs::create_dir(template_folder_path)
+            .expect("Can't create '~/.config/dotfile-manager/templates/")
+    }
+
+    template_folder
 }
