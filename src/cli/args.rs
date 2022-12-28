@@ -81,6 +81,7 @@ fn arguments() -> ArgMatches {
         .get_matches()
 }
 
+// match arguments: import, pull, push, ...
 pub fn match_args() {
     let args = arguments();
     match args.subcommand() {
@@ -99,6 +100,7 @@ pub fn match_args() {
     }
 }
 
+// match subcommand flags: -n, -p, -g; --name, --path, --git-path
 fn match_subcmd_flags(
     cmd: &str,
 ) -> (
