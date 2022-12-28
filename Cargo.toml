@@ -13,4 +13,5 @@ path = "src/gui/main.rs"
 
 [dependencies]
 clap = "4"
+serde = {version = "1", features = ["derive"]}
 toml = "0"
