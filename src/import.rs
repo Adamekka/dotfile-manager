@@ -37,10 +37,10 @@ fn write_config(config: Config, config_folder: String) {
     let toml = toml::to_string(&config).unwrap();
 
     // Create file path
-    let config_path = template_folder + "/" + &config.name.unwrap() + ".toml";
+    let file_path = template_folder + "/" + &config.name.unwrap() + ".toml";
 
     // Write file to fs
-    let result = fs::write(config_path, toml);
+    let result = fs::write(file_path, toml);
 
     // Print result
     println!("{:?}", result);
