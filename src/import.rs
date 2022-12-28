@@ -45,14 +45,14 @@ fn write_config(config: Config, config_folder: String) {
     let toml = toml::to_string(&config).unwrap();
 
     // Create file path
-    let file_path = template_folder + "/" + &config.name.unwrap() + ".toml";
-    let file_path_path = Path::new(&file_path);
+    let file_path_str = template_folder + "/" + &config.name.unwrap() + ".toml";
+    let file_path = Path::new(&file_path_str);
 
     // Check if file already exists
-    check_if_already_exists(&file_path_path);
+    check_if_already_exists(&file_path);
 
     // Write file to fs
-    let result = fs::write(file_path, toml);
+    let result = fs::write(file_path_str, toml);
 
     // Print result
     println!("{:?}", result);
