@@ -1,4 +1,8 @@
+#[path = "../import.rs"]
+mod import;
+
 use clap::{Arg, ArgAction, ArgMatches, Command};
+use import::import;
 
 // TODO: pull, push - set number of required args to 1
 fn arguments() -> ArgMatches {
@@ -87,6 +91,7 @@ pub fn match_args() {
     match args.subcommand() {
         Some(("import", set_matches)) => {
             let (name, path, git_path) = match_subcmd_flags("import");
+            import(name, path, git_path);
         }
         Some(("pull", set_matches)) => {
             let (name, path, git_path) = match_subcmd_flags("pull");
