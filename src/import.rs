@@ -23,6 +23,14 @@ pub fn import(name: Option<String>, path: Option<String>, git_path: Option<Strin
     write_config(config, config_folder);
 }
 
+fn check_if_already_exists(file_path: &Path) {
+    let file_existence = Path::exists(file_path);
+
+    if file_existence {
+        panic!("File already exists")
+    }
+}
+
 fn write_config(config: Config, config_folder: String) {
     let template_folder = config_folder.clone() + "/templates";
     let template_folder_path = Path::new(&template_folder);
@@ -38,6 +46,10 @@ fn write_config(config: Config, config_folder: String) {
 
     // Create file path
     let file_path = template_folder + "/" + &config.name.unwrap() + ".toml";
+    let file_path_path = Path::new(&file_path);
+
+    // Check if file already exists
+    check_if_already_exists(&file_path_path);
 
     // Write file to fs
     let result = fs::write(file_path, toml);
