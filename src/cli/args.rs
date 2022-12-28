@@ -89,18 +89,18 @@ fn arguments() -> ArgMatches {
 pub fn match_args() {
     let args = arguments();
     match args.subcommand() {
-        Some(("import", set_matches)) => {
+        Some(("import", _set_matches)) => {
             let (name, path, git_path) = match_subcmd_flags("import");
             import(name, path, git_path);
         }
-        Some(("pull", set_matches)) => {
+        Some(("pull", _set_matches)) => {
             let (name, path, git_path) = match_subcmd_flags("pull");
         }
-        Some(("pull-all", set_matches)) => {}
-        Some(("push", set_matches)) => {
+        Some(("pull-all", _set_matches)) => {}
+        Some(("push", _set_matches)) => {
             let (name, path, git_path) = match_subcmd_flags("push");
         }
-        Some(("push-all", set_matches)) => {}
+        Some(("push-all", _set_matches)) => {}
         _ => unreachable!(),
     }
 }
