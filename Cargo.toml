@@ -13,3 +13,4 @@ path = "src/gui/main.rs"
 
 [dependencies]
 clap = "4"
+toml = "0"
