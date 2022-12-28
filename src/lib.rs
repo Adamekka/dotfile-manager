@@ -1,6 +1,5 @@
 use std::{env, fs, path::Path};
 
-#[allow(dead_code)] // rust-analyzer doesn't know it's called in main()
 pub fn set_folders() {
     // Check for config folder, else create one
     let home_folder = env::var("HOME").expect("$HOME environment variable isn't set");
