@@ -85,14 +85,14 @@ pub fn match_args() {
     let args = arguments();
     match args.subcommand() {
         Some(("import", set_matches)) => {
-            match_subcmd_flags("import");
+            let (name, path, git_path) = match_subcmd_flags("import");
         }
         Some(("pull", set_matches)) => {
-            match_subcmd_flags("pull");
+            let (name, path, git_path) = match_subcmd_flags("pull");
         }
         Some(("pull-all", set_matches)) => {}
         Some(("push", set_matches)) => {
-            match_subcmd_flags("push");
+            let (name, path, git_path) = match_subcmd_flags("push");
         }
         Some(("push-all", set_matches)) => {}
         _ => unreachable!(),
@@ -102,34 +102,33 @@ pub fn match_args() {
 fn match_subcmd_flags(
     cmd: &str,
 ) -> (
-    std::string::String,
-    std::string::String,
-    std::string::String,
+    Option<std::string::String>,
+    Option<std::string::String>,
+    Option<std::string::String>,
 ) {
     let args = arguments();
 
-    let name;
-    let path;
-    let git_path;
+    let mut name: Option<String> = None;
+    let mut path: Option<String> = None;
+    let mut git_path: Option<String> = None;
 
     if let Some(arg_match) = args.subcommand_matches(cmd) {
-        name = arg_match
-            .get_one::<String>("name")
-            .unwrap()
-            .to_string();
-        path = arg_match
-            .get_one::<String>("path")
-            .unwrap()
-            .to_string();
-        git_path = arg_match
-            .get_one::<String>("git-path")
-            .unwrap()
-            .to_string();
+        if arg_match.get_one::<String>("name") != None {
+            name = Some(arg_match.get_one::<String>("name").unwrap().to_string());
+        }
+
+        if arg_match.get_one::<String>("path") != None {
+            path = Some(arg_match.get_one::<String>("path").unwrap().to_string());
+        }
+
+        if arg_match.get_one::<String>("git-path") != None {
+            git_path = Some(arg_match.get_one::<String>("git-path").unwrap().to_string());
+        }
     } else {
         // this never gets called
         panic!("Clap somehow screwed up");
     }
 
-    println!("{}, {}, {}", name, path, git_path);
+    println!("{:?}, {:?}, {:?}", name, path, git_path);
     return (name, path, git_path);
 }
