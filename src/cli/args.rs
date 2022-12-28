@@ -4,7 +4,6 @@ mod import;
 use clap::{Arg, ArgAction, ArgMatches, Command};
 use import::import;
 
-// TODO: pull, push - set number of required args to 1
 fn arguments() -> ArgMatches {
     Command::new("dman")
         .about("Manage your dotfiles")
@@ -93,14 +92,21 @@ pub fn match_args() {
             let (name, path, git_path) = match_subcmd_flags("import");
             import(name, path, git_path);
         }
+
         Some(("pull", _set_matches)) => {
+            check_if_enough_flags("pull");
             let (name, path, git_path) = match_subcmd_flags("pull");
         }
+
         Some(("pull-all", _set_matches)) => {}
+
         Some(("push", _set_matches)) => {
+            check_if_enough_flags("push");
             let (name, path, git_path) = match_subcmd_flags("push");
         }
+
         Some(("push-all", _set_matches)) => {}
+
         _ => unreachable!(),
     }
 }
@@ -138,4 +144,18 @@ fn match_subcmd_flags(
 
     println!("{:?}, {:?}, {:?}", name, path, git_path);
     return (name, path, git_path);
+}
+
+// Check if at least 1 flag is present
+fn check_if_enough_flags(cmd: &str) {
+    let args = arguments();
+
+    if let Some(arg_match) = args.subcommand_matches(cmd) {
+        if !(arg_match.get_one::<String>("name") != None
+            || arg_match.get_one::<String>("path") != None
+            || arg_match.get_one::<String>("git-path") != None)
+        {
+            panic!("At least 1 flag is required");
+        }
+    }
 }
