@@ -1,9 +1,10 @@
 #[path = "../import.rs"]
 mod import;
-use std::cfg;
 
 use clap::{Arg, ArgAction, ArgMatches, Command};
 use import::import;
+use pull::pull;
+use std::cfg;
 
 fn arguments() -> ArgMatches {
     Command::new("dman")
