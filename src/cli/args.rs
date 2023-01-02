@@ -142,7 +142,11 @@ fn match_subcmd_flags(
         panic!("Clap somehow screwed up");
     }
 
-    println!("{:?}, {:?}, {:?}", name, path, git_path);
+    #[cfg(debug_assertions)]
+    {
+        println!("{:?}, {:?}, {:?}", name, path, git_path);
+    }
+
     return (name, path, git_path);
 }
 
