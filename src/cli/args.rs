@@ -1,5 +1,7 @@
 #[path = "../import.rs"]
 mod import;
+#[path = "../pull.rs"]
+mod pull;
 
 use clap::{Arg, ArgAction, ArgMatches, Command};
 use import::import;
@@ -98,6 +100,7 @@ pub fn match_args() {
         Some(("pull", _set_matches)) => {
             check_if_enough_flags("pull");
             let (name, path, git_path) = match_subcmd_flags("pull");
+            pull(name, path, git_path);
         }
 
         Some(("pull-all", _set_matches)) => {}
