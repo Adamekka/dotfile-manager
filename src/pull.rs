@@ -5,7 +5,7 @@ mod pull;
 use core::panic;
 use lib::set_folders;
 use serde::Deserialize;
-use std::{cfg, fs};
+use std::{cfg, fs, process::Command};
 
 // #[derive(Debug, Deserialize)]
 // struct Config {
@@ -74,7 +74,9 @@ pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>
     if !are_data_matched {
         println!("Not found");
     } else {
-        let result = Command::new("cd").args([config.path]).output();
+        // let result = Command::new("cd").args([config.path]).output();
+
+        let result = pull::run(config.path);
         println!("{:?}", result);
     }
 }

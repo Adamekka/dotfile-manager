@@ -14,6 +14,7 @@
 
 use git2::Repository;
 use std::io::{self, Write};
+use std::path::Path;
 use std::str;
 use structopt::StructOpt;
 
@@ -190,19 +191,12 @@ fn do_merge<'a>(
     Ok(())
 }
 
-fn run(args: &Args) -> Result<(), git2::Error> {
-    let remote_name = args.arg_remote.as_ref().map(|s| &s[..]).unwrap_or("origin");
-    let remote_branch = args.arg_branch.as_ref().map(|s| &s[..]).unwrap_or("master");
-    let repo = Repository::open(".")?;
+pub fn run(path_but_string: String) -> Result<(), git2::Error> {
+    let remote_name = "origin";
+    let remote_branch = "main"; // TODO: handle different branch names
+    let path = Path::new(&path_but_string);
+    let repo = Repository::open(path)?;
     let mut remote = repo.find_remote(remote_name)?;
     let fetch_commit = do_fetch(&repo, &[remote_branch], &mut remote)?;
     do_merge(&repo, &remote_branch, fetch_commit)
-}
-
-fn main() {
-    let args = Args::from_args();
-    match run(&args) {
-        Ok(()) => {}
-        Err(e) => println!("error: {}", e),
-    }
 }
