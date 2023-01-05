@@ -3,26 +3,33 @@ use std::{env, fs, path::Path};
 pub fn set_folders() -> String {
     // Check for config folder, else create one
     let home_folder = env::var("HOME").expect("$HOME environment variable isn't set");
-    let config_folder = home_folder.clone() + "/.config/dotfile-manager";
+    let config_folder = home_folder.clone() + "/.config";
     let config_folder_path = Path::new(&config_folder);
 
     if !config_folder_path.exists() {
-        fs::create_dir(config_folder_path).expect("Can't create '~/.config/dotfile-manager/")
+        fs::create_dir(config_folder_path).expect("Can't create '~/.config/'");
     }
 
-    let template_folder = set_template_folder(&config_folder);
+    let dman_folder = home_folder.clone() + "/.config/dotfile-manager";
+    let dman_folder_path = Path::new(&dman_folder);
+
+    if !dman_folder_path.exists() {
+        fs::create_dir(dman_folder_path).expect("Can't create '~/.config/dotfile-manager/");
+    }
+
+    let template_folder = set_template_folder(&dman_folder);
 
     template_folder
 }
 
-fn set_template_folder(config_folder: &String) -> String {
-    let template_folder = config_folder.clone() + "/templates";
+fn set_template_folder(dman_folder: &String) -> String {
+    let template_folder = dman_folder.clone() + "/templates";
     let template_folder_path = Path::new(&template_folder);
 
     // Create templates folder
     if !template_folder_path.exists() {
         fs::create_dir(template_folder_path)
-            .expect("Can't create '~/.config/dotfile-manager/templates/")
+            .expect("Can't create '~/.config/dotfile-manager/templates/");
     }
 
     template_folder
