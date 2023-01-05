@@ -1,4 +1,6 @@
 mod lib;
+#[path = "./libgit2-rs/pull.rs"]
+mod pull;
 
 use core::panic;
 use lib::set_folders;
