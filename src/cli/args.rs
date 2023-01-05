@@ -5,6 +5,7 @@ mod pull;
 
 use clap::{Arg, ArgAction, ArgMatches, Command};
 use import::import;
+use pull::pull;
 use std::cfg;
 
 fn arguments() -> ArgMatches {

@@ -5,7 +5,7 @@ mod pull;
 use core::panic;
 use lib::set_folders;
 use serde::Deserialize;
-use std::{cfg, fs, process::Command};
+use std::{cfg, fs};
 
 // #[derive(Debug, Deserialize)]
 // struct Config {
