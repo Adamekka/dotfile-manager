@@ -197,6 +197,13 @@ pub fn run(path_but_string: String) -> Result<(), git2::Error> {
     let path = Path::new(&path_but_string);
     let repo = Repository::open(path)?;
     let mut remote = repo.find_remote(remote_name)?;
+
+    #[cfg(debug_assertions)]
+    {
+        println!("Pulling config from git repo");
+        println!("path: {:?}, remote branch: {}", path, remote_branch);
+    }
+
     let fetch_commit = do_fetch(&repo, &[remote_branch], &mut remote)?;
     do_merge(&repo, &remote_branch, fetch_commit)
 }
