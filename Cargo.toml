@@ -15,4 +15,5 @@ path = "src/gui/main.rs"
 clap = "4"
 git2 = "0"
 serde = { version = "1", features = ["derive"] }
+structopt = "0"
 toml = "0"
