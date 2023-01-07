@@ -74,6 +74,11 @@ pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>
     if !are_data_matched {
         println!("Not found");
     } else {
+        #[cfg(debug_assertions)]
+        {
+            println!("{:?}", config);
+        }
+
         let result = pull::run(config.path);
         println!("{:?}", result);
     }
@@ -85,6 +90,11 @@ pub fn pull_all() {
     for file in files {
         let saved_config = process_file_to_struct(&file);
 
+        println!("Pulling changes for: {}", saved_config.name);
+        #[cfg(debug_assertions)]
+        {
+            println!("{:?}", saved_config);
+        }
         let result = pull::run(saved_config.path);
         println!("{:?}", result);
     }
