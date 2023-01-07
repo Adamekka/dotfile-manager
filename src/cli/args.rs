@@ -5,7 +5,7 @@ mod pull;
 
 use clap::{Arg, ArgAction, ArgMatches, Command};
 use import::import;
-use pull::pull;
+use pull::{pull, pull_all};
 use std::cfg;
 
 fn arguments() -> ArgMatches {
@@ -103,7 +103,9 @@ pub fn match_args() {
             pull(name, path, git_path);
         }
 
-        Some(("pull-all", _set_matches)) => {}
+        Some(("pull-all", _set_matches)) => {
+            pull_all();
+        }
 
         Some(("push", _set_matches)) => {
             check_if_enough_flags("push");

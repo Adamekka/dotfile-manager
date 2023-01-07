@@ -5,7 +5,10 @@ mod pull;
 use core::panic;
 use lib::set_folders;
 use serde::Deserialize;
-use std::{cfg, fs};
+use std::{
+    cfg,
+    fs::{self, ReadDir},
+};
 
 #[derive(Debug, Default, Deserialize)]
 struct SavedConfig {
@@ -14,11 +17,15 @@ struct SavedConfig {
     git_path: String,
 }
 
-pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>) {
+fn setup() -> ReadDir {
     let template_folder = set_folders();
 
     // Get files from template folder
-    let files = fs::read_dir(template_folder).unwrap();
+    return fs::read_dir(template_folder).unwrap();
+}
+
+pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>) {
+    let files = setup();
 
     // How to match input with saved configs
     let matching: char;
@@ -70,6 +77,10 @@ pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>
         let result = pull::run(config.path);
         println!("{:?}", result);
     }
+}
+
+pub fn pull_all() {
+    let files = setup();
 }
 
 fn process_file_to_struct(file: &Result<fs::DirEntry, std::io::Error>) -> SavedConfig {
