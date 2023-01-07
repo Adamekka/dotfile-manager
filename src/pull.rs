@@ -81,6 +81,13 @@ pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>
 
 pub fn pull_all() {
     let files = setup();
+
+    for file in files {
+        let saved_config = process_file_to_struct(&file);
+
+        let result = pull::run(saved_config.path);
+        println!("{:?}", result);
+    }
 }
 
 fn process_file_to_struct(file: &Result<fs::DirEntry, std::io::Error>) -> SavedConfig {
