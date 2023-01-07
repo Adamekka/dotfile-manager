@@ -109,7 +109,7 @@ pub fn match_args() {
 
         Some(("push", _set_matches)) => {
             check_if_enough_flags("push");
-            let (name, path, git_path) = match_subcmd_flags("push");
+            let (_name, _path, _git_path) = match_subcmd_flags("push");
         }
 
         Some(("push-all", _set_matches)) => {}
@@ -133,15 +133,15 @@ fn match_subcmd_flags(
     let mut git_path: Option<String> = None;
 
     if let Some(arg_match) = args.subcommand_matches(cmd) {
-        if arg_match.get_one::<String>("name") != None {
+        if arg_match.get_one::<String>("name").is_some() {
             name = Some(arg_match.get_one::<String>("name").unwrap().to_string());
         }
 
-        if arg_match.get_one::<String>("path") != None {
+        if arg_match.get_one::<String>("path").is_some() {
             path = Some(arg_match.get_one::<String>("path").unwrap().to_string());
         }
 
-        if arg_match.get_one::<String>("git-path") != None {
+        if arg_match.get_one::<String>("git-path").is_some() {
             git_path = Some(arg_match.get_one::<String>("git-path").unwrap().to_string());
         }
     } else {
@@ -154,7 +154,7 @@ fn match_subcmd_flags(
         println!("{:?}, {:?}, {:?}", name, path, git_path);
     }
 
-    return (name, path, git_path);
+    (name, path, git_path)
 }
 
 // Check if at least 1 flag is present
@@ -162,9 +162,9 @@ fn check_if_enough_flags(cmd: &str) {
     let args = arguments();
 
     if let Some(arg_match) = args.subcommand_matches(cmd) {
-        if !(arg_match.get_one::<String>("name") != None
-            || arg_match.get_one::<String>("path") != None
-            || arg_match.get_one::<String>("git-path") != None)
+        if !(arg_match.get_one::<String>("name").is_some()
+            || arg_match.get_one::<String>("path").is_some()
+            || arg_match.get_one::<String>("git-path").is_some())
         {
             panic!("At least 1 flag is required");
         }

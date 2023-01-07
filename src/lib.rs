@@ -10,20 +10,18 @@ pub fn set_folders() -> String {
         fs::create_dir(config_folder_path).expect("Can't create '~/.config/'");
     }
 
-    let dman_folder = home_folder.clone() + "/.config/dotfile-manager";
+    let dman_folder = home_folder + "/.config/dotfile-manager";
     let dman_folder_path = Path::new(&dman_folder);
 
     if !dman_folder_path.exists() {
         fs::create_dir(dman_folder_path).expect("Can't create '~/.config/dotfile-manager/");
     }
 
-    let template_folder = set_template_folder(&dman_folder);
-
-    template_folder
+    set_template_folder(&dman_folder)
 }
 
-fn set_template_folder(dman_folder: &String) -> String {
-    let template_folder = dman_folder.clone() + "/templates";
+fn set_template_folder(dman_folder: &str) -> String {
+    let template_folder = dman_folder.to_owned() + "/templates";
     let template_folder_path = Path::new(&template_folder);
 
     // Create templates folder
