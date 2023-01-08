@@ -15,9 +15,9 @@ pub fn import(name: Option<String>, path: Option<String>, git_path: Option<Strin
     let template_folder = set_folders();
 
     let config = Config {
-        name: name,
-        path: path,
-        git_path: git_path,
+        name,
+        path,
+        git_path,
     };
 
     write_config(config, template_folder);
@@ -40,7 +40,7 @@ fn write_config(config: Config, template_folder: String) {
     let file_path = Path::new(&file_path_string);
 
     // Check if file already exists
-    check_if_already_exists(&file_path);
+    check_if_already_exists(file_path);
 
     // Write file to fs
     let result = fs::write(file_path_string, toml);

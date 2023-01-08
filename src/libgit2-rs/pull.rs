@@ -184,7 +184,7 @@ fn do_merge<'a>(
     } else if analysis.0.is_normal() {
         // do a normal merge
         let head_commit = repo.reference_to_annotated_commit(&repo.head()?)?;
-        normal_merge(&repo, &head_commit, &fetch_commit)?;
+        normal_merge(repo, &head_commit, &fetch_commit)?;
     } else {
         println!("Nothing to do...");
     }
@@ -207,5 +207,5 @@ pub fn run(path_but_string: String) -> Result<(), git2::Error> {
     }
 
     let fetch_commit = do_fetch(&repo, &[remote_branch], &mut remote)?;
-    do_merge(&repo, &remote_branch, fetch_commit)
+    do_merge(&repo, remote_branch, fetch_commit)
 }

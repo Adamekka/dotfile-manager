@@ -21,7 +21,7 @@ fn setup() -> ReadDir {
     let template_folder = set_folders();
 
     // Get files from template folder
-    return fs::read_dir(template_folder).unwrap();
+    fs::read_dir(template_folder).unwrap()
 }
 
 pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>) {
@@ -125,8 +125,8 @@ fn match_data(
     if saved_config == data {
         println!("{} found", saved_config_struct.name);
 
-        return (true, saved_config_struct);
+        (true, saved_config_struct)
     } else {
-        return (previous_value, saved_config_struct);
+        (previous_value, saved_config_struct)
     }
 }
