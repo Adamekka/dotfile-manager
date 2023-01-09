@@ -1,8 +1,16 @@
+use serde::Deserialize;
 use std::{
     env,
     fs::{self, ReadDir},
     path::Path,
 };
+
+#[derive(Debug, Default, Deserialize)]
+pub struct SavedConfig {
+    pub name: String,
+    pub path: String,
+    pub git_path: String,
+}
 
 pub fn set_folders() -> String {
     // Check for config folder, else create one
@@ -42,4 +50,17 @@ pub fn get_files() -> ReadDir {
 
     // Get files from template folder
     fs::read_dir(template_folder).unwrap()
+}
+
+pub fn process_file_to_struct(file: &Result<fs::DirEntry, std::io::Error>) -> SavedConfig {
+    let text = fs::read_to_string(file.as_ref().unwrap().path());
+    let text_string = text.unwrap();
+    let saved_config: SavedConfig = toml::from_str(&text_string).expect("Couldn't parse");
+
+    #[cfg(debug_assertions)]
+    {
+        println!("{:?}", saved_config);
+    }
+
+    saved_config
 }

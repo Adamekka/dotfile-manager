@@ -4,15 +4,9 @@ mod pull;
 
 use core::panic;
 use lib::get_files;
-use serde::Deserialize;
+use lib::process_file_to_struct;
+use lib::SavedConfig;
 use std::{cfg, fs};
-
-#[derive(Debug, Default, Deserialize)]
-struct SavedConfig {
-    name: String,
-    path: String,
-    git_path: String,
-}
 
 pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>) {
     let files = get_files();
@@ -88,19 +82,6 @@ pub fn pull_all() {
         let result = pull::run(saved_config.path);
         println!("{:?}", result);
     }
-}
-
-fn process_file_to_struct(file: &Result<fs::DirEntry, std::io::Error>) -> SavedConfig {
-    let text = fs::read_to_string(file.as_ref().unwrap().path());
-    let text_string = text.unwrap();
-    let saved_config: SavedConfig = toml::from_str(&text_string).expect("Couldn't parse");
-
-    #[cfg(debug_assertions)]
-    {
-        println!("{:?}", saved_config);
-    }
-
-    saved_config
 }
 
 fn match_data(
