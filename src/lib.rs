@@ -1,4 +1,8 @@
-use std::{env, fs, path::Path};
+use std::{
+    env,
+    fs::{self, ReadDir},
+    path::Path,
+};
 
 pub fn set_folders() -> String {
     // Check for config folder, else create one
@@ -31,4 +35,11 @@ fn set_template_folder(dman_folder: &str) -> String {
     }
 
     template_folder
+}
+
+pub fn get_files() -> ReadDir {
+    let template_folder = set_folders();
+
+    // Get files from template folder
+    fs::read_dir(template_folder).unwrap()
 }
