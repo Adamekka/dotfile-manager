@@ -4,9 +4,7 @@ WORKDIR /dman
 
 COPY . .
 
-RUN cargo install --path . --bin dman
-RUN cargo install --path . --bin dman-gui
-
+RUN cargo install --path .
 
 FROM debian:latest
 
