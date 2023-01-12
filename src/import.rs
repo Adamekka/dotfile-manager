@@ -11,7 +11,7 @@ struct Template {
     git_path: Option<String>,
 }
 
-// Construct struct with template parameters
+// Construct a struct with template parameters
 pub fn import(name: Option<String>, path: Option<String>, git_path: Option<String>) {
     let template_folder = set_folders();
 
@@ -43,7 +43,7 @@ fn write_config_to_fs(template: Template, template_folder: String) {
     // Check if template already exists
     check_template_existence(template_path);
 
-    // Write template to fs ~/.config/dotfile-manager/templates/
+    // Write template to fs ~/.config/dotfile-manager/templates/foo.toml
     let result = fs::write(template_path, toml);
 
     // Print result
