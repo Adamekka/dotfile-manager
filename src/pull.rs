@@ -87,8 +87,8 @@ pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>
 pub fn pull_all() {
     let templates = get_existing_templates();
 
-    for template in templates {
-        let template = process_template_to_struct(&template);
+    for template_file in templates {
+        let template = process_template_to_struct(&template_file);
 
         println!("Pulling changes for: {}", template.name);
         #[cfg(debug_assertions)]
