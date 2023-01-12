@@ -6,7 +6,7 @@ use std::{
 };
 
 #[derive(Debug, Default, Deserialize)]
-pub struct SavedConfig {
+pub struct Template {
     pub name: String,
     pub path: String,
     pub git_path: String,
@@ -45,22 +45,21 @@ fn set_template_folder(dman_folder: &str) -> String {
     template_folder
 }
 
-pub fn get_files() -> ReadDir {
+pub fn get_existing_templates() -> ReadDir {
     let template_folder = set_folders();
 
-    // Get files from template folder
+    // Get templates from template folder
     fs::read_dir(template_folder).unwrap()
 }
 
-pub fn process_file_to_struct(file: &Result<fs::DirEntry, std::io::Error>) -> SavedConfig {
-    let text = fs::read_to_string(file.as_ref().unwrap().path());
-    let text_string = text.unwrap();
-    let saved_config: SavedConfig = toml::from_str(&text_string).expect("Couldn't parse");
+pub fn process_template_to_struct(file: &Result<fs::DirEntry, std::io::Error>) -> Template {
+    let template_but_string = fs::read_to_string(file.as_ref().unwrap().path()).unwrap();
+    let template: Template = toml::from_str(&template_but_string).expect("Couldn't parse");
 
     #[cfg(debug_assertions)]
     {
-        println!("{:?}", saved_config);
+        println!("{:?}", template);
     }
 
-    saved_config
+    template
 }

@@ -16,7 +16,7 @@ fn arguments() -> ArgMatches {
         .author("Adamekka")
         .subcommand(
             Command::new("import")
-                .about("Import a config")
+                .about("Import a template")
                 .arg(
                     Arg::new("name")
                         .short('n')
@@ -41,7 +41,7 @@ fn arguments() -> ArgMatches {
         )
         .subcommand(
             Command::new("pull")
-                .about("Pull config from Git repo")
+                .about("Pull changes from Git repo")
                 .arg(
                     Arg::new("name")
                         .short('n')
@@ -61,10 +61,10 @@ fn arguments() -> ArgMatches {
                         .action(ArgAction::Append),
                 ),
         )
-        .subcommand(Command::new("pull-all").about("Pull all configs from Git repo(s)"))
+        .subcommand(Command::new("pull-all").about("Pull all changes from all Git repo(s)"))
         .subcommand(
             Command::new("push")
-                .about("Push config to Git repo")
+                .about("Push changes to Git repo")
                 .arg(
                     Arg::new("name")
                         .short('n')
@@ -84,11 +84,12 @@ fn arguments() -> ArgMatches {
                         .action(ArgAction::Append),
                 ),
         )
-        .subcommand(Command::new("push-all").about("Push all configs to Git repo(s)"))
+        .subcommand(Command::new("push-all").about("Push all changes to all Git repo(s)"))
         .get_matches()
 }
 
-// match arguments: import, pull, push, ...
+// Match arguments: import, pull, push, ...
+// Then pass them to according function with their parameters
 pub fn match_args() {
     let args = arguments();
     match args.subcommand() {
@@ -118,7 +119,7 @@ pub fn match_args() {
     }
 }
 
-// match subcommand flags: -n, -p, -g; --name, --path, --git-path
+// Match subcommand flags: -n, -p, -g; --name, --path, --git-path
 fn match_subcmd_flags(
     cmd: &str,
 ) -> (
