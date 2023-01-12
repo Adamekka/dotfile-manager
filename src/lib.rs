@@ -1,4 +1,16 @@
-use std::{env, fs, path::Path};
+use serde::Deserialize;
+use std::{
+    env,
+    fs::{self, ReadDir},
+    path::Path,
+};
+
+#[derive(Debug, Default, Deserialize)]
+pub struct Template {
+    pub name: String,
+    pub path: String,
+    pub git_path: String,
+}
 
 pub fn set_folders() -> String {
     // Check for config folder, else create one
@@ -31,4 +43,23 @@ fn set_template_folder(dman_folder: &str) -> String {
     }
 
     template_folder
+}
+
+pub fn get_existing_templates() -> ReadDir {
+    let template_folder = set_folders();
+
+    // Get templates from template folder
+    fs::read_dir(template_folder).unwrap()
+}
+
+pub fn process_template_to_struct(file: &Result<fs::DirEntry, std::io::Error>) -> Template {
+    let template_but_string = fs::read_to_string(file.as_ref().unwrap().path()).unwrap();
+    let template: Template = toml::from_str(&template_but_string).expect("Couldn't parse");
+
+    #[cfg(debug_assertions)]
+    {
+        println!("{:?}", template);
+    }
+
+    template
 }

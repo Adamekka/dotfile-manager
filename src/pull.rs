@@ -3,31 +3,15 @@ mod lib;
 mod pull;
 
 use core::panic;
-use lib::set_folders;
-use serde::Deserialize;
-use std::{
-    cfg,
-    fs::{self, ReadDir},
-};
-
-#[derive(Debug, Default, Deserialize)]
-struct SavedConfig {
-    name: String,
-    path: String,
-    git_path: String,
-}
-
-fn setup() -> ReadDir {
-    let template_folder = set_folders();
-
-    // Get files from template folder
-    fs::read_dir(template_folder).unwrap()
-}
+use lib::get_existing_templates;
+use lib::process_template_to_struct;
+use lib::Template;
+use std::{cfg, fs};
 
 pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>) {
-    let files = setup();
+    let templates = get_existing_templates();
 
-    // How to match input with saved configs
+    // How to match input with saved templates
     let matching: char;
 
     if name.is_some() {
@@ -43,90 +27,96 @@ pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>
         panic!("Not enough arguments");
     }
 
-    let mut are_data_matched: bool = false;
-    let mut config: SavedConfig = Default::default();
+    let mut is_user_input_matched: bool = false;
+    let mut template: Template = Default::default();
 
-    // For loop template folder for files
-    for file in files {
-        let saved_config = process_file_to_struct(&file);
+    // For loop template folder for templates, when matched, pass it to git pull
+    for template_file in templates {
+        // You need to construct template_temp struct every time in a loop, because you wanna for loop your existing templates in your fs
+        // You can't use template variable, because it's constructed after templates_temp values are matched with user input and then passed to git pull
+        let template_temp = process_template_to_struct(&template_file);
 
         match matching {
             // name
             'n' => {
-                (are_data_matched, config) =
-                    match_data(are_data_matched, saved_config.name, &name, file);
+                (is_user_input_matched, template) = match_user_input_with_template_data(
+                    is_user_input_matched,
+                    template_temp.name,
+                    &name,
+                    template_file,
+                );
             }
             // path
             'p' => {
-                (are_data_matched, config) =
-                    match_data(are_data_matched, saved_config.path, &path, file);
+                (is_user_input_matched, template) = match_user_input_with_template_data(
+                    is_user_input_matched,
+                    template_temp.path,
+                    &path,
+                    template_file,
+                );
             }
             // git-path
             'g' => {
-                (are_data_matched, config) =
-                    match_data(are_data_matched, saved_config.git_path, &git_path, file);
+                (is_user_input_matched, template) = match_user_input_with_template_data(
+                    is_user_input_matched,
+                    template_temp.git_path,
+                    &git_path,
+                    template_file,
+                );
             }
             _ => {
                 panic!("Match error");
             }
         }
     }
-    if !are_data_matched {
+    if !is_user_input_matched {
         println!("Not found");
     } else {
         #[cfg(debug_assertions)]
         {
-            println!("{:?}", config);
+            println!("{:?}", template);
         }
 
-        let result = pull::run(config.path);
+        // Pass path from matched template to function, that'll pull changes from GitHub
+        let result = pull::run(template.path);
         println!("{:?}", result);
     }
 }
 
+// Git pull every template
 pub fn pull_all() {
-    let files = setup();
+    let templates = get_existing_templates();
 
-    for file in files {
-        let saved_config = process_file_to_struct(&file);
+    for template in templates {
+        let template = process_template_to_struct(&template);
 
-        println!("Pulling changes for: {}", saved_config.name);
+        println!("Pulling changes for: {}", template.name);
         #[cfg(debug_assertions)]
         {
-            println!("{:?}", saved_config);
+            println!("{:?}", template);
         }
-        let result = pull::run(saved_config.path);
+        let result = pull::run(template.path);
         println!("{:?}", result);
     }
 }
 
-fn process_file_to_struct(file: &Result<fs::DirEntry, std::io::Error>) -> SavedConfig {
-    let text = fs::read_to_string(file.as_ref().unwrap().path());
-    let text_string = text.unwrap();
-    let saved_config: SavedConfig = toml::from_str(&text_string).expect("Couldn't parse");
-
-    #[cfg(debug_assertions)]
-    {
-        println!("{:?}", saved_config);
-    }
-
-    saved_config
-}
-
-fn match_data(
+// Match user input with existing templates to find one to Git pull
+fn match_user_input_with_template_data(
     previous_value: bool,
-    saved_config: String,
-    data: &Option<String>,
-    file: Result<fs::DirEntry, std::io::Error>,
-) -> (bool, SavedConfig) {
-    let data = data.clone().unwrap();
-    let saved_config_struct = process_file_to_struct(&file);
+    template_data: String,
+    user_input: &Option<String>,
+    template_file: Result<fs::DirEntry, std::io::Error>,
+) -> (bool, Template) {
+    let user_input = user_input.clone().unwrap();
 
-    if saved_config == data {
-        println!("{} found", saved_config_struct.name);
+    // Construct template according to data and return it
+    let template = process_template_to_struct(&template_file);
 
-        (true, saved_config_struct)
+    if template_data == user_input {
+        println!("{} template found", template.name);
+
+        (true, template)
     } else {
-        (previous_value, saved_config_struct)
+        (previous_value, template)
     }
 }

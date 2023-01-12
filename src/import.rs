@@ -5,45 +5,46 @@ use serde::Serialize;
 use std::{fs, path::Path};
 
 #[derive(Serialize)]
-struct Config {
+struct Template {
     name: Option<String>,
     path: Option<String>,
     git_path: Option<String>,
 }
 
+// Construct struct with template parameters
 pub fn import(name: Option<String>, path: Option<String>, git_path: Option<String>) {
     let template_folder = set_folders();
 
-    let config = Config {
+    let template = Template {
         name,
         path,
         git_path,
     };
 
-    write_config(config, template_folder);
+    write_config_to_fs(template, template_folder);
 }
 
-fn check_if_already_exists(file_path: &Path) {
-    let file_existence = Path::exists(file_path);
+fn check_template_existence(template_path: &Path) {
+    let template_existence = Path::exists(template_path);
 
-    if file_existence {
-        panic!("File already exists")
+    if template_existence {
+        panic!("Template already exists")
     }
 }
 
-fn write_config(config: Config, template_folder: String) {
+fn write_config_to_fs(template: Template, template_folder: String) {
     // Create file contents
-    let toml = toml::to_string(&config).unwrap();
+    let toml = toml::to_string(&template).unwrap();
 
     // Create file path
-    let file_path_string = template_folder + "/" + &config.name.unwrap() + ".toml";
-    let file_path = Path::new(&file_path_string);
+    let template_path_string = template_folder + "/" + &template.name.unwrap() + ".toml";
+    let template_path = Path::new(&template_path_string);
 
-    // Check if file already exists
-    check_if_already_exists(file_path);
+    // Check if template already exists
+    check_template_existence(template_path);
 
-    // Write file to fs
-    let result = fs::write(file_path_string, toml);
+    // Write template to fs ~/.config/dotfile-manager/templates/
+    let result = fs::write(template_path, toml);
 
     // Print result
     println!("{:?}", result);
