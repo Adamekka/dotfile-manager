@@ -14,7 +14,7 @@ path = "src/gui/main.rs"
 [dependencies]
 clap = "4"
 git2 = "0"
-gtk = { version = "0", package = "libadwaita" }
+relm4 = { version = "0", features = ["libadwaita"] }
 serde = { version = "1", features = ["derive"] }
 structopt = "0"
 toml = "0"
