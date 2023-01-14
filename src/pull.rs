@@ -1,7 +1,7 @@
-mod lib;
 #[path = "./libgit2-rs/pull.rs"]
 mod pull;
 
+use crate::lib;
 use core::panic;
 use lib::get_existing_templates;
 use lib::process_template_to_struct;

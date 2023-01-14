@@ -1,5 +1,4 @@
-mod lib;
-
+use crate::lib;
 use lib::set_folders;
 use serde::Serialize;
 use std::{fs, path::Path};
