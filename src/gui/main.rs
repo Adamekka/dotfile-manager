@@ -1,7 +1,10 @@
 #[path = "../lib.rs"]
 mod lib;
 
+use lib::get_existing_templates;
+use lib::process_template_to_struct;
 use lib::set_folders;
+use lib::Template;
 use relm4::{
     gtk::{
         self,
@@ -54,7 +57,22 @@ impl SimpleComponent for AppModel {
 fn main() {
     println!("dman-gui found on path");
     set_folders();
+    get_templates_to_vec();
 
     let app = RelmApp::new("dman-gui");
     app.run::<AppModel>(());
+}
+
+fn get_templates_to_vec() -> Vec<Template> {
+    let templates = get_existing_templates();
+    let mut templates_vec: Vec<Template> = Vec::new();
+
+    for template in templates {
+        let template = process_template_to_struct(&template);
+        templates_vec.push(template);
+    }
+
+    dbg!(&templates_vec);
+
+    templates_vec
 }
