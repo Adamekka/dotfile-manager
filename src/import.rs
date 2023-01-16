@@ -10,7 +10,7 @@ struct Template {
     git_path: Option<String>,
 }
 
-// Construct a struct with template parameters
+/// Construct a struct with template parameters
 pub fn import(name: Option<String>, path: Option<String>, git_path: Option<String>) {
     let template_folder = set_folders();
 
@@ -20,9 +20,10 @@ pub fn import(name: Option<String>, path: Option<String>, git_path: Option<Strin
         git_path,
     };
 
-    write_config_to_fs(template, template_folder);
+    write_template_to_fs(template, template_folder);
 }
 
+/// Check if template exists in filesystem
 fn check_template_existence(template_path: &Path) {
     let template_existence = Path::exists(template_path);
 
@@ -31,7 +32,8 @@ fn check_template_existence(template_path: &Path) {
     }
 }
 
-fn write_config_to_fs(template: Template, template_folder: String) {
+/// Write template to filesystem
+fn write_template_to_fs(template: Template, template_folder: String) {
     // Create file contents
     let toml = toml::to_string(&template).unwrap();
 

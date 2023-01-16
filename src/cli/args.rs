@@ -8,6 +8,7 @@ use import::import;
 use pull::{pull, pull_all};
 use std::cfg;
 
+/// Get arguments from Clap
 fn arguments() -> ArgMatches {
     Command::new("dman")
         .about("Manage your dotfiles")
@@ -88,8 +89,8 @@ fn arguments() -> ArgMatches {
         .get_matches()
 }
 
-// Match arguments: import, pull, push, ...
-// Then pass them to according function with their parameters
+/// Match arguments: import, pull, push, ...
+/// Then pass them to according function with their parameters
 pub fn match_args() {
     let args = arguments();
     match args.subcommand() {
@@ -119,7 +120,7 @@ pub fn match_args() {
     }
 }
 
-// Match subcommand flags: -n, -p, -g; --name, --path, --git-path
+/// Match subcommand flags: -n, -p, -g; --name, --path, --git-path
 fn match_subcmd_flags(
     cmd: &str,
 ) -> (
@@ -158,7 +159,7 @@ fn match_subcmd_flags(
     (name, path, git_path)
 }
 
-// Check if at least 1 flag is present
+/// Check if at least 1 flag is present
 fn check_if_enough_flags(cmd: &str) {
     let args = arguments();
 

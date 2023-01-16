@@ -193,6 +193,7 @@ fn do_merge<'a>(
 
 // TODO: handle private repos
 
+/// Pull changes from Git repository
 pub fn run(path_but_string: String) -> Result<(), git2::Error> {
     let remote_name = "origin";
     let remote_branch = "main"; // TODO: handle different branch names

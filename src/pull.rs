@@ -83,7 +83,7 @@ pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>
     }
 }
 
-// Git pull every template
+/// Git pull every template
 pub fn pull_all() {
     let templates = get_existing_templates();
 
@@ -100,7 +100,7 @@ pub fn pull_all() {
     }
 }
 
-// Match user input with existing templates to find one to Git pull
+/// Match user input with existing templates to find one to Git pull
 fn match_user_input_with_template_data(
     previous_value: bool,
     template_data: String,
