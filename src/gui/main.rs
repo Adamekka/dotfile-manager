@@ -64,6 +64,7 @@ fn main() {
     app.run::<AppModel>(());
 }
 
+/// Read templates from filesystem and put them to Vector
 fn get_templates_to_vec() -> Vec<Template> {
     let templates = get_existing_templates();
     let mut templates_vec: Vec<Template> = Vec::new();
