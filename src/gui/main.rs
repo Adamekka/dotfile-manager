@@ -5,6 +5,7 @@ use lib::get_existing_templates;
 use lib::process_template_to_struct;
 use lib::set_folders;
 use lib::Template;
+use relm4::adw;
 use relm4::{
     gtk::{
         self,
@@ -36,20 +37,20 @@ impl SimpleComponent for AppModel {
 
     fn update(&mut self, message: Self::Input, sender: ComponentSender<Self>) {}
 
-    view!(gtk::Window {
+    view!(adw::Window {
         set_title: Some("Dotfile Manager"),
-        set_default_width: 300,
-        set_default_height: 100,
+        set_default_width: 640,
+        set_default_height: 480,
 
         gtk::Box {
             set_orientation: gtk::Orientation::Vertical,
             set_spacing: 5,
             set_margin_all: 5,
 
-            gtk::Label {
-                set_label: &format!("Dotfile Manager"),
-                set_margin_all: 5,
-            }
+            adw::HeaderBar {},
+
+            // gtk::ListBox {
+            // }
         }
     });
 }
