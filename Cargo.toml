@@ -17,5 +17,5 @@ git2 = "0"
 relm4 = { version = "0.5.0-rc.1", features = ["libadwaita"] }
 serde = { version = "1", features = ["derive"] }
 structopt = "0"
-tabled = "0"
+tabled = { version = "0", features = ["color"] }
 toml = "0"
