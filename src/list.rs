@@ -4,11 +4,14 @@ use lib::get_existing_templates;
 use lib::process_template_to_struct;
 use lib::Template;
 use owo_colors::OwoColorize;
+use tabled::color::Color;
+use tabled::object::Rows;
 use tabled::object::Segment;
 use tabled::style::BorderColored;
 use tabled::style::RawStyle;
 use tabled::style::Symbol;
 use tabled::Highlight;
+use tabled::ModifyObject;
 use tabled::Style;
 use tabled::Table;
 
@@ -38,23 +41,15 @@ pub fn list_templates() {
         ));
     }
 
-    let mut table_style = RawStyle::from(Style::extended()).colored();
-    table_style.set_horizontal(Some(Symbol::ansi("═".magenta().to_string()).unwrap()));
-    table_style.set_vertical(Some(Symbol::ansi("║".cyan().to_string()).unwrap()));
+    let table_style = RawStyle::from(Style::rounded()).colored();
+
+    let color = Color::try_from(" ".red().to_string()).unwrap();
 
     let mut table = Table::from_iter(&data);
-    table.with(table_style).with(Highlight::colored(
-        Segment::all(),
-        BorderColored::default()
-            .top(Symbol::ansi("═".red().to_string()).unwrap())
-            .bottom(Symbol::ansi("═".red().to_string()).unwrap())
-            .left(Symbol::ansi("║".red().to_string()).unwrap())
-            .right(Symbol::ansi("║".red().to_string()).unwrap())
-            .top_left_corner(Symbol::ansi("╔".red().to_string()).unwrap())
-            .top_right_corner(Symbol::ansi("╗".red().to_string()).unwrap())
-            .bottom_left_corner(Symbol::ansi("╚".red().to_string()).unwrap())
-            .bottom_right_corner(Symbol::ansi("╝".red().to_string()).unwrap()),
-    ));
+    table
+        .with(table_style)
+        .with(Highlight::colored(Segment::all(), BorderColored::default()))
+        .with(color);
 
     println!("{}", table);
 }
