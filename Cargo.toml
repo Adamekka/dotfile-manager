@@ -14,7 +14,7 @@ path = "src/gui/main.rs"
 [dependencies]
 clap = "4"
 git2 = "0"
-owo-colors = "3.5.0"
+owo-colors = "3"
 relm4 = { version = "0.5.0-rc.1", features = ["libadwaita"] }
 serde = { version = "1", features = ["derive"] }
 structopt = "0"
