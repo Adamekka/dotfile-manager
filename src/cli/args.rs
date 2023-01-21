@@ -1,10 +1,13 @@
 #[path = "../import.rs"]
 mod import;
+#[path = "../list.rs"]
+mod list;
 #[path = "../pull.rs"]
 mod pull;
 
 use clap::{Arg, ArgAction, ArgMatches, Command};
 use import::import;
+use list::list_templates;
 use pull::{pull, pull_all};
 use std::cfg;
 
@@ -98,6 +101,10 @@ pub fn match_args() {
         Some(("import", _set_matches)) => {
             let (name, path, git_path) = match_subcmd_flags("import");
             import(name, path, git_path);
+        }
+
+        Some(("list", _set_matches)) => {
+            list_templates();
         }
 
         Some(("pull", _set_matches)) => {

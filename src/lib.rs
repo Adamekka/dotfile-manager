@@ -4,8 +4,9 @@ use std::{
     fs::{self, ReadDir},
     path::Path,
 };
+use tabled::Tabled;
 
-#[derive(Debug, Default, Deserialize)]
+#[derive(Debug, Default, Deserialize, Tabled)]
 pub struct Template {
     pub name: String,
     pub path: String,
