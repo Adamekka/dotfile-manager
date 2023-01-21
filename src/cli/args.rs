@@ -1,6 +1,6 @@
 #[path = "../import.rs"]
 mod import;
-#[path = "../list.rs"]
+#[path = "list.rs"]
 mod list;
 #[path = "../pull.rs"]
 mod pull;
