@@ -40,6 +40,7 @@ fn arguments() -> ArgMatches {
                         .required(true),
                 ),
         )
+        .subcommand(Command::new("list").about("List imported templates"))
         .subcommand(
             Command::new("pull")
                 .about("Pull changes from Git repo")
