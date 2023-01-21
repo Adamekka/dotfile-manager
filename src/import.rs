@@ -33,7 +33,7 @@ fn write_template_to_fs(template: Template, template_folder: String) {
     let template_path = Path::new(&template_path_string);
 
     // Check if template already exists
-    if !template_path.exists() {
+    if template_path.exists() {
         panic!("Template already exists");
     }
 
