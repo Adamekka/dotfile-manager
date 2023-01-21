@@ -13,9 +13,11 @@
  */
 
 use git2::Repository;
-use std::io::{self, Write};
-use std::path::Path;
-use std::str;
+use std::{
+    io::{self, Write},
+    path::Path,
+    str,
+};
 use structopt::StructOpt;
 
 #[derive(StructOpt)]

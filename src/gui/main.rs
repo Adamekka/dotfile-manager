@@ -1,12 +1,9 @@
 #[path = "../lib.rs"]
 mod lib;
 
-use lib::get_existing_templates;
-use lib::process_template_to_struct;
-use lib::set_folders;
-use lib::Template;
-use relm4::adw;
+use lib::{get_existing_templates, process_template_to_struct, set_folders, Template};
 use relm4::{
+    adw,
     gtk::{
         self,
         traits::{BoxExt, GtkWindowExt, OrientableExt},

@@ -1,19 +1,13 @@
 use crate::lib;
 
-use lib::get_existing_templates;
-use lib::process_template_to_struct;
-use lib::Template;
+use lib::{get_existing_templates, process_template_to_struct, Template};
 use owo_colors::OwoColorize;
-use tabled::color::Color;
-use tabled::object::Rows;
-use tabled::object::Segment;
-use tabled::style::BorderColored;
-use tabled::style::RawStyle;
-use tabled::style::Symbol;
-use tabled::Highlight;
-use tabled::ModifyObject;
-use tabled::Style;
-use tabled::Table;
+use tabled::{
+    color::Color,
+    object::Segment,
+    style::{BorderColored, RawStyle},
+    Highlight, Style, Table,
+};
 
 impl Template {
     fn new(name: String, path: String, git_path: String) -> Self {

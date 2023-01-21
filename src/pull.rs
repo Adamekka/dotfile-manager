@@ -3,9 +3,7 @@ mod pull;
 
 use crate::lib;
 use core::panic;
-use lib::get_existing_templates;
-use lib::process_template_to_struct;
-use lib::Template;
+use lib::{get_existing_templates, process_template_to_struct, Template};
 use std::{cfg, fs};
 
 pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>) {
