@@ -151,7 +151,7 @@ fn make_list_box(templates: Vec<Template>) -> gtk::ListBox {
     for template in templates {
         let row = relm4::gtk::ListBoxRow::new();
         let label = relm4::gtk::Label::new(Some(&template.name));
-        row.add();
+        row.add(&label);
         list_box.append(&row);
     }
     list_box
