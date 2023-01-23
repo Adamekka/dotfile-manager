@@ -100,6 +100,13 @@ impl SimpleComponent for AppModel {
 
                 adw::HeaderBar {},
 
+                gtk::Button {
+                    set_label: "Reload Templates",
+                    set_margin_all: 5,
+                    set_halign: gtk::Align::Center,
+                    set_valign: gtk::Align::Center,
+                },
+
                 gtk::ScrolledWindow {
                     set_hscrollbar_policy: gtk::PolicyType::Never,
                     set_min_content_height: 240,
