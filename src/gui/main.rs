@@ -1,8 +1,6 @@
 #[path = "../lib.rs"]
 mod lib;
 
-use crate::gtk::Label;
-use crate::gtk::ListView;
 use adw::prelude::*;
 use gtk::prelude::*;
 use lib::{get_existing_templates, process_template_to_struct, set_folders, Template};
@@ -149,10 +147,8 @@ fn get_templates_to_vec() -> Vec<Template> {
 fn make_list_box(templates: Vec<Template>) -> gtk::ListBox {
     let list_box = relm4::gtk::ListBox::new();
     for template in templates {
-        let row = relm4::gtk::ListBoxRow::new();
         let label = relm4::gtk::Label::new(Some(&template.name));
-        row.add(&label);
-        list_box.append(&row);
+        list_box.append(&label);
     }
     list_box
 }
