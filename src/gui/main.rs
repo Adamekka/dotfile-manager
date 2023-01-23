@@ -20,7 +20,7 @@ use relm4::{
 #[relm4::factory(pub)]
 impl FactoryComponent for Template {
     type ParentWidget = gtk::ListBox;
-    type ParentInput = AppMsg;
+    type ParentInput = ();
     type CommandOutput = ();
     type Input = ();
     type Output = ();
@@ -49,17 +49,16 @@ impl FactoryComponent for Template {
     }
 }
 
-#[derive(Debug)]
-pub enum AppMsg {
-    AddEntry(Template),
-}
+// #[derive(Debug)]
+// pub enum AppMsg {}
+
 struct AppModel {
     templates: FactoryVecDeque<Template>,
 }
 
 #[relm4::component]
 impl SimpleComponent for AppModel {
-    type Input = AppMsg;
+    type Input = ();
     type Output = ();
     type Init = ();
 
@@ -79,13 +78,7 @@ impl SimpleComponent for AppModel {
         ComponentParts { model, widgets }
     }
 
-    fn update(&mut self, message: Self::Input, sender: ComponentSender<Self>) {
-        match message {
-            AppMsg::AddEntry(template) => {
-                self.templates.guard().push_back(template);
-            }
-        }
-    }
+    fn update(&mut self, message: Self::Input, sender: ComponentSender<Self>) {}
 
     view!(
         main_window = adw::Window {
