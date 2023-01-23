@@ -120,9 +120,12 @@ pub fn match_args() {
         Some(("push", _set_matches)) => {
             check_if_enough_flags("push");
             let (_name, _path, _git_path) = match_subcmd_flags("push");
+            todo!("push");
         }
 
-        Some(("push-all", _set_matches)) => {}
+        Some(("push-all", _set_matches)) => {
+            todo!("push-all");
+        }
 
         _ => unreachable!(),
     }
