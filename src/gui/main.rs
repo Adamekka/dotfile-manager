@@ -17,43 +17,43 @@ use relm4::{
     ComponentParts, ComponentSender, RelmApp, RelmWidgetExt, SimpleComponent,
 };
 
-#[relm4::factory(pub)]
-impl FactoryComponent for Template {
-    type ParentWidget = gtk::ListBox;
-    type ParentInput = ();
-    type CommandOutput = ();
-    type Input = ();
-    type Output = ();
-    type Init = Template;
+// #[relm4::factory(pub)]
+// impl FactoryComponent for Template {
+//     type ParentWidget = gtk::ListBox;
+//     type ParentInput = ();
+//     type CommandOutput = ();
+//     type Input = ();
+//     type Output = ();
+//     type Init = Template;
 
-    fn init_model(template: Self::Init, index: &DynamicIndex, sender: FactorySender<Self>) -> Self {
-        Self {
-            name: template.name,
-            path: template.path,
-            git_path: template.git_path,
-        }
-    }
+//     fn init_model(template: Self::Init, index: &DynamicIndex, sender: FactorySender<Self>) -> Self {
+//         Self {
+//             name: template.name,
+//             path: template.path,
+//             git_path: template.git_path,
+//         }
+//     }
 
-    view! {
-        gtk::Box {
-            set_orientation: gtk::Orientation::Horizontal,
+//     view! {
+//         gtk::Box {
+//             set_orientation: gtk::Orientation::Horizontal,
 
-            #[name(label)]
-            gtk::Label {
-                set_label: &self.name,
-                set_hexpand: true,
-                set_halign: gtk::Align::Start,
-                set_margin_all: 12,
-            }
-        }
-    }
-}
+//             #[name(label)]
+//             gtk::Label {
+//                 set_label: &self.name,
+//                 set_hexpand: true,
+//                 set_halign: gtk::Align::Start,
+//                 set_margin_all: 12,
+//             }
+//         }
+//     }
+// }
 
 // #[derive(Debug)]
 // pub enum AppMsg {}
 
 struct AppModel {
-    templates: FactoryVecDeque<Template>,
+    // templates: FactoryVecDeque<Template>,
 }
 
 #[relm4::component]
@@ -68,7 +68,7 @@ impl SimpleComponent for AppModel {
         sender: ComponentSender<Self>,
     ) -> relm4::ComponentParts<Self> {
         let model = AppModel {
-            templates: FactoryVecDeque::new(gtk::ListBox::default(), sender.input_sender()),
+            // templates: FactoryVecDeque::new(gtk::ListBox::default(), sender.input_sender()),
         };
 
         // let templates_list_box = model.templates.widget();
