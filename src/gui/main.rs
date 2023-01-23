@@ -19,19 +19,6 @@ use relm4::{
     ComponentParts, ComponentSender, RelmApp, RelmWidgetExt, SimpleComponent,
 };
 
-macro_rules! make_list_box {
-    ($items:expr) => {{
-        let list_box = relm4::gtk::ListBox::new();
-        for item in $items {
-            let row = relm4::gtk::ListBoxRow::new();
-            // let label = relm4::gtk::Label::new(Some("ff"));
-            row.add();
-            list_box.append(&row);
-        }
-        list_box
-    }};
-}
-
 #[relm4::factory(pub)]
 impl FactoryComponent for Template {
     type ParentWidget = gtk::ListBox;
@@ -88,7 +75,7 @@ impl SimpleComponent for AppModel {
         };
 
         // let templates_list_box = model.templates.widget();
-        let templates_list_box = make_list_box!(get_templates_to_vec());
+        let templates_list_box = make_list_box(get_templates_to_vec());
         let widgets = view_output!();
 
         ComponentParts { model, widgets }
@@ -157,4 +144,15 @@ fn get_templates_to_vec() -> Vec<Template> {
     dbg!(&templates_vec);
 
     templates_vec
+}
+
+fn make_list_box(templates: Vec<Template>) -> gtk::ListBox {
+    let list_box = relm4::gtk::ListBox::new();
+    for template in templates {
+        let row = relm4::gtk::ListBoxRow::new();
+        let label = relm4::gtk::Label::new(Some(&template.name));
+        row.add();
+        list_box.append(&row);
+    }
+    list_box
 }
