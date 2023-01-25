@@ -19,8 +19,9 @@ fn arguments() -> ArgMatches {
         .arg_required_else_help(true)
         .author("Adamekka")
         .subcommand(
-            Command::new("import")
-                .about("Import a template")
+            Command::new("new")
+                .about("Create a new template")
+                .alias("create")
                 .arg(
                     Arg::new("name")
                         .short('n')
