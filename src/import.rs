@@ -11,7 +11,7 @@ struct Template {
 }
 
 /// Construct a struct with template parameters
-pub fn import(name: Option<String>, path: Option<String>, git_path: Option<String>) {
+pub fn create_template(name: Option<String>, path: Option<String>, git_path: Option<String>) {
     let template_folder = set_folders();
 
     let template = Template {

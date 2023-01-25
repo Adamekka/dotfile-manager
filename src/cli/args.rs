@@ -6,7 +6,7 @@ mod list;
 mod pull;
 
 use clap::{Arg, ArgAction, ArgMatches, Command};
-use import::import;
+use import::create_template;
 use list::list_templates;
 use pull::{pull, pull_all};
 use std::cfg;
@@ -99,9 +99,9 @@ fn arguments() -> ArgMatches {
 pub fn match_args() {
     let args = arguments();
     match args.subcommand() {
-        Some(("import", _set_matches)) => {
+        Some(("new", _set_matches)) => {
             let (name, path, git_path) = match_subcmd_flags("import");
-            import(name, path, git_path);
+            create_template(name, path, git_path);
         }
 
         Some(("list", _set_matches)) => {
