@@ -45,6 +45,7 @@ fn arguments() -> ArgMatches {
                 ),
         )
         .subcommand(Command::new("list").about("List imported templates"))
+        .subcommand(Command::new("import").about("Import a template from toml file"))
         .subcommand(
             Command::new("pull")
                 .about("Pull changes from Git repo")
@@ -106,6 +107,11 @@ pub fn match_args() {
 
         Some(("list", _set_matches)) => {
             list_templates();
+        }
+
+        Some(("import", _set_matches)) => {
+            let (_name, _path, _git_path) = match_subcmd_flags("import");
+            todo!("import");
         }
 
         Some(("pull", _set_matches)) => {
