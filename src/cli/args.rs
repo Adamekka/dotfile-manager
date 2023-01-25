@@ -45,7 +45,7 @@ fn arguments() -> ArgMatches {
                 ),
         )
         .subcommand(Command::new("list").about("List imported templates"))
-        .subcommand(Command::new("import").about("Import a template from toml file"))
+        .subcommand(Command::new("import").about("Import templates from toml file"))
         .subcommand(
             Command::new("pull")
                 .about("Pull changes from Git repo")
