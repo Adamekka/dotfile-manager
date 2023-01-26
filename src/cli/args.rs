@@ -95,13 +95,13 @@ fn arguments() -> ArgMatches {
         .get_matches()
 }
 
-/// Match arguments: import, pull, push, ...
+/// Match arguments: new, pull, push, ...
 /// Then pass them to according function with their parameters
 pub fn match_args() {
     let args = arguments();
     match args.subcommand() {
         Some(("new", _set_matches)) => {
-            let (name, path, git_path) = match_subcmd_flags("import");
+            let (name, path, git_path) = match_subcmd_flags("new");
             create_template(name, path, git_path);
         }
 
