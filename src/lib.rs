@@ -63,7 +63,7 @@ pub fn process_template_to_struct(file: &Result<fs::DirEntry, std::io::Error>) -
 
     #[cfg(debug_assertions)]
     {
-        println!("{:?}", template);
+        println!("{template:?}");
     }
 
     template

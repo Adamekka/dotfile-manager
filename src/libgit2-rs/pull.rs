@@ -97,7 +97,7 @@ fn fast_forward(
         None => String::from_utf8_lossy(lb.name_bytes()).to_string(),
     };
     let msg = format!("Fast-Forward: Setting {} to id: {}", name, rc.id());
-    println!("{}", msg);
+    println!("{msg}");
     lb.set_target(rc.id(), &msg)?;
     repo.set_head(&name)?;
     repo.checkout_head(Some(
@@ -159,7 +159,7 @@ fn do_merge<'a>(
     if analysis.0.is_fast_forward() {
         println!("Doing a fast forward");
         // do a fast forward
-        let refname = format!("refs/heads/{}", remote_branch);
+        let refname = format!("refs/heads/{remote_branch}");
         match repo.find_reference(&refname) {
             Ok(mut r) => {
                 fast_forward(repo, &mut r, &fetch_commit)?;
@@ -206,7 +206,7 @@ pub fn run(path_but_string: String) -> Result<(), git2::Error> {
     #[cfg(debug_assertions)]
     {
         println!("Pulling config from git repo");
-        println!("path: {:?}, remote branch: {}", path, remote_branch);
+        println!("path: {path:?}, remote branch: {remote_branch}");
     }
 
     let fetch_commit = do_fetch(&repo, &[remote_branch], &mut remote)?;

@@ -45,5 +45,5 @@ pub fn list_templates() {
         .with(Highlight::colored(Segment::all(), BorderColored::default()))
         .with(color);
 
-    println!("{}", table);
+    println!("{table}");
 }

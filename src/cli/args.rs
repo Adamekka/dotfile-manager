@@ -171,7 +171,7 @@ fn match_subcmd_flags(
 
     #[cfg(debug_assertions)]
     {
-        println!("{:?}, {:?}, {:?}", name, path, git_path);
+        println!("{name:?}, {path:?}, {git_path:?}");
     }
 
     (name, path, git_path)

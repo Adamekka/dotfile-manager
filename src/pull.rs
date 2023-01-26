@@ -72,12 +72,12 @@ pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>
     } else {
         #[cfg(debug_assertions)]
         {
-            println!("{:?}", template);
+            println!("{template:?}");
         }
 
         // Pass path from matched template to function, that'll pull changes from GitHub
         let result = pull::run(template.path);
-        println!("{:?}", result);
+        println!("{result:?}");
     }
 }
 
@@ -91,10 +91,10 @@ pub fn pull_all() {
         println!("Pulling changes for: {}", template.name);
         #[cfg(debug_assertions)]
         {
-            println!("{:?}", template);
+            println!("{template:?}");
         }
         let result = pull::run(template.path);
-        println!("{:?}", result);
+        println!("{result:?}");
     }
 }
 

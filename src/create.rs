@@ -41,5 +41,5 @@ fn write_template_to_fs(template: Template, template_folder: String) {
     let result = fs::write(template_path, toml);
 
     // Print result
-    println!("{:?}", result);
+    println!("{result:?}");
 }
