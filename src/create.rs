@@ -34,7 +34,14 @@ fn write_template_to_fs(template: Template, template_folder: String) {
 
     // Check if template already exists
     if template_path.exists() {
-        panic!("Template already exists");
+        panic!("Same named template already exists");
+    }
+
+    // Check if path defined in template exists
+    let tmp = template.path.unwrap();
+    let path_in_template = Path::new(&tmp);
+    if !path_in_template.exists() {
+        panic!("Path {path_in_template:?} does not exist");
     }
 
     // Write template to fs ~/.config/dotfile-manager/templates/foo.toml
