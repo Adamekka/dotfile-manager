@@ -1,12 +1,12 @@
-#[path = "../import.rs"]
-mod import;
+#[path = "../create.rs"]
+mod create;
 #[path = "list.rs"]
 mod list;
 #[path = "../pull.rs"]
 mod pull;
 
 use clap::{Arg, ArgAction, ArgMatches, Command};
-use import::create_template;
+use create::create_template;
 use list::list_templates;
 use pull::{pull, pull_all};
 use std::cfg;
