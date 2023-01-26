@@ -44,6 +44,18 @@ fn write_template_to_fs(template: Template, template_folder: String) {
         panic!("Path {path_in_template:?} does not exist");
     }
 
+    // Check if git path defined in template exists
+    let repo = git2::Repository::open(path_in_template).unwrap();
+    let remote = repo.find_remote("origin");
+    match remote {
+        Ok(_) => {
+            println!("Remote origin exists");
+        }
+        Err(_) => {
+            panic!("Remote origin does not exist");
+        }
+    }
+
     // Write template to fs ~/.config/dotfile-manager/templates/foo.toml
     let result = fs::write(template_path, toml);
 
