@@ -1,5 +1,7 @@
 #[path = "../create.rs"]
 mod create;
+#[path = "../import.rs"]
+mod import;
 #[path = "list.rs"]
 mod list;
 #[path = "../pull.rs"]
@@ -7,6 +9,7 @@ mod pull;
 
 use clap::{Arg, ArgAction, ArgMatches, Command};
 use create::create_template;
+use import::import_templates;
 use list::list_templates;
 use pull::{pull, pull_all};
 use std::cfg;
@@ -114,6 +117,8 @@ pub fn match_args() {
         }
 
         Some(("import", _set_matches)) => {
+            let file_path = get_toml_file_from_import();
+            import_templates(file_path);
             todo!("import");
         }
 
@@ -191,5 +196,23 @@ fn check_if_enough_flags(cmd: &str) {
         {
             panic!("At least 1 flag is required");
         }
+    }
+}
+
+/// Get toml file when using import subcommand
+fn get_toml_file_from_import() -> String {
+    let args = arguments();
+
+    if let Some(arg_match) = args.subcommand_matches("file") {
+        if arg_match.get_one::<String>("file").is_some() {
+            let file_path = arg_match.get_one::<String>("file").unwrap().to_string();
+            println!("{:?}", file_path);
+
+            file_path
+        } else {
+            panic!("No file specified");
+        }
+    } else {
+        panic!("Clap somehow screwed up");
     }
 }
