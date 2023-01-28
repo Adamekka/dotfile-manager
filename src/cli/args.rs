@@ -203,7 +203,7 @@ fn check_if_enough_flags(cmd: &str) {
 fn get_toml_file_from_import() -> String {
     let args = arguments();
 
-    if let Some(arg_match) = args.subcommand_matches("file") {
+    if let Some(arg_match) = args.subcommand_matches("import") {
         if arg_match.get_one::<String>("file").is_some() {
             let file_path = arg_match.get_one::<String>("file").unwrap().to_string();
             println!("{:?}", file_path);
