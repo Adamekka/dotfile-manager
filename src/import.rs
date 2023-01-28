@@ -1,4 +1,6 @@
+use crate::args;
 use crate::lib;
+use args::create_template;
 use lib::get_existing_templates;
 use lib::process_template_to_struct;
 use lib::Template;
@@ -151,7 +153,15 @@ pub fn import_templates(file_path: String) {
         println!("templates: {templates:?}");
     }
 
-    // import template(s)
-
     println!("Importing templates...");
+
+    // import template(s)
+    for template in templates {
+        println!("Importing template {:?}", template.name);
+        create_template(
+            Some(template.name),
+            Some(template.path),
+            Some(template.git_path),
+        );
+    }
 }
