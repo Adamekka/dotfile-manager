@@ -206,7 +206,7 @@ fn get_toml_file_from_import() -> String {
     if let Some(arg_match) = args.subcommand_matches("import") {
         if arg_match.get_one::<String>("file").is_some() {
             let file_path = arg_match.get_one::<String>("file").unwrap().to_string();
-            println!("{:?}", file_path);
+            println!("{file_path:?}",);
 
             file_path
         } else {
