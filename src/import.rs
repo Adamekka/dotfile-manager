@@ -1,5 +1,4 @@
-mod lib;
-
+use crate::lib;
 use lib::get_existing_templates;
 use lib::process_template_to_struct;
 use lib::Template;
