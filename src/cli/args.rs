@@ -110,7 +110,6 @@ pub fn match_args() {
         }
 
         Some(("import", _set_matches)) => {
-            let (_name, _path, _git_path) = match_subcmd_flags("import");
             todo!("import");
         }
 
