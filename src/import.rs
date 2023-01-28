@@ -9,6 +9,11 @@ pub fn import_templates(file_path: String) {
         panic!("File does not exist");
     }
 
+    // check if file is not directory
+    if file_path.is_dir() {
+        panic!("File is directory and not file");
+    }
+
     // check if file is a toml file
     match file_path.extension() {
         Some(extension) => match extension.to_str() {
