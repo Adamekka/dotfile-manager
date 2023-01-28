@@ -15,6 +15,23 @@ pub struct Template {
 
 /// Check for config folder, else create one
 /// Same for dotfile-manager folder
+///
+/// Returns the path to the template folder
+///
+/// # Panics
+///
+/// * If $HOME environment variable isn't set
+/// * If ~/.config/ can't be created
+/// * If ~/.config/dotfile-manager/ can't be created
+/// * If ~/.config/dotfile-manager/templates/ can't be created
+///
+/// # Example
+///
+/// ```
+/// use dotfile_manager::set_folders;
+///
+/// let template_folder = set_folders();
+/// ```
 pub fn set_folders() -> String {
     let home_folder = env::var("HOME").expect("$HOME environment variable isn't set");
     let config_folder = home_folder.clone() + "/.config";
@@ -49,6 +66,18 @@ fn set_template_folder(dman_folder: &str) -> String {
 }
 
 /// Get templates from filesystem ~/.config/templates/
+///
+/// # Panics
+///
+/// * If template folder can't be read
+///
+/// # Example
+///
+/// ```
+/// use dotfile_manager::get_existing_templates;
+///
+/// let templates = get_existing_templates();
+/// ```
 pub fn get_existing_templates() -> ReadDir {
     let template_folder = set_folders();
 
@@ -57,6 +86,31 @@ pub fn get_existing_templates() -> ReadDir {
 }
 
 /// Process file to Template struct
+///
+/// # Arguments
+///
+/// * file: &Result<fs::DirEntry, std::io::Error>
+///
+/// # Panics
+///
+/// * If template can't be parsed
+///
+/// # Example
+///
+/// ```
+/// use dotfile_manager::process_template_to_struct;
+/// use dotfile_manager::get_existing_templates;
+///
+/// let templates = get_existing_templates();
+///
+/// // Iterate over templates
+///    for template in templates {
+/// let template = process_template_to_struct(&template);
+/// }
+/// ```
+/// # Debug
+///
+/// * Print template if debug_assertions is set
 pub fn process_template_to_struct(file: &Result<fs::DirEntry, std::io::Error>) -> Template {
     let template_but_string = fs::read_to_string(file.as_ref().unwrap().path()).unwrap();
     let template: Template = toml::from_str(&template_but_string).expect("Couldn't parse");

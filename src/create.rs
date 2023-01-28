@@ -11,6 +11,26 @@ struct Template {
 }
 
 /// Construct a struct with template parameters
+///
+/// # Arguments
+///
+/// * `name` - Name of the template
+/// * `path` - Path to the template
+/// * `git_path` - Path to the git repository
+///
+/// # Panics
+///
+/// * If template already exists
+/// * If path does not exist
+/// * If git path does not exist
+///
+/// # Examples
+///
+/// ```
+/// use dotfile_manager::create_template;
+///
+/// create_template(Some("test".to_string()), Some("/home/user/test".to_string()), Some("https://github.com/user/repository".to_string()));
+/// ```
 pub fn create_template(name: Option<String>, path: Option<String>, git_path: Option<String>) {
     let template_folder = set_folders();
 

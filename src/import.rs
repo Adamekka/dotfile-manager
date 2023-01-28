@@ -6,6 +6,27 @@ use lib::Template;
 use std::path::Path;
 
 /// Import templates from a file
+///
+/// # Arguments
+///
+/// * `file_path` - Path to the file
+///
+/// # Panics
+///
+/// * If the file does not exist
+/// * If the file is a directory
+/// * If the file is not a toml file
+/// * If the file does not contain a name
+/// * If the file does not contain a path
+/// * If the file does not contain a git_path
+///
+/// # Examples
+///
+/// ```
+/// use dotfile_manager::import_templates;
+///
+/// import_templates(String::from("/home/user/.config/dotfile-manager/templates.toml"));
+/// ```
 pub fn import_templates(file_path: String) {
     let file_path = Path::new(&file_path);
 
