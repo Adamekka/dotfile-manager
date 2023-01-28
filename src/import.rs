@@ -1,5 +1,7 @@
 mod lib;
 
+use lib::get_existing_templates;
+use lib::process_template_to_struct;
 use lib::Template;
 use std::path::Path;
 
@@ -46,6 +48,9 @@ pub fn import_templates(file_path: String) {
         }
 
         // check if file contains valid values
+        // if not, panic
+        // if yes, put them in a vector
+        // and then add them to the templates vector
 
         let name = match value.get("name") {
             Some(name) => name,
@@ -75,11 +80,48 @@ pub fn import_templates(file_path: String) {
             println!("git_path: {git_path}");
         }
 
+        // this is needed, because the values are wrapped in quotes
+        // and we need to remove them
+        // they look like this: "value"
+        // and we need to remove the quotes
+        // so they look like this: value
+        // and we can use them
+        // this is a workaround, because I don't know how to do it better
+        // if you know how to do it better, please open an issue on GitHub
+        // or make a pull request
+
+        let mut name = name.to_string();
+        name.pop();
+        name.remove(0);
+
+        let mut path = path.to_string();
+        path.pop();
+        path.remove(0);
+
+        let mut git_path = git_path.to_string();
+        git_path.pop();
+        git_path.remove(0);
+
         let template = Template {
-            name: name.to_string(),
-            path: path.to_string(),
-            git_path: git_path.to_string(),
+            name,
+            path,
+            git_path,
         };
+
+        // check if template(s) already exists
+        let existing_templates = get_existing_templates();
+        for existing_template in existing_templates {
+            let existing_template = process_template_to_struct(&existing_template);
+
+            #[cfg(debug_assertions)]
+            {
+                println!("{:?}", existing_template.name);
+                println!("{:?}", template.name);
+            }
+            if existing_template.name == template.name {
+                panic!("Template {:?} already exists", template.name);
+            }
+        }
 
         templates.push(template);
     }
@@ -89,7 +131,6 @@ pub fn import_templates(file_path: String) {
         println!("templates: {templates:?}");
     }
 
-    // check if template(s) already exists
     // import template(s)
 
     println!("Importing templates...");
