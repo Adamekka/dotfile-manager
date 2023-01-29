@@ -23,7 +23,7 @@ fn arguments() -> ArgMatches {
         .author("Adamekka")
         .subcommand(
             Command::new("new")
-                .about("Create a new template")
+                .about("Create anew template")
                 .alias("create")
                 .arg(
                     Arg::new("name")
@@ -50,7 +50,7 @@ fn arguments() -> ArgMatches {
         .subcommand(Command::new("list").about("List imported templates"))
         .subcommand(
             Command::new("import")
-                .about("Import templates from toml file")
+                .about("Import template(s) from toml file")
                 .arg(Arg::new("file").required(true)),
         )
         .subcommand(
