@@ -181,8 +181,7 @@ fn match_subcmd_flags(
             git_path = Some(arg_match.get_one::<String>("git-path").unwrap().to_string());
         }
     } else {
-        // this never gets called
-        panic!("Clap somehow screwed up");
+        unreachable!("Clap somehow screwed up");
     }
 
     #[cfg(debug_assertions)]
@@ -221,6 +220,6 @@ fn get_toml_file_from_import() -> String {
             panic!("No file specified");
         }
     } else {
-        panic!("Clap somehow screwed up");
+        unreachable!("Clap somehow screwed up");
     }
 }
