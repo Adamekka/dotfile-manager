@@ -6,21 +6,27 @@ use core::panic;
 use lib::{get_existing_templates, process_template_to_struct, Template};
 use std::{cfg, fs};
 
+enum Matching {
+    Name,
+    Path,
+    GitPath,
+}
+
 pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>) {
     let templates = get_existing_templates();
 
     // How to match input with saved templates
-    let matching: char;
+    let matching: Matching;
 
     if name.is_some() {
         println!("Matching by name");
-        matching = 'n';
+        matching = Matching::Name;
     } else if path.is_some() {
         println!("Matching by path");
-        matching = 'p';
+        matching = Matching::Path;
     } else if git_path.is_some() {
         println!("Matching by git-path");
-        matching = 'g';
+        matching = Matching::GitPath;
     } else {
         panic!("Not enough arguments");
     }
@@ -35,8 +41,7 @@ pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>
         let template_temp = process_template_to_struct(&template_file);
 
         match matching {
-            // name
-            'n' => {
+            Matching::Name => {
                 (is_user_input_matched, template) = match_user_input_with_template_data(
                     is_user_input_matched,
                     template_temp.name,
@@ -44,8 +49,7 @@ pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>
                     template_file,
                 );
             }
-            // path
-            'p' => {
+            Matching::Path => {
                 (is_user_input_matched, template) = match_user_input_with_template_data(
                     is_user_input_matched,
                     template_temp.path,
@@ -53,17 +57,13 @@ pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>
                     template_file,
                 );
             }
-            // git-path
-            'g' => {
+            Matching::GitPath => {
                 (is_user_input_matched, template) = match_user_input_with_template_data(
                     is_user_input_matched,
                     template_temp.git_path,
                     &git_path,
                     template_file,
                 );
-            }
-            _ => {
-                panic!("Match error");
             }
         }
     }
