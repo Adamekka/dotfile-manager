@@ -119,7 +119,6 @@ pub fn match_args() {
         Some(("import", _set_matches)) => {
             let file_path = get_toml_file_from_import();
             import_templates(file_path);
-            todo!("import");
         }
 
         Some(("pull", _set_matches)) => {
