@@ -54,6 +54,11 @@ fn arguments() -> ArgMatches {
                 .arg(Arg::new("file").required(true)),
         )
         .subcommand(
+            Command::new("remove")
+                .about("Remove template")
+                .arg(Arg::new("template").required(true)),
+        )
+        .subcommand(
             Command::new("pull")
                 .about("Pull changes from Git repo")
                 .arg(
@@ -119,6 +124,10 @@ pub fn match_args() {
         Some(("import", _set_matches)) => {
             let file_path = get_toml_file_from_import();
             import_templates(file_path);
+        }
+
+        Some(("remove", _set_matches)) => {
+            todo!("remove");
         }
 
         Some(("pull", _set_matches)) => {
