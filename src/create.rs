@@ -62,7 +62,7 @@ fn write_template_to_fs(template: Template, template_folder: String) {
     let home = env::var("HOME").expect("$HOME environment variable isn't set");
     // Replace ~ with home path
     // this is needed because ~ is not expanded by the std::path::Path
-    tmp = tmp.replace("~", home.as_str());
+    tmp = tmp.replace('~', home.as_str());
 
     let path_in_template = Path::new(&tmp);
     if !path_in_template.exists() {
