@@ -37,7 +37,7 @@ pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>
     // For loop template folder for templates, when matched, pass it to git pull
     for template_file in templates {
         // You need to construct template_temp struct every time in a loop, because you wanna for loop your existing templates in your fs
-        // You can't use template variable, because it's constructed after templates_temp values are matched with user input and then passed to git pull
+        // If you use template variable, it'll be empty, because it's constructed after templates_temp values are matched with user input and then passed to git pull
         let template_temp = process_template_to_struct(&template_file);
 
         match matching {
