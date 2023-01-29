@@ -46,7 +46,12 @@ pub fn create_template(name: Option<String>, path: Option<String>, git_path: Opt
 /// Write template to filesystem
 fn write_template_to_fs(template: Template, template_folder: String) {
     // Create file contents
-    let toml = toml::to_string(&template).unwrap();
+    let mut toml = toml::to_string(&template).unwrap();
+    // Replace ~ with home path
+    // this is needed because ~ is not expanded by the std::path::Path
+    // and the toml crate does not expand it either
+    let home = env::var("HOME").expect("$HOME environment variable isn't set");
+    toml = toml.replace('~', home.as_str());
 
     // Create file path
     let template_path_string = template_folder + "/" + &template.name.unwrap() + ".toml";
@@ -59,9 +64,9 @@ fn write_template_to_fs(template: Template, template_folder: String) {
 
     // Check if path defined in template exists
     let mut tmp = template.path.unwrap();
-    let home = env::var("HOME").expect("$HOME environment variable isn't set");
     // Replace ~ with home path
     // this is needed because ~ is not expanded by the std::path::Path
+    // and the toml crate does not expand it either
     tmp = tmp.replace('~', home.as_str());
 
     let path_in_template = Path::new(&tmp);
