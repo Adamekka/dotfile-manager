@@ -1,7 +1,7 @@
 use crate::lib;
 use lib::set_folders;
 use serde::Serialize;
-use std::{fs, path::Path};
+use std::{env, fs, path::Path};
 
 #[derive(Serialize)]
 struct Template {
@@ -58,7 +58,12 @@ fn write_template_to_fs(template: Template, template_folder: String) {
     }
 
     // Check if path defined in template exists
-    let tmp = template.path.unwrap();
+    let mut tmp = template.path.unwrap();
+    let home = env::var("HOME").expect("$HOME environment variable isn't set");
+    // Replace ~ with home path
+    // this is needed because ~ is not expanded by the std::path::Path
+    tmp = tmp.replace("~", home.as_str());
+
     let path_in_template = Path::new(&tmp);
     if !path_in_template.exists() {
         panic!("Path {path_in_template:?} does not exist");
