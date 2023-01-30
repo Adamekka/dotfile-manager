@@ -18,13 +18,6 @@ use std::{
     path::Path,
     str,
 };
-use structopt::StructOpt;
-
-#[derive(StructOpt)]
-struct Args {
-    arg_remote: Option<String>,
-    arg_branch: Option<String>,
-}
 
 fn do_fetch<'a>(
     repo: &'a git2::Repository,
