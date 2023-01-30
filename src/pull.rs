@@ -2,10 +2,10 @@
 mod pull;
 
 use crate::lib;
-use core::panic;
-use lib::match_user_input_with_existing_templates;
-use lib::{get_existing_templates, process_template_to_struct, Template};
-use std::{cfg, fs};
+use lib::{
+    get_existing_templates, match_user_input_with_existing_templates, process_template_to_struct,
+};
+use std::cfg;
 
 pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>) {
     let template = match_user_input_with_existing_templates(name, path, git_path);

@@ -1,9 +1,7 @@
 use crate::args;
 use crate::lib;
 use args::create_template;
-use lib::get_existing_templates;
-use lib::process_template_to_struct;
-use lib::Template;
+use lib::{get_existing_templates, process_template_to_struct, Template};
 use std::path::Path;
 
 /// Import templates from a file
