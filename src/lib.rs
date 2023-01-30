@@ -122,3 +122,102 @@ pub fn process_template_to_struct(file: &Result<fs::DirEntry, std::io::Error>) -
 
     template
 }
+
+enum Matching {
+    Name,
+    Path,
+    GitPath,
+}
+
+pub fn match_user_input_with_existing_templates(
+    name: Option<String>,
+    path: Option<String>,
+    git_path: Option<String>,
+) -> Template {
+    let templates = get_existing_templates();
+
+    // How to match input with saved templates
+    let matching: Matching;
+
+    if name.is_some() {
+        println!("Matching by name");
+        matching = Matching::Name;
+    } else if path.is_some() {
+        println!("Matching by path");
+        matching = Matching::Path;
+    } else if git_path.is_some() {
+        println!("Matching by git-path");
+        matching = Matching::GitPath;
+    } else {
+        panic!("Not enough arguments");
+    }
+
+    let mut is_user_input_matched: bool = false;
+    let mut template: Template = Default::default();
+
+    // For loop template folder for templates, when matched, return it
+    for template_file in templates {
+        // You need to construct template_temp struct every time in a loop, because you wanna for loop your existing templates in your fs
+        // If you use template variable, it'll be empty, because it's constructed after templates_temp values are matched with user input and then returned
+        let template_temp = process_template_to_struct(&template_file);
+
+        match matching {
+            Matching::Name => {
+                (is_user_input_matched, template) = match_user_input_with_template_data(
+                    is_user_input_matched,
+                    template_temp.name,
+                    &name,
+                    template_file,
+                );
+            }
+            Matching::Path => {
+                (is_user_input_matched, template) = match_user_input_with_template_data(
+                    is_user_input_matched,
+                    template_temp.path,
+                    &path,
+                    template_file,
+                );
+            }
+            Matching::GitPath => {
+                (is_user_input_matched, template) = match_user_input_with_template_data(
+                    is_user_input_matched,
+                    template_temp.git_path,
+                    &git_path,
+                    template_file,
+                );
+            }
+        }
+    }
+    if !is_user_input_matched {
+        panic!("Not found");
+    } else {
+        #[cfg(debug_assertions)]
+        {
+            println!("Returning template: ");
+            dbg!(&template);
+        }
+
+        template
+    }
+}
+
+/// Match user input with existing templates to find one to Git pull
+fn match_user_input_with_template_data(
+    previous_value: bool,
+    template_data: String,
+    user_input: &Option<String>,
+    template_file: Result<fs::DirEntry, std::io::Error>,
+) -> (bool, Template) {
+    let user_input = user_input.clone().unwrap();
+
+    // Construct template according to data and return it
+    let template = process_template_to_struct(&template_file);
+
+    if template_data == user_input {
+        println!("{} template found", template.name);
+
+        (true, template)
+    } else {
+        (previous_value, template)
+    }
+}
