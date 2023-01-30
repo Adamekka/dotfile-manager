@@ -69,6 +69,9 @@ pub fn import_templates(file_path: String) {
             println!("{key}: {value}");
         }
 
+        // check if file contains table name
+        // otherwise it would use wrong key as table name and couldn't find the values
+
         match key.as_str() {
             "name" | "path" | "git_path" => {
                 panic!("Table name missing");
