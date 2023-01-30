@@ -69,6 +69,13 @@ pub fn import_templates(file_path: String) {
             println!("{key}: {value}");
         }
 
+        match key.as_str() {
+            "name" | "path" | "git_path" => {
+                panic!("Table name missing");
+            }
+            _ => {}
+        }
+
         // check if file contains valid values
         // if not, panic
         // if yes, put them in a vector
