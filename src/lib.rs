@@ -168,6 +168,7 @@ pub fn match_user_input_with_existing_templates(
                     template_temp.name,
                     &name,
                     template_file,
+                    template,
                 );
             }
             Matching::Path => {
@@ -176,6 +177,7 @@ pub fn match_user_input_with_existing_templates(
                     template_temp.path,
                     &path,
                     template_file,
+                    template,
                 );
             }
             Matching::GitPath => {
@@ -184,6 +186,7 @@ pub fn match_user_input_with_existing_templates(
                     template_temp.git_path,
                     &git_path,
                     template_file,
+                    template,
                 );
             }
         }
@@ -207,6 +210,7 @@ fn match_user_input_with_template_data(
     template_data: String,
     user_input: &Option<String>,
     template_file: Result<fs::DirEntry, std::io::Error>,
+    previous_matched_template: Template,
 ) -> (bool, Template) {
     let user_input = user_input.clone().unwrap();
 
@@ -218,6 +222,6 @@ fn match_user_input_with_template_data(
 
         (true, template)
     } else {
-        (previous_value, template)
+        (previous_value, previous_matched_template)
     }
 }
