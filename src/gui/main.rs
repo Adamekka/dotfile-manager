@@ -1,13 +1,15 @@
 #[path = "../lib.rs"]
 mod lib;
 
+#[allow(unused_imports)]
 use adw::prelude::*;
+#[allow(unused_imports)]
 use gtk::prelude::*;
 use lib::{get_existing_templates, process_template_to_struct, set_folders, Template};
+#[allow(unused_imports)]
 use relm4::{
     adw,
     adw::prelude::*,
-    factory::FactoryVecDeque,
     gtk::prelude::*,
     gtk::{
         self,
@@ -65,7 +67,7 @@ impl SimpleComponent for AppModel {
     fn init(
         _: Self::Init,
         root: &Self::Root,
-        sender: ComponentSender<Self>,
+        _sender: ComponentSender<Self>,
     ) -> relm4::ComponentParts<Self> {
         let model = AppModel {
             // templates: FactoryVecDeque::new(gtk::ListBox::default(), sender.input_sender()),
@@ -78,7 +80,7 @@ impl SimpleComponent for AppModel {
         ComponentParts { model, widgets }
     }
 
-    fn update(&mut self, message: Self::Input, sender: ComponentSender<Self>) {}
+    fn update(&mut self, _message: Self::Input, _sender: ComponentSender<Self>) {}
 
     view!(
         main_window = adw::Window {

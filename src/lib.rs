@@ -129,6 +129,7 @@ enum Matching {
     GitPath,
 }
 
+#[allow(dead_code)]
 pub fn match_user_input_with_existing_templates(
     name: Option<String>,
     path: Option<String>,
