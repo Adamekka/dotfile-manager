@@ -23,12 +23,12 @@ jobs:
           rustup install nightly
 
       - name: Lint
-        uses: |
+        run: |
           cargo fmt -v --check
           cargo clippy -- -D warnings
 
       - name: Test
-        uses: |
+        run: |
           cargo check
           cargo test --all
 
