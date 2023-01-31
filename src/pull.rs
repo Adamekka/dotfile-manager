@@ -1,5 +1,5 @@
-#[path = "./libgit2-rs/pull.rs"]
-mod pull;
+#[path = "./libgit2-rs/pull_git.rs"]
+mod pull_git;
 
 use crate::lib;
 use lib::{
@@ -11,7 +11,7 @@ pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>
     let template = match_user_input_with_existing_templates(name, path, git_path);
 
     // Pass path from matched template to function, that'll pull changes from GitHub
-    let result = pull::run(template.path);
+    let result = pull_git::run(template.path);
     println!("{result:?}");
 }
 
@@ -27,7 +27,7 @@ pub fn pull_all() {
         {
             println!("{template:?}");
         }
-        let result = pull::run(template.path);
+        let result = pull_git::run(template.path);
         println!("{result:?}");
     }
 }

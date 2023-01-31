@@ -148,6 +148,7 @@ pub fn import_templates(file_path: String) {
                 println!("{:?}", existing_template.name);
                 println!("{:?}", template.name);
             }
+
             if existing_template.name == template.name {
                 panic!("Template {:?} already exists", template.name);
             }
