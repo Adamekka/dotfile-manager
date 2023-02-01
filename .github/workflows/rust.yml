@@ -19,7 +19,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt update
-          sudo apt install libpango-1.0-0 -y
+          sudo apt install libpango-1.0-0-dev -y
 
       - name: Update local toolchain
         run: |
