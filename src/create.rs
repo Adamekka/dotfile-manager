@@ -2,6 +2,7 @@ use crate::lib;
 use lib::set_folders;
 use serde::Serialize;
 use std::{env, fs, path::Path};
+use tabled::peaker::PriorityMax;
 
 #[derive(Serialize)]
 struct Template {
@@ -84,6 +85,21 @@ fn write_template_to_fs(template: Template, template_folder: String) {
         Err(_) => {
             panic!("Path: Remote origin does not exist");
         }
+    }
+
+    // Check if git path defined in template exists
+    let repo = git2::Repository::open(".").unwrap();
+    let remote = template.git_path.unwrap();
+    let mut remote = repo
+        .find_remote(&remote)
+        .or_else(|_| repo.remote_anonymous(&remote))
+        .unwrap();
+    let connection = remote
+        .connect_auth(git2::Direction::Fetch, None, None)
+        .unwrap();
+    for head in connection.list().unwrap().iter() {
+        println!("{}\t{}", head.oid(), head.name());
+        println!("Git path: Remote origin exists");
     }
 
     // Write template to fs ~/.config/dotfile-manager/templates/foo.toml
