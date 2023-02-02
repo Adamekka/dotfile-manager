@@ -74,15 +74,15 @@ fn write_template_to_fs(template: Template, template_folder: String) {
         panic!("Path {path_in_template:?} does not exist");
     }
 
-    // Check if git path defined in template exists
+    // Check if path defined in template is a git repository
     let repo = git2::Repository::open(path_in_template).unwrap();
     let remote = repo.find_remote("origin");
     match remote {
         Ok(_) => {
-            println!("Remote origin exists");
+            println!("Path: Remote origin exists");
         }
         Err(_) => {
-            panic!("Remote origin does not exist");
+            panic!("Path: Remote origin does not exist");
         }
     }
 
