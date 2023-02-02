@@ -5,7 +5,6 @@ use crate::lib;
 use lib::{
     get_existing_templates, match_user_input_with_existing_templates, process_template_to_struct,
 };
-use std::cfg;
 
 pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>) {
     let template = match_user_input_with_existing_templates(name, path, git_path);

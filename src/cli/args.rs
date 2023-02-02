@@ -12,7 +12,6 @@ use create::create_template;
 use import::import_templates;
 use list::list_templates;
 use pull::{pull, pull_all};
-use std::cfg;
 
 /// Get arguments from Clap
 fn arguments() -> ArgMatches {
