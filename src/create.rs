@@ -2,7 +2,6 @@ use crate::lib;
 use lib::set_folders;
 use serde::Serialize;
 use std::{env, fs, path::Path};
-use tabled::peaker::PriorityMax;
 
 #[derive(Serialize)]
 struct Template {
