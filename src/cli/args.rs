@@ -60,6 +60,7 @@ fn arguments() -> ArgMatches {
         .subcommand(
             Command::new("pull")
                 .about("Pull changes from Git repo")
+                .arg(Arg::new("template").required(false))
                 .arg(
                     Arg::new("name")
                         .short('n')
@@ -168,8 +169,11 @@ fn match_subcmd_flags(
     let mut git_path: Option<String> = None;
 
     if let Some(arg_match) = args.subcommand_matches(cmd) {
+        // If name flag is present use it, otherwise use subcommand argument as Template name
         if arg_match.get_one::<String>("name").is_some() {
             name = Some(arg_match.get_one::<String>("name").unwrap().to_string());
+        } else if arg_match.get_one::<String>("template").is_some() {
+            name = Some(arg_match.get_one::<String>("template").unwrap().to_string());
         }
 
         if arg_match.get_one::<String>("path").is_some() {
@@ -191,17 +195,22 @@ fn match_subcmd_flags(
     (name, path, git_path)
 }
 
-/// Check if at least 1 flag is present
+/// Check if at least 1 flag or name of Template is present
+/// If not, panic
 fn check_if_enough_flags(cmd: &str) {
     let args = arguments();
 
     if let Some(arg_match) = args.subcommand_matches(cmd) {
-        if !(arg_match.get_one::<String>("name").is_some()
-            || arg_match.get_one::<String>("path").is_some()
-            || arg_match.get_one::<String>("git-path").is_some())
+        if arg_match.get_one::<String>("name").is_none()
+            && arg_match.get_one::<String>("path").is_none()
+            && arg_match.get_one::<String>("git-path").is_none()
         {
-            panic!("At least 1 flag is required");
+            if arg_match.get_one::<String>("template").is_none() {
+                panic!("At least 1 flag or name of Template is required");
+            }
         }
+    } else {
+        unreachable!("Clap somehow screwed up");
     }
 }
 
