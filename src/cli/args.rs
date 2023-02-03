@@ -22,7 +22,7 @@ fn arguments() -> ArgMatches {
         .author("Adamekka")
         .subcommand(
             Command::new("new")
-                .about("Create anew template")
+                .about("Create new template")
                 .alias("create")
                 .arg(
                     Arg::new("name")
