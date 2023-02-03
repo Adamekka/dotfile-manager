@@ -7,9 +7,14 @@ edition = "2021"
 name = "dman"
 path = "src/cli/main.rs"
 
-#[[bin]]
-#name = "dman-gui"
-#path = "src/gui/main.rs"
+[[bin]]
+name = "dman-gui"
+path = "src/gui/main.rs"
+required-features = ["dman-gui"]
+
+[features]
+default = []
+dman-gui = ["relm4/libadwaita"]
 
 [dependencies]
 clap = "4"
