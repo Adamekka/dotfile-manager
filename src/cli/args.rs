@@ -204,10 +204,9 @@ fn check_if_enough_flags(cmd: &str) {
         if arg_match.get_one::<String>("name").is_none()
             && arg_match.get_one::<String>("path").is_none()
             && arg_match.get_one::<String>("git-path").is_none()
+            && arg_match.get_one::<String>("template").is_none()
         {
-            if arg_match.get_one::<String>("template").is_none() {
-                panic!("At least 1 flag or name of Template is required");
-            }
+            panic!("At least 1 flag or name of Template is required");
         }
     } else {
         unreachable!("Clap somehow screwed up");
