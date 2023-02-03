@@ -1,4 +1,5 @@
 use crate::lib;
+use core::panic;
 use lib::set_folders;
 use serde::Serialize;
 use std::{env, fs, path::Path};
@@ -8,6 +9,11 @@ struct Template {
     name: Option<String>,
     path: Option<String>,
     git_path: Option<String>,
+}
+
+#[derive(Serialize)]
+struct Toml {
+    template: Template,
 }
 
 /// Construct a struct with template parameters
@@ -45,8 +51,16 @@ pub fn create_template(name: Option<String>, path: Option<String>, git_path: Opt
 
 /// Write template to filesystem
 fn write_template_to_fs(template: Template, template_folder: String) {
+    // This is needed because i want toml to have table name
+    // [template]
+    // name = "..."
+    // path = "..."
+    // git_path = "..."
+    let template = Toml { template };
+
     // Create file contents
     let mut toml = toml::to_string(&template).unwrap();
+
     // Replace ~ with home path
     // this is needed because ~ is not expanded by the std::path::Path
     // and the toml crate does not expand it either
@@ -54,7 +68,7 @@ fn write_template_to_fs(template: Template, template_folder: String) {
     toml = toml.replace('~', home.as_str());
 
     // Create file path
-    let template_path_string = template_folder + "/" + &template.name.unwrap() + ".toml";
+    let template_path_string = template_folder + "/" + &template.template.name.unwrap() + ".toml";
     let template_path = Path::new(&template_path_string);
 
     // Check if template already exists
@@ -63,7 +77,7 @@ fn write_template_to_fs(template: Template, template_folder: String) {
     }
 
     // Check if path defined in template exists
-    let mut tmp = template.path.unwrap();
+    let mut tmp = template.template.path.unwrap();
     // Replace ~ with home path
     // this is needed because ~ is not expanded by the std::path::Path
     // and the toml crate does not expand it either
@@ -88,7 +102,7 @@ fn write_template_to_fs(template: Template, template_folder: String) {
 
     // Check if git path defined in template exists
     let repo = git2::Repository::open(".").unwrap();
-    let remote = template.git_path.unwrap();
+    let remote = template.template.git_path.unwrap();
     let mut remote = repo
         .find_remote(&remote)
         .or_else(|_| repo.remote_anonymous(&remote))

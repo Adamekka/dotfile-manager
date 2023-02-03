@@ -13,6 +13,11 @@ pub struct Template {
     pub git_path: String,
 }
 
+#[derive(Debug, Deserialize)]
+struct Toml {
+    template: Template,
+}
+
 /// Check for config folder, else create one
 /// Same for dotfile-manager folder
 ///
@@ -113,7 +118,10 @@ pub fn get_existing_templates() -> ReadDir {
 /// * Print template if debug_assertions is set
 pub fn process_template_to_struct(file: &Result<fs::DirEntry, std::io::Error>) -> Template {
     let template_but_string = fs::read_to_string(file.as_ref().unwrap().path()).unwrap();
-    let template: Template = toml::from_str(&template_but_string).expect("Couldn't parse");
+    let template: Toml = toml::from_str(&template_but_string).expect("Couldn't parse");
+    // This is needed because I need to return clean Template struct, not Toml struct
+    // Toml struct contains Template struct inside
+    let template = template.template;
 
     #[cfg(debug_assertions)]
     {
