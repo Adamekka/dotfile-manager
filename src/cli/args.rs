@@ -6,12 +6,15 @@ mod import;
 mod list;
 #[path = "../pull.rs"]
 mod pull;
+#[path = "../remove.rs"]
+mod remove;
 
 use clap::{Arg, ArgAction, ArgMatches, Command};
 use create::create_template;
 use import::import_templates;
 use list::list_templates;
 use pull::{pull, pull_all};
+use remove::remove_template;
 
 /// Get arguments from Clap
 fn arguments() -> ArgMatches {
@@ -54,8 +57,26 @@ fn arguments() -> ArgMatches {
         )
         .subcommand(
             Command::new("remove")
-                .about("Remove template")
-                .arg(Arg::new("template").required(true)),
+                .about("Remove template from dman, not from filesystem")
+                .arg(Arg::new("template").required(false))
+                .arg(
+                    Arg::new("name")
+                        .short('n')
+                        .long("name")
+                        .action(ArgAction::Append),
+                )
+                .arg(
+                    Arg::new("path")
+                        .short('p')
+                        .long("path")
+                        .action(ArgAction::Append),
+                )
+                .arg(
+                    Arg::new("git-path")
+                        .short('g')
+                        .long("git-path")
+                        .action(ArgAction::Append),
+                ),
         )
         .subcommand(
             Command::new("pull")
@@ -127,7 +148,9 @@ pub fn match_args() {
         }
 
         Some(("remove", _set_matches)) => {
-            todo!("remove");
+            check_if_enough_flags("remove");
+            let (name, path, git_path) = match_subcmd_flags("remove");
+            remove_template(name, path, git_path);
         }
 
         Some(("pull", _set_matches)) => {
