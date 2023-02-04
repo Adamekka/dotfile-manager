@@ -159,7 +159,6 @@ pub fn import_templates(file_path: String) {
         }
 
         if !(is_template_already_existing) {
-            println!("Importing template {:?}", template.name);
             templates.push(template);
         }
     }
