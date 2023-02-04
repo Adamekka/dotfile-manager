@@ -1,6 +1,7 @@
 use crate::args;
 use crate::lib;
 use args::create_template;
+use core::panic;
 use lib::{get_existing_templates, process_template_to_struct, Template};
 use std::path::Path;
 
@@ -140,6 +141,7 @@ pub fn import_templates(file_path: String) {
 
         // check if template(s) already exists
         let existing_templates = get_existing_templates();
+        let mut is_template_already_existing = false;
         for existing_template in existing_templates {
             let existing_template = process_template_to_struct(&existing_template);
 
@@ -150,11 +152,16 @@ pub fn import_templates(file_path: String) {
             }
 
             if existing_template.name == template.name {
-                panic!("Template {:?} already exists", template.name);
+                // If template already exists, skip it
+                println!("Template {:?} already exists, skipping..", template.name);
+                is_template_already_existing = true;
             }
         }
 
-        templates.push(template);
+        if !(is_template_already_existing) {
+            println!("Importing template {:?}", template.name);
+            templates.push(template);
+        }
     }
 
     #[cfg(debug_assertions)]
