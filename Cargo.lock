@@ -181,6 +181,7 @@ dependencies = [
  "clap 4.1.4",
  "git2",
  "owo-colors",
+ "question",
  "relm4",
  "serde",
  "structopt",
@@ -1079,6 +1080,12 @@ checksum = "5d727cae5b39d21da60fa540906919ad737832fe0b1c165da3a34d6548c849d6"
 dependencies = [
  "unicode-ident",
 ]
+
+[[package]]
+name = "question"
+version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "acbb3ede7a8f9a8ab89e714637f2cf40001b58f21340d4242b2f11533e65fa8d"
 
 [[package]]
 name = "quote"

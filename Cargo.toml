@@ -20,6 +20,7 @@ dman-gui = ["relm4/libadwaita"]
 clap = "4"
 git2 = "0"
 owo-colors = "3"
+question = "0"
 relm4 = { version = "0.5.0-rc.1", features = ["libadwaita"], optional = true }
 serde = { version = "1", features = ["derive"] }
 structopt = "0"
