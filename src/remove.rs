@@ -1,10 +1,14 @@
 use crate::lib;
 
+use dotfile_manager::question_yes_no;
 use lib::{match_user_input_with_existing_templates, set_folders};
+use question::Answer;
 
 pub fn remove_template(name: Option<String>, path: Option<String>, git_path: Option<String>) {
     let template_folder = set_folders();
     let template = match_user_input_with_existing_templates(name, path, git_path);
+
+    question_yes_no!("Are you sure you want to remove this template?");
 
     println!("Removing template: {}", template.name);
 

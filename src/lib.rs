@@ -234,3 +234,29 @@ fn match_user_input_with_template_data(
         (previous_value, previous_matched_template)
     }
 }
+
+#[macro_export]
+macro_rules! question_yes_no {
+    ($text:expr) => {
+        let answer: Option<Answer>;
+
+        answer = question::Question::new($text)
+            .yes_no()
+            .show_defaults()
+            .until_acceptable()
+            .ask();
+
+        match answer {
+            Some(Answer::YES) => {}
+            Some(Answer::NO) => {
+                panic!("Aborting");
+            }
+            Some(Answer::RESPONSE(_)) => {
+                unreachable!("Something went wrong");
+            }
+            None => {
+                unreachable!("Something went wrong");
+            }
+        }
+    };
+}
