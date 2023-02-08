@@ -38,7 +38,10 @@ struct Toml {
 /// let template_folder = set_folders();
 /// ```
 pub fn set_folders() -> String {
+    #[cfg(target_os = "unix")]
     let home_folder = env::var("HOME").expect("$HOME environment variable isn't set");
+    #[cfg(target_os = "windows")]
+    let home_folder = env::var("USERPROFILE").expect("$USERPROFILE environment variable isn't set");
     let config_folder = home_folder.clone() + "/.config";
     let config_folder_path = Path::new(&config_folder);
 
