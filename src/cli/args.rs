@@ -124,7 +124,6 @@ fn arguments() -> ArgMatches {
                         .action(ArgAction::Append),
                 ),
         )
-        .subcommand(Command::new("push-all").about("Push all changes to all Git repo(s)"))
         .get_matches()
 }
 
@@ -167,10 +166,6 @@ pub fn match_args() {
             check_if_enough_flags("push");
             let (_name, _path, _git_path) = match_subcmd_flags("push");
             todo!("push");
-        }
-
-        Some(("push-all", _set_matches)) => {
-            todo!("push-all");
         }
 
         _ => unreachable!(),
