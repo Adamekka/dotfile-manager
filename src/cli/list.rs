@@ -35,6 +35,15 @@ pub fn list_templates() {
         ));
     }
 
+    // If no templates found, push dummy data
+    if data.is_empty() {
+        data.push(Template::new(
+            "No templates found".red().to_string(),
+            "No templates found".red().to_string(),
+            "No templates found".red().to_string(),
+        ));
+    }
+
     let table_style = RawStyle::from(Style::rounded()).colored();
 
     let color = Color::try_from(" ".red().to_string()).unwrap();
