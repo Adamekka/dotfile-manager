@@ -39,6 +39,7 @@ struct Toml {
 /// ```
 pub fn set_folders() -> String {
     #[cfg(target_os = "unix")]
+    #[cfg(target_os = "linux")]
     let home_folder = env::var("HOME").expect("$HOME environment variable isn't set");
     #[cfg(target_os = "windows")]
     let home_folder = env::var("USERPROFILE").expect("$USERPROFILE environment variable isn't set");
