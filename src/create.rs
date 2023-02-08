@@ -1,10 +1,15 @@
+#[path = "./libgit2-rs/clone_git.rs"]
+mod clone_git;
+
 use crate::lib;
 use core::panic;
+use dotfile_manager::question_yes_no;
 use lib::set_folders;
+use question::Answer;
 use serde::Serialize;
 use std::{env, fs, path::Path};
 
-#[derive(Serialize)]
+#[derive(Clone, Serialize)]
 struct Template {
     name: Option<String>,
     path: Option<String>,
@@ -56,7 +61,7 @@ fn write_template_to_fs(template: Template, template_folder: String) {
     // name = "..."
     // path = "..."
     // git_path = "..."
-    let template = Toml { template };
+    let mut template = Toml { template };
 
     // Create file contents
     let mut toml = toml::to_string(&template).unwrap();
@@ -68,7 +73,8 @@ fn write_template_to_fs(template: Template, template_folder: String) {
     toml = toml.replace('~', home.as_str());
 
     // Create file path
-    let template_path_string = template_folder + "/" + &template.template.name.unwrap() + ".toml";
+    let template_path_string =
+        template_folder.clone() + "/" + template.template.name.as_ref().unwrap() + ".toml";
     let template_path = Path::new(&template_path_string);
 
     // Check if template already exists
@@ -77,7 +83,7 @@ fn write_template_to_fs(template: Template, template_folder: String) {
     }
 
     // Check if path defined in template exists
-    let mut tmp = template.template.path.unwrap();
+    let mut tmp = template.template.path.as_mut().unwrap().clone();
     // Replace ~ with home path
     // this is needed because ~ is not expanded by the std::path::Path
     // and the toml crate does not expand it either
@@ -85,7 +91,28 @@ fn write_template_to_fs(template: Template, template_folder: String) {
 
     let path_in_template = Path::new(&tmp);
     if !path_in_template.exists() {
-        panic!("Path {path_in_template:?} does not exist");
+        println!("Path {path_in_template:?} does not exist");
+        question_yes_no!("Do you want to clone this template from Git repository?");
+
+        let result = clone_git::run(
+            template.template.git_path.as_ref().unwrap().as_str(),
+            path_in_template,
+        );
+
+        match result {
+            Ok(_) => {
+                println!("Cloned template from Git repository");
+
+                // Repeat this function
+                write_template_to_fs(template.template.clone(), template_folder);
+
+                return;
+            }
+            Err(error) => {
+                println!("Error: {error:?}");
+                panic!("Could not clone template from Git repository");
+            }
+        }
     }
 
     // Check if path defined in template is a git repository
