@@ -12,8 +12,10 @@
  * <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 
+use crate::question_yes_no;
 use git2::build::{CheckoutBuilder, RepoBuilder};
 use git2::{FetchOptions, Progress, RemoteCallbacks};
+use question::Answer;
 use std::cell::RefCell;
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
@@ -73,6 +75,7 @@ fn print(state: &mut State) {
 pub fn run(git_path: &str, path: &Path) -> Result<(), git2::Error> {
     // Create folder if not exists
     if !path.exists() {
+        question_yes_no!("Folder does not exist. Create it?");
         let result = std::fs::create_dir_all(path);
 
         match result {
