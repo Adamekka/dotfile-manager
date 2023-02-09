@@ -94,6 +94,18 @@ fn set_template_folder(dman_folder: &Path) -> String {
     template_folder.to_str().unwrap().to_string()
 }
 
+fn get_fake_git_folder() -> String {
+    #[cfg(target_family = "unix")]
+    let home_folder = env::var("HOME").expect("$HOME environment variable isn't set");
+    #[cfg(target_family = "windows")]
+    let home_folder = env::var("USERPROFILE").expect("$USERPROFILE environment variable isn't set");
+    #[cfg(target_family = "wasm")]
+    panic!("WebAssembly isn't supported");
+    let fake_git_folder = Path::new(&home_folder).join(".local/share/dotfile-manager/fake-git");
+
+    fake_git_folder.to_str().unwrap().to_string()
+}
+
 /// Get templates from filesystem ~/.config/templates/
 ///
 /// # Panics
@@ -306,7 +318,7 @@ macro_rules! question_yes_no {
 ///
 /// * Print Git path if debug_assertions is set
 pub fn check_if_remote_exists(remote: String) {
-    let repo = git2::Repository::open(".").unwrap();
+    let repo = git2::Repository::open(get_fake_git_folder()).unwrap();
     let mut remote = repo
         .find_remote(&remote)
         .or_else(|_| repo.remote_anonymous(&remote))
