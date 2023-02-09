@@ -5,7 +5,6 @@ use crate::lib;
 use core::panic;
 use dotfile_manager::question_yes_no;
 use lib::set_folders;
-use question::Answer;
 use serde::Serialize;
 use std::{env, fs, path::Path};
 

@@ -242,7 +242,7 @@ fn match_user_input_with_template_data(
 #[macro_export]
 macro_rules! question_yes_no {
     ($text:expr) => {
-        let answer: Option<Answer>;
+        let answer: Option<question::Answer>;
 
         answer = question::Question::new($text)
             .yes_no()
@@ -251,11 +251,11 @@ macro_rules! question_yes_no {
             .ask();
 
         match answer {
-            Some(Answer::YES) => {}
-            Some(Answer::NO) => {
+            Some(question::Answer::YES) => {}
+            Some(question::Answer::NO) => {
                 panic!("Aborting");
             }
-            Some(Answer::RESPONSE(_)) => {
+            Some(question::Answer::RESPONSE(_)) => {
                 unreachable!("Something went wrong");
             }
             None => {
