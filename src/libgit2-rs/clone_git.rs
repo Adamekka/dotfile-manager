@@ -12,6 +12,7 @@
  * <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 
+use crate::lib::check_if_remote_exists;
 use crate::question_yes_no;
 use git2::build::{CheckoutBuilder, RepoBuilder};
 use git2::{FetchOptions, Progress, RemoteCallbacks};
@@ -77,13 +78,17 @@ pub fn run(git_path: &str, path: &Path) -> Result<(), git2::Error> {
         question_yes_no!("Folder does not exist. Create it?");
 
         match std::fs::create_dir_all(path) {
-            Ok(_) => {}
+            Ok(_) => {
+                println!("Folder created: {path:?}");
+            }
             Err(e) => {
                 println!("Error: {}", e);
                 return Err(git2::Error::from_str("Error creating folder"));
             }
         }
     }
+
+    check_if_remote_exists(git_path.to_string());
 
     let state = RefCell::new(State {
         progress: None,

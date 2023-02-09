@@ -264,3 +264,39 @@ macro_rules! question_yes_no {
         }
     };
 }
+
+/// Check if remote exists
+///
+/// # Arguments
+///
+/// * remote: String
+///
+/// # Panics
+///
+/// * If remote doesn't exist
+///
+/// # Example
+///
+/// ```
+/// use dotfile_manager::check_if_remote_exists;
+///
+/// check_if_remote_exists(String::from("https://github.com/Adamekka/dotfile-manager.git"));
+/// ```
+///
+/// # Debug
+///
+/// * Print Git path if debug_assertions is set
+pub fn check_if_remote_exists(remote: String) {
+    let repo = git2::Repository::open(".").unwrap();
+    let mut remote = repo
+        .find_remote(&remote)
+        .or_else(|_| repo.remote_anonymous(&remote))
+        .unwrap();
+    let connection = remote
+        .connect_auth(git2::Direction::Fetch, None, None)
+        .unwrap();
+    for head in connection.list().unwrap().iter() {
+        println!("{}\t{}", head.oid(), head.name());
+        println!("Git path: Remote origin exists");
+    }
+}

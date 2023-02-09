@@ -4,7 +4,7 @@ mod clone_git;
 use crate::lib;
 use core::panic;
 use dotfile_manager::question_yes_no;
-use lib::set_folders;
+use lib::{check_if_remote_exists, set_folders};
 use serde::Serialize;
 use std::{env, fs, path::Path};
 
@@ -126,19 +126,7 @@ fn write_template_to_fs(template: Template, template_folder: String) {
     }
 
     // Check if git path defined in template exists
-    let repo = git2::Repository::open(".").unwrap();
-    let remote = template.template.git_path.unwrap();
-    let mut remote = repo
-        .find_remote(&remote)
-        .or_else(|_| repo.remote_anonymous(&remote))
-        .unwrap();
-    let connection = remote
-        .connect_auth(git2::Direction::Fetch, None, None)
-        .unwrap();
-    for head in connection.list().unwrap().iter() {
-        println!("{}\t{}", head.oid(), head.name());
-        println!("Git path: Remote origin exists");
-    }
+    check_if_remote_exists(template.template.git_path.unwrap());
 
     // Write template to fs ~/.config/dotfile-manager/templates/foo.toml
     let result = fs::write(template_path, toml);
