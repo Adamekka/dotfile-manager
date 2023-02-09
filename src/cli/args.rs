@@ -56,6 +56,11 @@ fn arguments() -> ArgMatches {
                 .arg(Arg::new("file").required(true)),
         )
         .subcommand(
+            Command::new("export")
+                .about("Export template(s) to toml file")
+                .arg(Arg::new("file").required(false)),
+        )
+        .subcommand(
             Command::new("remove")
                 .about("Remove template from dman, not from filesystem")
                 .arg(Arg::new("template").required(false))
@@ -144,6 +149,10 @@ pub fn match_args() {
         Some(("import", _set_matches)) => {
             let file_path = get_toml_file_from_import();
             import_templates(file_path);
+        }
+
+        Some(("export", _set_matches)) => {
+            todo!("export");
         }
 
         Some(("remove", _set_matches)) => {
