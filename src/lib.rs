@@ -44,35 +44,54 @@ pub fn set_folders() -> String {
     let home_folder = env::var("USERPROFILE").expect("$USERPROFILE environment variable isn't set");
     #[cfg(target_family = "wasm")]
     panic!("WebAssembly isn't supported");
-    let config_folder = home_folder.clone() + "/.config";
-    let config_folder_path = Path::new(&config_folder);
+    let config_folder_path = Path::new(&home_folder).join(".config");
 
     if !config_folder_path.exists() {
         fs::create_dir(config_folder_path).expect("Can't create '~/.config/'");
     }
 
-    let dman_folder = home_folder + "/.config/dotfile-manager";
-    let dman_folder_path = Path::new(&dman_folder);
+    let dman_folder = Path::new(&home_folder).join(".config/dotfile-manager");
 
-    if !dman_folder_path.exists() {
-        fs::create_dir(dman_folder_path).expect("Can't create '~/.config/dotfile-manager/");
+    if !dman_folder.exists() {
+        fs::create_dir(&dman_folder).expect("Can't create '~/.config/dotfile-manager/");
+    }
+
+    // Create fake-git folder
+    // This is used to check if remote exists, because Repository::open() need a git repo
+    let fake_git_folder = Path::new(&home_folder).join(".local/share/dotfile-manager/fake-git");
+
+    if !fake_git_folder.exists() {
+        fs::create_dir_all(&fake_git_folder)
+            .expect("Can't create '~/.config/dotfile-manager/fake-git/");
+
+        // check if git is installed
+        which::which("git").expect("Git is not installed");
+        // git init
+        let mut cmd = std::process::Command::new("git");
+        cmd.arg("init");
+        cmd.current_dir(&fake_git_folder);
+        cmd.output().expect("Can't run git init");
+
+        // create readme inside fake-git folder
+        let fake_git_readme = "This is a fake git repository, used to check if remote exists";
+        fs::write(fake_git_folder.join("readme"), fake_git_readme)
+            .expect("Can't write to fake-git folder");
     }
 
     set_template_folder(&dman_folder)
 }
 
 /// Check for template folder, else create one
-fn set_template_folder(dman_folder: &str) -> String {
-    let template_folder = dman_folder.to_owned() + "/templates";
-    let template_folder_path = Path::new(&template_folder);
+fn set_template_folder(dman_folder: &Path) -> String {
+    let template_folder = Path::new(&dman_folder).join("templates");
 
     // Create templates folder
-    if !template_folder_path.exists() {
-        fs::create_dir(template_folder_path)
+    if !template_folder.exists() {
+        fs::create_dir(&template_folder)
             .expect("Can't create '~/.config/dotfile-manager/templates/");
     }
 
-    template_folder
+    template_folder.to_str().unwrap().to_string()
 }
 
 /// Get templates from filesystem ~/.config/templates/
