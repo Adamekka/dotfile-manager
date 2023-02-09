@@ -82,7 +82,7 @@ pub fn run(git_path: &str, path: &Path) -> Result<(), git2::Error> {
                 println!("Folder created: {path:?}");
             }
             Err(e) => {
-                println!("Error: {}", e);
+                println!("Error: {e}");
                 return Err(git2::Error::from_str("Error creating folder"));
             }
         }
