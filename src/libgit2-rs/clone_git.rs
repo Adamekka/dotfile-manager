@@ -98,7 +98,7 @@ pub fn run(git_path: &str, path: &Path) -> Result<(), git2::Error> {
     cb.transfer_progress(|stats| {
         let mut state = state.borrow_mut();
         state.progress = Some(stats.to_owned());
-        print(&mut *state);
+        print(&mut state);
         true
     });
 
@@ -108,7 +108,7 @@ pub fn run(git_path: &str, path: &Path) -> Result<(), git2::Error> {
         state.path = path.map(|p| p.to_path_buf());
         state.current = cur;
         state.total = total;
-        print(&mut *state);
+        print(&mut state);
     });
 
     let mut fo = FetchOptions::new();
