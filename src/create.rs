@@ -112,6 +112,34 @@ fn write_template_to_fs(template: Template, template_folder: String) {
                 panic!("Could not clone template from Git repository");
             }
         }
+    } else if path_in_template.is_file() {
+        panic!("Path is a file");
+    } else if path_in_template.is_dir() {
+        // Check if folder is empty
+        if path_in_template.read_dir().unwrap().next().is_none() {
+            println!("Folder {path_in_template:?} exists but is empty");
+            question_yes_no!("Clone into it?");
+
+            let result = clone_git::run(
+                template.template.git_path.as_ref().unwrap().as_str(),
+                path_in_template,
+            );
+
+            match result {
+                Ok(_) => {
+                    println!("Cloned template from Git repository");
+
+                    // Repeat this function
+                    write_template_to_fs(template.template.clone(), template_folder);
+
+                    return;
+                }
+                Err(error) => {
+                    println!("Error: {error:?}");
+                    panic!("Could not clone template from Git repository");
+                }
+            }
+        }
     }
 
     // Check if path defined in template is a git repository
