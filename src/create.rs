@@ -78,7 +78,7 @@ fn write_template_to_fs(template: Template, template_folder: String) {
 
     // Check if template already exists
     if template_path.exists() {
-        panic!("Same named template already exists");
+        panic!("Same path template already exists");
     }
 
     // Check if path defined in template exists
