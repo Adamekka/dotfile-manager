@@ -26,3 +26,4 @@ serde = { version = "1", features = ["derive"] }
 structopt = "0"
 tabled = { version = "0", features = ["color"] }
 toml = "0"
+which = "4"
