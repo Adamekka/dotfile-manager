@@ -75,15 +75,14 @@ pub fn run(git_path: &str, path: &Path) -> Result<(), git2::Error> {
     // Create folder if not exists
     if !path.exists() {
         question_yes_no!("Folder does not exist. Create it?");
-        let result = std::fs::create_dir_all(path);
 
-        match result {
+        match std::fs::create_dir_all(path) {
             Ok(_) => {}
             Err(e) => {
                 println!("Error: {}", e);
                 return Err(git2::Error::from_str("Error creating folder"));
             }
-        }
+        };
     }
 
     let state = RefCell::new(State {

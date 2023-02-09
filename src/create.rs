@@ -116,8 +116,7 @@ fn write_template_to_fs(template: Template, template_folder: String) {
 
     // Check if path defined in template is a git repository
     let repo = git2::Repository::open(path_in_template).unwrap();
-    let remote = repo.find_remote("origin");
-    match remote {
+    match repo.find_remote("origin") {
         Ok(_) => {
             println!("Path: Remote origin exists");
         }
