@@ -1,5 +1,7 @@
 #[path = "../create.rs"]
 mod create;
+#[path = "../export.rs"]
+mod export;
 #[path = "../import.rs"]
 mod import;
 #[path = "list.rs"]
@@ -11,6 +13,7 @@ mod remove;
 
 use clap::{Arg, ArgAction, ArgMatches, Command};
 use create::create_template;
+use export::export_templates;
 use import::import_templates;
 use list::list_templates;
 use pull::{pull, pull_all};
@@ -58,7 +61,7 @@ fn arguments() -> ArgMatches {
         .subcommand(
             Command::new("export")
                 .about("Export template(s) to toml file")
-                .arg(Arg::new("file").required(false)),
+                .arg(Arg::new("file").required(true)),
         )
         .subcommand(
             Command::new("remove")
@@ -151,8 +154,14 @@ pub fn match_args() {
             import_templates(file_path);
         }
 
-        Some(("export", _set_matches)) => {
-            todo!("export");
+        Some(("export", _arg_matches)) => {
+            // Get export_file from arguments
+            let args = arguments();
+            if let Some(arg_matches) = args.subcommand_matches("export") {
+                let export_file = arg_matches.get_one::<String>("file").unwrap().to_string();
+
+                export_templates(export_file);
+            }
         }
 
         Some(("remove", _set_matches)) => {
