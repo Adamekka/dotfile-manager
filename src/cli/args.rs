@@ -198,17 +198,17 @@ fn match_subcmd_flags(
     if let Some(arg_match) = args.subcommand_matches(cmd) {
         // If name flag is present use it, otherwise use subcommand argument as Template name
         if arg_match.get_one::<String>("name").is_some() {
-            name = Some(arg_match.get_one::<String>("name").unwrap().to_string());
+            name = arg_match.get_one::<String>("name").cloned();
         } else if arg_match.get_one::<String>("template").is_some() {
-            name = Some(arg_match.get_one::<String>("template").unwrap().to_string());
+            name = arg_match.get_one::<String>("template").cloned();
         }
 
         if arg_match.get_one::<String>("path").is_some() {
-            path = Some(arg_match.get_one::<String>("path").unwrap().to_string());
+            path = arg_match.get_one::<String>("path").cloned();
         }
 
         if arg_match.get_one::<String>("git-path").is_some() {
-            git_path = Some(arg_match.get_one::<String>("git-path").unwrap().to_string());
+            git_path = arg_match.get_one::<String>("git-path").cloned();
         }
     } else {
         unreachable!("Clap somehow screwed up");
