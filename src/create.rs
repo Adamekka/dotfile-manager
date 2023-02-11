@@ -2,8 +2,7 @@
 mod clone_git;
 
 use crate::lib;
-use core::panic;
-use dotfile_manager::question_yes_no;
+use dotfile_manager::{pretty_panic, question_yes_no};
 use lib::{check_if_remote_exists, set_folders};
 use serde::Serialize;
 use std::{env, fs, path::Path};
@@ -78,7 +77,7 @@ fn write_template_to_fs(template: Template, template_folder: String) {
 
     // Check if template already exists
     if template_path.exists() {
-        panic!("Same path template already exists");
+        pretty_panic!("Same path template already exists");
     }
 
     // Check if path defined in template exists
@@ -109,11 +108,11 @@ fn write_template_to_fs(template: Template, template_folder: String) {
             }
             Err(error) => {
                 println!("Error: {error:?}");
-                panic!("Could not clone template from Git repository");
+                pretty_panic!("Could not clone template from Git repository");
             }
         }
     } else if path_in_template.is_file() {
-        panic!("Path is a file");
+        pretty_panic!("Path is a file");
     } else if path_in_template.is_dir() {
         // Check if folder is empty
         if path_in_template.read_dir().unwrap().next().is_none() {
@@ -136,7 +135,7 @@ fn write_template_to_fs(template: Template, template_folder: String) {
                 }
                 Err(error) => {
                     println!("Error: {error:?}");
-                    panic!("Could not clone template from Git repository");
+                    pretty_panic!("Could not clone template from Git repository");
                 }
             }
         }
@@ -149,7 +148,7 @@ fn write_template_to_fs(template: Template, template_folder: String) {
             println!("Path: Remote origin exists");
         }
         Err(_) => {
-            panic!("Path: Remote origin does not exist");
+            pretty_panic!("Path: Remote origin does not exist");
         }
     }
 

@@ -13,6 +13,7 @@ mod remove;
 
 use clap::{Arg, ArgAction, ArgMatches, Command};
 use create::create_template;
+use dotfile_manager::pretty_panic;
 use export::export_templates;
 use import::import_templates;
 use list::list_templates;
@@ -242,7 +243,7 @@ fn check_if_enough_flags(cmd: &str) {
             && arg_match.get_one::<String>("git-path").is_none()
             && arg_match.get_one::<String>("template").is_none()
         {
-            panic!("At least 1 flag or name of Template is required");
+            pretty_panic!("At least 1 flag or name of Template is required");
         }
     } else {
         unreachable!("Clap somehow screwed up");
@@ -260,7 +261,7 @@ fn get_toml_file_from_import() -> String {
 
             file_path
         } else {
-            panic!("No file specified");
+            pretty_panic!("No file specified");
         }
     } else {
         unreachable!("Clap somehow screwed up");

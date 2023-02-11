@@ -18,6 +18,19 @@ struct Toml {
     template: Template,
 }
 
+#[macro_export]
+macro_rules! pretty_panic {
+    ($msg:expr) => {
+        use owo_colors::OwoColorize;
+        print!("{}", "Error: ".red().bold());
+        println!("{}", $msg);
+        #[cfg(debug_assertions)]
+        panic!();
+        #[cfg(not(debug_assertions))]
+        std::process::exit(1);
+    };
+}
+
 pub fn get_home_folder() -> String {
     #[cfg(target_family = "unix")]
     return env::var("HOME").expect("$HOME environment variable isn't set");
@@ -25,7 +38,7 @@ pub fn get_home_folder() -> String {
     #[cfg(target_family = "windows")]
     return env::var("USERPROFILE").expect("$USERPROFILE environment variable isn't set");
     #[cfg(target_family = "wasm")]
-    panic!("WebAssembly isn't supported");
+    pretty_panic!("WebAssembly isn't supported");
 }
 
 /// Check for config folder, else create one
@@ -194,7 +207,7 @@ pub fn match_user_input_with_existing_templates(
         println!("Matching by git-path");
         matching = Matching::GitPath;
     } else {
-        panic!("Not enough arguments");
+        pretty_panic!("Not enough arguments");
     }
 
     let mut is_user_input_matched: bool = false;
@@ -237,7 +250,7 @@ pub fn match_user_input_with_existing_templates(
         }
     }
     if !is_user_input_matched {
-        panic!("Not found");
+        pretty_panic!("Not found");
     } else {
         #[cfg(debug_assertions)]
         {
@@ -285,7 +298,7 @@ macro_rules! question_yes_no {
         match answer {
             Some(question::Answer::YES) => {}
             Some(question::Answer::NO) => {
-                panic!("Aborting");
+                dotfile_manager::pretty_panic!("Aborting");
             }
             Some(question::Answer::RESPONSE(_)) => {
                 unreachable!("Something went wrong");

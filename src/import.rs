@@ -1,7 +1,7 @@
 use crate::args;
 use crate::lib;
 use args::create_template;
-use core::panic;
+use dotfile_manager::pretty_panic;
 use lib::{get_existing_templates, process_template_to_struct, Template};
 use std::path::Path;
 
@@ -32,12 +32,12 @@ pub fn import_templates(file_path: String) {
 
     // check if file exists
     if !file_path.exists() {
-        panic!("File does not exist");
+        pretty_panic!("File does not exist");
     }
 
     // check if file is not directory
     if file_path.is_dir() {
-        panic!("File is directory and not file");
+        pretty_panic!("File is directory and not file");
     }
 
     // check if file is a toml file
@@ -45,15 +45,15 @@ pub fn import_templates(file_path: String) {
         Some(extension) => match extension.to_str() {
             Some(extension) => {
                 if extension != "toml" {
-                    panic!("File is not a toml file");
+                    pretty_panic!("File is not a toml file");
                 }
             }
             None => {
-                panic!("File is not a toml file");
+                pretty_panic!("File is not a toml file");
             }
         },
         None => {
-            panic!("File is not a toml file");
+            pretty_panic!("File is not a toml file");
         }
     }
 
@@ -73,7 +73,7 @@ pub fn import_templates(file_path: String) {
 
         match key.as_str() {
             "name" | "path" | "git_path" => {
-                panic!("Table name missing");
+                pretty_panic!("Table name missing");
             }
             _ => {}
         }
@@ -86,21 +86,21 @@ pub fn import_templates(file_path: String) {
         let name = match value.get("name") {
             Some(name) => name,
             None => {
-                panic!("Template does not contain a name");
+                pretty_panic!("Template does not contain a name");
             }
         };
 
         let path = match value.get("path") {
             Some(path) => path,
             None => {
-                panic!("Template does not contain a path");
+                pretty_panic!("Template does not contain a path");
             }
         };
 
         let git_path = match value.get("git_path") {
             Some(git_path) => git_path,
             None => {
-                panic!("Template does not contain a git_path");
+                pretty_panic!("Template does not contain a git_path");
             }
         };
 
