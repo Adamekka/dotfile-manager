@@ -18,6 +18,16 @@ struct Toml {
     template: Template,
 }
 
+pub fn get_home_folder() -> String {
+    #[cfg(target_family = "unix")]
+    return env::var("HOME").expect("$HOME environment variable isn't set");
+
+    #[cfg(target_family = "windows")]
+    return env::var("USERPROFILE").expect("$USERPROFILE environment variable isn't set");
+    #[cfg(target_family = "wasm")]
+    panic!("WebAssembly isn't supported");
+}
+
 /// Check for config folder, else create one
 /// Same for dotfile-manager folder
 ///
@@ -38,12 +48,7 @@ struct Toml {
 /// let template_folder = set_folders();
 /// ```
 pub fn set_folders() -> String {
-    #[cfg(target_family = "unix")]
-    let home_folder = env::var("HOME").expect("$HOME environment variable isn't set");
-    #[cfg(target_family = "windows")]
-    let home_folder = env::var("USERPROFILE").expect("$USERPROFILE environment variable isn't set");
-    #[cfg(target_family = "wasm")]
-    panic!("WebAssembly isn't supported");
+    let home_folder = get_home_folder();
     let config_folder_path = Path::new(&home_folder).join(".config");
 
     if !config_folder_path.exists() {
@@ -95,12 +100,8 @@ fn set_template_folder(dman_folder: &Path) -> String {
 }
 
 fn get_fake_git_folder() -> String {
-    #[cfg(target_family = "unix")]
-    let home_folder = env::var("HOME").expect("$HOME environment variable isn't set");
-    #[cfg(target_family = "windows")]
-    let home_folder = env::var("USERPROFILE").expect("$USERPROFILE environment variable isn't set");
-    #[cfg(target_family = "wasm")]
-    panic!("WebAssembly isn't supported");
+    let home_folder = get_home_folder();
+
     let fake_git_folder = Path::new(&home_folder).join(".local/share/dotfile-manager/fake-git");
 
     fake_git_folder.to_str().unwrap().to_string()
