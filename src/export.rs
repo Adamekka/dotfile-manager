@@ -1,15 +1,20 @@
 use crate::lib;
 use dotfile_manager::question_yes_no;
-use lib::{get_existing_templates, process_template_to_struct};
+use lib::{get_existing_templates, get_home_folder, process_template_to_struct};
 use std::{fs, path::Path};
 
 pub fn export_templates(export_file: String) {
     // Get all templates
     let templates = get_existing_templates();
+    let home_folder = get_home_folder();
 
     let mut toml = String::new();
     for template in templates {
-        let template = process_template_to_struct(&template);
+        let mut template = process_template_to_struct(&template);
+
+        // Replace home directory with ~ so it is portable
+        template.path = template.path.replace(&home_folder, "~");
+
         toml.push_str(&format!(
             "[{}]\nname = \"{}\"\npath = \"{}\"\ngit_path = \"{}\"\n\n",
             template.name, template.name, template.path, template.git_path
