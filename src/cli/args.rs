@@ -11,17 +11,21 @@ mod pull;
 #[path = "../remove.rs"]
 mod remove;
 
-use clap::{Arg, ArgAction, ArgMatches, Command};
+use crate::lib;
+use clap::{Arg, ArgAction, Command};
+use clap_complete::{generate, Generator, Shell};
 use create::create_template;
 use dotfile_manager::pretty_panic;
 use export::export_templates;
 use import::import_templates;
+use lib::get_home_folder;
 use list::list_templates;
 use pull::{pull, pull_all};
 use remove::remove_template;
+use std::path::Path;
 
 /// Get arguments from Clap
-fn arguments() -> ArgMatches {
+fn arguments() -> Command {
     Command::new("dman")
         .about("Manage your dotfiles")
         .subcommand_required(true)
@@ -30,39 +34,50 @@ fn arguments() -> ArgMatches {
         .subcommand(
             Command::new("new")
                 .about("Create new template")
-                .alias("create")
+                .visible_alias("create")
                 .arg(
                     Arg::new("name")
                         .short('n')
                         .long("name")
                         .action(ArgAction::Append)
-                        .required(true),
+                        .required(true)
+                        .value_hint(clap::ValueHint::Unknown),
                 )
                 .arg(
                     Arg::new("path")
                         .short('p')
                         .long("path")
                         .action(ArgAction::Append)
-                        .required(true),
+                        .required(true)
+                        .value_hint(clap::ValueHint::DirPath),
                 )
                 .arg(
                     Arg::new("git-path")
                         .short('g')
                         .long("git-path")
                         .action(ArgAction::Append)
-                        .required(true),
+                        .required(true)
+                        .value_hint(clap::ValueHint::Url),
                 ),
         )
         .subcommand(Command::new("list").about("List imported templates"))
         .subcommand(
             Command::new("import")
                 .about("Import template(s) from toml file")
-                .arg(Arg::new("file").required(true)),
+                .arg(
+                    Arg::new("file")
+                        .required(true)
+                        .value_hint(clap::ValueHint::FilePath),
+                ),
         )
         .subcommand(
             Command::new("export")
                 .about("Export template(s) to toml file")
-                .arg(Arg::new("file").required(true)),
+                .arg(
+                    Arg::new("file")
+                        .required(false)
+                        .value_hint(clap::ValueHint::FilePath),
+                ),
         )
         .subcommand(
             Command::new("remove")
@@ -72,42 +87,52 @@ fn arguments() -> ArgMatches {
                     Arg::new("name")
                         .short('n')
                         .long("name")
-                        .action(ArgAction::Append),
+                        .action(ArgAction::Append)
+                        .value_hint(clap::ValueHint::Unknown),
                 )
                 .arg(
                     Arg::new("path")
                         .short('p')
                         .long("path")
-                        .action(ArgAction::Append),
+                        .action(ArgAction::Append)
+                        .value_hint(clap::ValueHint::DirPath),
                 )
                 .arg(
                     Arg::new("git-path")
                         .short('g')
                         .long("git-path")
-                        .action(ArgAction::Append),
+                        .action(ArgAction::Append)
+                        .value_hint(clap::ValueHint::Url),
                 ),
         )
         .subcommand(
             Command::new("pull")
                 .about("Pull changes from Git repo")
-                .arg(Arg::new("template").required(false))
+                .arg(
+                    Arg::new("template")
+                        .required(false)
+                        .value_hint(clap::ValueHint::Unknown),
+                )
                 .arg(
                     Arg::new("name")
                         .short('n')
                         .long("name")
-                        .action(ArgAction::Append),
+                        .action(ArgAction::Append)
+                        .value_hint(clap::ValueHint::Unknown),
                 )
                 .arg(
                     Arg::new("path")
                         .short('p')
                         .long("path")
-                        .action(ArgAction::Append),
+                        .action(ArgAction::Append)
+                        .value_hint(clap::ValueHint::DirPath),
                 )
                 .arg(
                     Arg::new("git-path")
                         .short('g')
                         .long("git-path")
-                        .action(ArgAction::Append),
+                        .action(ArgAction::Append)
+                        .value_hint(clap::ValueHint::Url),
                 ),
         )
         .subcommand(Command::new("pull-all").about("Pull all changes from all Git repo(s)"))
@@ -118,28 +143,80 @@ fn arguments() -> ArgMatches {
                     Arg::new("name")
                         .short('n')
                         .long("name")
-                        .action(ArgAction::Append),
+                        .action(ArgAction::Append)
+                        .value_hint(clap::ValueHint::Unknown),
                 )
                 .arg(
                     Arg::new("path")
                         .short('p')
                         .long("path")
-                        .action(ArgAction::Append),
+                        .action(ArgAction::Append)
+                        .value_hint(clap::ValueHint::DirPath),
                 )
                 .arg(
                     Arg::new("git-path")
                         .short('g')
                         .long("git-path")
-                        .action(ArgAction::Append),
+                        .action(ArgAction::Append)
+                        .value_hint(clap::ValueHint::Url),
                 ),
         )
-        .get_matches()
+}
+
+fn print_completions<G: Generator + std::marker::Copy>(
+    gen: G,
+    cmd: &mut Command,
+    shell: clap_complete::Shell,
+) {
+    // Binding is needed because of lifetime
+    let binding = get_home_folder();
+    let home = Path::new(&binding);
+
+    // Create directory for completion file if it doesn't exist
+    let dir = match shell {
+        clap_complete::Shell::Bash => home.join(".local/share/bash-completion/completions"),
+        clap_complete::Shell::Fish => home.join(".config/fish/completions"),
+        clap_complete::Shell::Zsh => todo!("Zsh completions not implemented yet"),
+        // clap_complete::Shell::Zsh => home.join(".local/share/zsh/site-functions"),
+        clap_complete::Shell::Elvish => todo!("Elvish completions not implemented yet"),
+        // clap_complete::Shell::Elvish => home.join(".local/share/elvish/site-functions"),
+        _ => panic!("Shell not supported"),
+    };
+
+    std::fs::create_dir_all(dir).expect("Failed to create directory for shell completion file");
+
+    // Get path to completion file
+    let path = match shell {
+        clap_complete::Shell::Bash => home.join(".local/share/bash-completion/completions/dman"),
+        clap_complete::Shell::Fish => home.join(".config/fish/completions/dman.fish"),
+        // clap_complete::Shell::Zsh => home.join(".local/share/zsh/site-functions/dman"),
+        // clap_complete::Shell::Elvish => home.join(".local/share/elvish/site-functions/_dman.elv"),
+        _ => panic!("Shell not supported"),
+    };
+
+    let mut file = std::fs::File::create(path).expect("Failed to create shell completion file");
+    generate(gen, cmd, cmd.get_name().to_string(), &mut file);
 }
 
 /// Match arguments: new, pull, push, ...
 /// Then pass them to according function with their parameters
 pub fn match_args() {
-    let args = arguments();
+    let args = arguments().get_matches();
+
+    // Generate completion file
+    let shell = get_shell::get_shell().expect("Failed to get shell");
+    let generator = match shell {
+        get_shell::Shell::Bash => Shell::Bash,
+        get_shell::Shell::Fish => Shell::Fish,
+        get_shell::Shell::Zsh => Shell::Zsh,
+        get_shell::Shell::Elvish => Shell::Elvish,
+        _ => panic!("Shell not supported"),
+    };
+
+    #[cfg(debug_assertions)]
+    println!("Generating completion file for {generator}...");
+    print_completions(generator, &mut arguments(), generator);
+
     match args.subcommand() {
         Some(("new", _set_matches)) => {
             let (name, path, git_path) = match_subcmd_flags("new");
@@ -157,7 +234,6 @@ pub fn match_args() {
 
         Some(("export", _arg_matches)) => {
             // Get export_file from arguments
-            let args = arguments();
             if let Some(arg_matches) = args.subcommand_matches("export") {
                 let export_file = arg_matches.get_one::<String>("file").unwrap().to_string();
 
@@ -199,7 +275,7 @@ fn match_subcmd_flags(
     Option<std::string::String>,
     Option<std::string::String>,
 ) {
-    let args = arguments();
+    let args = arguments().get_matches();
 
     let mut name: Option<String> = None;
     let mut path: Option<String> = None;
@@ -235,7 +311,7 @@ fn match_subcmd_flags(
 /// Check if at least 1 flag or name of Template is present
 /// If not, panic
 fn check_if_enough_flags(cmd: &str) {
-    let args = arguments();
+    let args = arguments().get_matches();
 
     if let Some(arg_match) = args.subcommand_matches(cmd) {
         if arg_match.get_one::<String>("name").is_none()
@@ -252,7 +328,7 @@ fn check_if_enough_flags(cmd: &str) {
 
 /// Get toml file when using import subcommand
 fn get_toml_file_from_import() -> String {
-    let args = arguments();
+    let args = arguments().get_matches();
 
     if let Some(arg_match) = args.subcommand_matches("import") {
         if arg_match.get_one::<String>("file").is_some() {
