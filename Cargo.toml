@@ -19,6 +19,7 @@ dman-gui = ["relm4/libadwaita"]
 [dependencies]
 clap = "4"
 clap_complete = "4"
+get-shell = "0"
 git2 = "0"
 owo-colors = "3"
 question = "0"
