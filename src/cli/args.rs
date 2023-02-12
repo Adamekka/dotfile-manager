@@ -41,7 +41,8 @@ fn arguments() -> Command {
                         .long("name")
                         .action(ArgAction::Append)
                         .required(true)
-                        .value_hint(clap::ValueHint::Unknown),
+                        .value_hint(clap::ValueHint::Unknown)
+                        .help("Name of the template"),
                 )
                 .arg(
                     Arg::new("path")
@@ -49,7 +50,8 @@ fn arguments() -> Command {
                         .long("path")
                         .action(ArgAction::Append)
                         .required(true)
-                        .value_hint(clap::ValueHint::DirPath),
+                        .value_hint(clap::ValueHint::DirPath)
+                        .help("Path to the template"),
                 )
                 .arg(
                     Arg::new("git-path")
@@ -57,7 +59,8 @@ fn arguments() -> Command {
                         .long("git-path")
                         .action(ArgAction::Append)
                         .required(true)
-                        .value_hint(clap::ValueHint::Url),
+                        .value_hint(clap::ValueHint::Url)
+                        .help("Git path to the template"),
                 ),
         )
         .subcommand(Command::new("list").about("List imported templates"))
@@ -88,21 +91,24 @@ fn arguments() -> Command {
                         .short('n')
                         .long("name")
                         .action(ArgAction::Append)
-                        .value_hint(clap::ValueHint::Unknown),
+                        .value_hint(clap::ValueHint::Unknown)
+                        .help("Name of the template"),
                 )
                 .arg(
                     Arg::new("path")
                         .short('p')
                         .long("path")
                         .action(ArgAction::Append)
-                        .value_hint(clap::ValueHint::DirPath),
+                        .value_hint(clap::ValueHint::DirPath)
+                        .help("Path to the template"),
                 )
                 .arg(
                     Arg::new("git-path")
                         .short('g')
                         .long("git-path")
                         .action(ArgAction::Append)
-                        .value_hint(clap::ValueHint::Url),
+                        .value_hint(clap::ValueHint::Url)
+                        .help("Git path to the template"),
                 ),
         )
         .subcommand(
@@ -118,21 +124,24 @@ fn arguments() -> Command {
                         .short('n')
                         .long("name")
                         .action(ArgAction::Append)
-                        .value_hint(clap::ValueHint::Unknown),
+                        .value_hint(clap::ValueHint::Unknown)
+                        .help("Name of the template"),
                 )
                 .arg(
                     Arg::new("path")
                         .short('p')
                         .long("path")
                         .action(ArgAction::Append)
-                        .value_hint(clap::ValueHint::DirPath),
+                        .value_hint(clap::ValueHint::DirPath)
+                        .help("Path to the template"),
                 )
                 .arg(
                     Arg::new("git-path")
                         .short('g')
                         .long("git-path")
                         .action(ArgAction::Append)
-                        .value_hint(clap::ValueHint::Url),
+                        .value_hint(clap::ValueHint::Url)
+                        .help("Git path to the template"),
                 ),
         )
         .subcommand(Command::new("pull-all").about("Pull all changes from all Git repo(s)"))
@@ -144,21 +153,24 @@ fn arguments() -> Command {
                         .short('n')
                         .long("name")
                         .action(ArgAction::Append)
-                        .value_hint(clap::ValueHint::Unknown),
+                        .value_hint(clap::ValueHint::Unknown)
+                        .help("Name of the template"),
                 )
                 .arg(
                     Arg::new("path")
                         .short('p')
                         .long("path")
                         .action(ArgAction::Append)
-                        .value_hint(clap::ValueHint::DirPath),
+                        .value_hint(clap::ValueHint::DirPath)
+                        .help("Path to the template"),
                 )
                 .arg(
                     Arg::new("git-path")
                         .short('g')
                         .long("git-path")
                         .action(ArgAction::Append)
-                        .value_hint(clap::ValueHint::Url),
+                        .value_hint(clap::ValueHint::Url)
+                        .help("Git path to the template"),
                 ),
         )
 }
