@@ -377,3 +377,19 @@ pub fn get_branches(path: String) -> Vec<String> {
 
     branches
 }
+
+#[allow(dead_code)]
+/// Read templates from filesystem and put them to Vector
+pub fn get_templates_to_vec() -> Vec<Template> {
+    let templates = get_existing_templates();
+    let mut templates_vec: Vec<Template> = Vec::new();
+
+    for template in templates {
+        let template = process_template_to_struct(&template);
+        templates_vec.push(template);
+    }
+
+    dbg!(&templates_vec);
+
+    templates_vec
+}
