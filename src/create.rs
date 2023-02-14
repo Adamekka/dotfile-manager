@@ -146,7 +146,7 @@ fn write_template_to_fs(template: Template, template_folder: String) {
         Ok(repo) => repo,
         Err(_) => {
             // Check if folder is empty
-            if !path_in_template.read_dir().unwrap().next().is_none() {
+            if path_in_template.read_dir().unwrap().next().is_some() {
                 pretty_panic!(
                     "Path: {path_in_template:?} isn't empty, make sure it's empty before cloning"
                 );
