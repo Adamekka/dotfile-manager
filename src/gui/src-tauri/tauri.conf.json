@@ -1,0 +1,26 @@
+{
+    "build": {
+        "distDir": "src/gui/dist",
+        "devPath": "http://localhost:8080/"
+    },
+    "tauri": {
+        "bundle": {
+            "identifier": "com.adamekka.dotfile-manager",
+            "icon": [
+                "icon.png"
+            ]
+        },
+        "allowlist": {
+            "all": true
+        },
+        "windows": [
+            {
+                "width": 800,
+                "height": 600,
+                "resizable": true,
+                "fullscreen": false,
+                "title": "Dotfile Manager by Adamekka"
+            }
+        ]
+    }
+}

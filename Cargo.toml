@@ -9,12 +9,13 @@ path = "src/cli/main.rs"
 
 [[bin]]
 name = "dman-gui"
-path = "src/gui/main.rs"
+path = "src/gui/src-tauri/main.rs"
 required-features = ["gui"]
 
 [features]
 default = []
-gui = ["tauri", "tauri-build"]
+gui = ["tauri-feat"]
+tauri-feat = ["tauri", "tauri/custom-protocol", "tauri-build"]
 
 [dependencies]
 clap = "4"
@@ -27,7 +28,7 @@ question = "0"
 serde = { version = "1", features = ["derive"] }
 structopt = "0"
 tabled = { version = "0", features = ["color"] }
-tauri = { version = "1", features = ["custom-protocol"], optional = true }
+tauri = { version = "1", features = ["api-all"], optional = true }
 toml = "0"
 which = "4"
 
