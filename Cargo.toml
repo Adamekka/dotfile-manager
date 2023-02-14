@@ -14,6 +14,7 @@ required-features = ["gui"]
 
 [features]
 default = []
+custom-protocol = ["tauri/custom-protocol"]
 gui = ["tauri-feat"]
 tauri-feat = ["tauri", "tauri/custom-protocol", "tauri-build"]
 
@@ -28,9 +29,9 @@ question = "0"
 serde = { version = "1", features = ["derive"] }
 structopt = "0"
 tabled = { version = "0", features = ["color"] }
-tauri = { version = "1", features = ["api-all"], optional = true }
+tauri = { version = "1", features = ["shell-open"], optional = true }
 toml = "0"
 which = "4"
 
 [build-dependencies]
-tauri-build = { version = "1", optional = true }
+tauri-build = { version = "1", features = [], optional = true }
