@@ -341,6 +341,7 @@ pub fn check_if_remote_exists(remote: String) {
         .connect_auth(git2::Direction::Fetch, None, None)
         .unwrap();
     let mut remote_origin_exists = false;
+    #[allow(unused_variables)]
     for head in connection.list().unwrap().iter() {
         #[cfg(debug_assertions)]
         println!("{}\t{}", head.oid(), head.name());
