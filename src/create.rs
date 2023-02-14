@@ -142,7 +142,20 @@ fn write_template_to_fs(template: Template, template_folder: String) {
     }
 
     // Check if path defined in template is a git repository
-    let repo = git2::Repository::open(path_in_template).unwrap();
+    let repo = match git2::Repository::open(path_in_template) {
+        Ok(repo) => repo,
+        Err(_) => {
+            // Check if folder is empty
+            if !path_in_template.read_dir().unwrap().next().is_none() {
+                pretty_panic!(
+                    "Path: {path_in_template:?} isn't empty, make sure it's empty before cloning"
+                );
+            }
+
+            pretty_panic!("Path: {path_in_template:?} is not a git repository");
+        }
+    };
+
     match repo.find_remote("origin") {
         Ok(_) => {
             println!("Path: Remote origin exists");
