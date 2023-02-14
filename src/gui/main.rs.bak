@@ -104,7 +104,7 @@ impl SimpleComponent for AppModel {
 
                 gtk::Button {
                     set_label: "Reload Templates",
-                    set_margin_all: 5,
+                    set_margin_all: 12,
                     set_halign: gtk::Align::Center,
                     set_valign: gtk::Align::Center,
                 },
@@ -148,8 +148,10 @@ fn get_templates_to_vec() -> Vec<Template> {
 
 fn make_list_box(templates: Vec<Template>) -> gtk::ListBox {
     let list_box = relm4::gtk::ListBox::new();
+    list_box.set_margin_all(12);
     for template in templates {
         let label = relm4::gtk::Label::new(Some(&template.name));
+        label.set_margin_all(12);
         list_box.append(&label);
     }
     list_box

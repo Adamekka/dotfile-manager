@@ -1,0 +1,42 @@
+{
+    "build": {
+        "beforeDevCommand": "npm run dev",
+        "beforeBuildCommand": "npm run build",
+        "distDir": "dist",
+        "devPath": "http://localhost:5173/",
+        "withGlobalTauri": false
+    },
+    "package": {
+        "productName": "dotfile-manager",
+        "version": "0.0.0"
+    },
+    "tauri": {
+        "bundle": {
+            "active": true,
+            "identifier": "com.adamekka.dotfile-manager",
+            "icon": [
+                "src/gui/src-tauri/icons/32x32.png",
+                "src/gui/src-tauri/icons/128x128.png",
+                "src/gui/src-tauri/icons/128x128@2x.png",
+                "src/gui/src-tauri/icons/icon.icns",
+                "src/gui/src-tauri/icons/icon.ico"
+            ]
+        },
+        "allowlist": {
+            "all": false,
+            "shell": {
+                "all": false,
+                "open": true
+            }
+        },
+        "windows": [
+            {
+                "width": 800,
+                "height": 600,
+                "resizable": true,
+                "fullscreen": false,
+                "title": "Dotfile Manager by Adamekka"
+            }
+        ]
+    }
+}
