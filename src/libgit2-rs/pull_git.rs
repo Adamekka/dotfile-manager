@@ -212,7 +212,7 @@ pub fn run(path: String, remote_branches: Vec<String>) -> Result<(), git2::Error
         return Err(git2::Error::from_str("No branches found"));
     }
 
-    println!("{:?}", results);
+    println!("{results:?}");
 
     for result in results {
         if result.is_ok() {
