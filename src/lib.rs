@@ -40,6 +40,7 @@ macro_rules! warn {
     };
 }
 
+#[allow(dead_code)]
 pub fn get_home_folder() -> String {
     #[cfg(target_family = "unix")]
     return env::var("HOME").expect("$HOME environment variable isn't set");
@@ -69,6 +70,7 @@ pub fn get_home_folder() -> String {
 ///
 /// let template_folder = set_folders();
 /// ```
+#[allow(dead_code)]
 pub fn set_folders() -> String {
     let home_folder = get_home_folder();
     let config_folder_path = Path::new(&home_folder).join(".config");
@@ -109,6 +111,7 @@ pub fn set_folders() -> String {
 }
 
 /// Check for template folder, else create one
+#[allow(dead_code)]
 fn set_template_folder(dman_folder: &Path) -> String {
     let template_folder = Path::new(&dman_folder).join("templates");
 
@@ -142,6 +145,7 @@ fn get_fake_git_folder() -> String {
 ///
 /// let templates = get_existing_templates();
 /// ```
+#[allow(dead_code)]
 pub fn get_existing_templates() -> ReadDir {
     let template_folder = set_folders();
 
@@ -196,6 +200,7 @@ enum Matching {
     GitPath,
 }
 
+#[allow(dead_code)]
 pub fn match_user_input_with_existing_templates(
     name: Option<String>,
     path: Option<String>,
@@ -272,6 +277,7 @@ pub fn match_user_input_with_existing_templates(
 }
 
 /// Match user input with existing templates to find one to Git pull
+#[allow(dead_code)]
 fn match_user_input_with_template_data(
     previous_value: bool,
     template_data: String,
@@ -340,6 +346,7 @@ macro_rules! question_yes_no {
 /// # Debug
 ///
 /// * Print Git path if debug_assertions is set
+#[allow(dead_code)]
 pub fn check_if_remote_exists(remote: String) {
     let repo = git2::Repository::open(get_fake_git_folder()).unwrap();
     let mut remote = repo
@@ -364,6 +371,7 @@ pub fn check_if_remote_exists(remote: String) {
     }
 }
 
+#[allow(dead_code)]
 pub fn get_branches(path: String) -> Vec<String> {
     let path = Path::new(&path);
     let repo = git2::Repository::open(path).expect("Couldn't open repo, bad path maybe?");
