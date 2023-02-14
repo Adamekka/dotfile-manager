@@ -31,6 +31,15 @@ macro_rules! pretty_panic {
     };
 }
 
+#[macro_export]
+macro_rules! warn {
+    ($msg:expr) => {
+        use owo_colors::OwoColorize;
+        print!("{}", "Warning: ".yellow().bold());
+        println!("{}", format!($msg));
+    };
+}
+
 pub fn get_home_folder() -> String {
     #[cfg(target_family = "unix")]
     return env::var("HOME").expect("$HOME environment variable isn't set");
