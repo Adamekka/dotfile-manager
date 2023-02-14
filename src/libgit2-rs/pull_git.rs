@@ -189,19 +189,37 @@ fn do_merge<'a>(
 // TODO: handle private repos
 
 /// Pull changes from Git repository
-pub fn run(path_but_string: String) -> Result<(), git2::Error> {
+pub fn run(path: String, remote_branches: Vec<String>) -> Result<(), git2::Error> {
     let remote_name = "origin";
-    let remote_branch = "main"; // TODO: handle different branch names
-    let path = Path::new(&path_but_string);
+    let path = Path::new(&path);
     let repo = Repository::open(path)?;
     let mut remote = repo.find_remote(remote_name)?;
+    let mut results: Vec<Result<(), git2::Error>> = Vec::new();
+    let mut final_result: Result<(), git2::Error> = Err(git2::Error::from_str("No branches found"));
 
-    #[cfg(debug_assertions)]
-    {
-        println!("Pulling config from git repo");
-        println!("path: {path:?}, remote branch: {remote_branch}");
+    for remote_branch in remote_branches {
+        #[cfg(debug_assertions)]
+        {
+            println!("Pulling config from git repo");
+            println!("path: {path:?}, remote branch: {remote_branch}");
+        }
+        let fetch_commit = do_fetch(&repo, &[&remote_branch], &mut remote)?;
+        results.push(do_merge(&repo, &remote_branch, fetch_commit));
     }
 
-    let fetch_commit = do_fetch(&repo, &[remote_branch], &mut remote)?;
-    do_merge(&repo, remote_branch, fetch_commit)
+    // Check if at least 1 pull was successful
+    if results.is_empty() {
+        return Err(git2::Error::from_str("No branches found"));
+    }
+
+    println!("{:?}", results);
+
+    for result in results {
+        if result.is_ok() {
+            println!("Pull successful");
+            final_result = Ok(());
+        }
+    }
+
+    final_result
 }

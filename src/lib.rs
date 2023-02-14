@@ -6,7 +6,7 @@ use std::{
 };
 use tabled::Tabled;
 
-#[derive(Debug, Default, Deserialize, Tabled)]
+#[derive(Clone, Debug, Default, Deserialize, Tabled)]
 pub struct Template {
     pub name: String,
     pub path: String,
@@ -341,7 +341,22 @@ pub fn check_if_remote_exists(remote: String) {
         .connect_auth(git2::Direction::Fetch, None, None)
         .unwrap();
     for head in connection.list().unwrap().iter() {
+        #[cfg(debug_assertions)]
         println!("{}\t{}", head.oid(), head.name());
         println!("Git path: Remote origin exists");
     }
+}
+
+pub fn get_branches(path: String) -> Vec<String> {
+    let path = Path::new(&path);
+    let repo = git2::Repository::open(path).expect("Couldn't open repo, bad path maybe?");
+    let mut branches = Vec::new();
+
+    for branch in repo.branches(Some(git2::BranchType::Local)).unwrap() {
+        let (branch, _) = branch.unwrap();
+        let name = branch.name().unwrap().unwrap();
+        branches.push(name.to_string());
+    }
+
+    branches
 }
