@@ -340,10 +340,17 @@ pub fn check_if_remote_exists(remote: String) {
     let connection = remote
         .connect_auth(git2::Direction::Fetch, None, None)
         .unwrap();
+    let mut remote_origin_exists = false;
     for head in connection.list().unwrap().iter() {
         #[cfg(debug_assertions)]
         println!("{}\t{}", head.oid(), head.name());
-        println!("Git path: Remote origin exists");
+        remote_origin_exists = true;
+    }
+
+    if remote_origin_exists {
+        println!("Remote origin exists");
+    } else {
+        println!("Remote origin doesn't exist");
     }
 }
 
