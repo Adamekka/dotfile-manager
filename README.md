@@ -1,23 +1,49 @@
 # dotfile-manager
 
-## Running from a container
+Manage and sync your dotfiles across multiple machines using Git
 
-### 1. Build an image
+## Installation
 
-From the root of the project run:
-
-```bash
-docker build -t "dman" .
-```
-
-### 2. Run the image
+Install only CLI
 
 ```bash
-docker run -it dman
+git clone https://github.com/Adamekka/dotfile-manager.git
+cd dotfile-manager
+make install
 ```
 
-This will open a shell session in the container's root user's home directory.
+Install CLI and GUI
 
-### 3. Run commands
+```bash
+git clone https://github.com/Adamekka/dotfile-manager.git
+cd dotfile-manager
+make install-gui
+```
 
-You can now run `dman` or `dman-gui` commands.
+## Usage
+
+In your `~/.config/` directory, `dotfile-manager` directory is going to be created, inside it's going to be created `templates` directory, where your templates are going to be stored.
+
+### CLI
+
+| command  | arguments  | subcommands   | description                                      |
+| -------- | ---------- | ------------- | ------------------------------------------------ |
+| new      | -n, -g, -p | _none_        | Create new template                              |
+| list     | _none_     | _none_        | List all templates                               |
+| import   | _none_     | file          | Import template(s) from toml file                |
+| export   | _none_     | file          | Export all template(s) to toml file              |
+| remove   | -n, -g, -p | template name | Remove template from dman, not from filesystem   |
+| pull     | -n, -g, -p | template name | Clone template and pull changes from remote      |
+| pull-all | _none_     | _none_        | Clone all templates and pull changes from remote |
+
+#### Arguments
+
+| short argument | long argument          | example                               | description |
+| -------------- | ---------------------- | ------------------------------------- | ----------- |
+| -n \<name>     | --name \<name>         | -n nvim                               | Name        |
+| -p \<path>     | --path \<path>         | -p ~/.config/nvim                     | Path        |
+| -g \<git-path> | --git-path \<git-path> | -g <https://github.com/Adamekka/nvim> | Git repo    |
+
+### GUI
+
+> todo
