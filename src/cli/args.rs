@@ -63,7 +63,7 @@ fn arguments() -> Command {
                         .help("Git path to the template"),
                 ),
         )
-        .subcommand(Command::new("list").about("List imported templates"))
+        .subcommand(Command::new("list").about("List all templates"))
         .subcommand(
             Command::new("import")
                 .about("Import template(s) from toml file")
@@ -113,7 +113,7 @@ fn arguments() -> Command {
         )
         .subcommand(
             Command::new("pull")
-                .about("Pull changes from Git repo")
+                .about("Clone template and pull changes from remote")
                 .arg(
                     Arg::new("template")
                         .required(false)
@@ -144,7 +144,9 @@ fn arguments() -> Command {
                         .help("Git path to the template"),
                 ),
         )
-        .subcommand(Command::new("pull-all").about("Pull all changes from all Git repo(s)"))
+        .subcommand(
+            Command::new("pull-all").about("Clone all templates and pull changes from remote"),
+        )
         .subcommand(
             Command::new("push")
                 .about("Push changes to Git repo")
