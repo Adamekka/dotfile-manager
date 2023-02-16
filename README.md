@@ -38,6 +38,8 @@ In your `~/.config/` directory, `dotfile-manager` directory is going to be creat
 
 #### Arguments
 
+> Those are used only at `new`, `remove` and `pull` commands
+
 | short argument | long argument          | example                               | description |
 | -------------- | ---------------------- | ------------------------------------- | ----------- |
 | -n \<name>     | --name \<name>         | -n nvim                               | Name        |
