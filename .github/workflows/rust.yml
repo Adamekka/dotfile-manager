@@ -16,11 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # - name: Install system dependencies
-      #   run: |
-      #     sudo apt update
-      #     sudo apt install libpango1.0-dev libgraphene-1.0-dev libgtk-4-dev libadwaita-1-dev -y
-
+      - name: Install system dependencies
+        run: |
+          sudo apt update
+          sudo apt install libgtk-4-dev -y
+      # libpango1.0-dev libgraphene-1.0-dev libadwaita-1-dev
       - name: Update local toolchain
         run: |
           rustup update
