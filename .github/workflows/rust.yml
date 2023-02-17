@@ -19,7 +19,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt update
-          sudo apt install libgtk-3-dev libsoup2.4-dev libjavascriptcoregtk-4.0-dev -y
+          sudo apt install libgtk-3-dev libsoup2.4-dev libjavascriptcoregtk-4.0-dev libwebkit2gtk-4.0-dev -y
       # libpango1.0-dev libgraphene-1.0-dev libadwaita-1-dev
       - name: Update local toolchain
         run: |
