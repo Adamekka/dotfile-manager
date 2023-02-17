@@ -44,4 +44,6 @@ jobs:
         run: cargo build --release --features gui
 
       - name: NPM
-        run: npm run build
+        run: |
+          npm install
+          npm run build
