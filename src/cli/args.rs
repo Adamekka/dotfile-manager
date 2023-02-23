@@ -10,6 +10,8 @@ mod list;
 mod pull;
 #[path = "../remove.rs"]
 mod remove;
+#[path = "../updater.rs"]
+mod updater;
 
 use crate::lib;
 use clap::{Arg, ArgAction, Command};
@@ -23,6 +25,7 @@ use list::list_templates;
 use pull::{pull, pull_all};
 use remove::remove_template;
 use std::path::Path;
+use updater::{check_updates, update};
 
 /// Get arguments from Clap
 fn arguments() -> Command {
@@ -175,6 +178,8 @@ fn arguments() -> Command {
                         .help("Git path to the template"),
                 ),
         )
+        .subcommand(Command::new("check-updates").about("Check for updates"))
+        .subcommand(Command::new("update").about("Update dman to the latest version"))
 }
 
 fn print_completions<G: Generator + std::marker::Copy>(
@@ -275,6 +280,14 @@ pub fn match_args() {
             check_if_enough_flags("push");
             let (_name, _path, _git_path) = match_subcmd_flags("push");
             todo!("push");
+        }
+
+        Some(("check-updates", _set_matches)) => {
+            check_updates();
+        }
+
+        Some(("update", _set_matches)) => {
+            update();
         }
 
         _ => unreachable!(),
