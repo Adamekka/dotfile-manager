@@ -1,6 +1,12 @@
 [package]
 name = "dotfile-manager"
 version = "0.1.0"
+authors = ["Adam Cvikl <adam.wasd4@gmail.com"]
+categories = []
+description = "Manage and sync your dotfiles across multiple machines using Git"
+documentation = ""
+license = "GPL-3.0"
+repository = "https://github.com/Adamekka/dotfile-manager"
 edition = "2021"
 
 [[bin]]
