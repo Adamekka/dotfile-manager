@@ -1,10 +1,13 @@
+#[path = "./libgit2-rs/pull_git.rs"]
+mod pull_git;
 
 use crate::args::create::clone_git;
 use crate::lib;
-use dotfile_manager::pretty_panic;
+use dotfile_manager::{pretty_panic, question_yes_no};
 use git2::Repository;
 use lib::get_home_folder;
-use std::path::Path;
+use question::Question;
+use std::{path::Path, process::Command};
 
 fn clone_dman_repo() -> String {
     let binding = &get_home_folder();
@@ -32,19 +35,23 @@ pub fn check_updates() {
     println!("Checking for updates...");
     let installed_git_commit_hash = env!("DMAN_GIT_COMMIT_HASH");
     let dman_repo_path = clone_dman_repo();
-    let dman_remote_repo =
-        Repository::discover(dman_repo_path).expect("Failed to open remote repository");
-    // Get remote git commit hash
-    let remote_git_commit_hash = dman_remote_repo
-        .head()
-        .unwrap()
-        .peel_to_commit()
-        .unwrap()
-        .id();
 
-    // Get first 7 characters of remote git commit hash
-    // Because the installed git commit hash is also only 7 characters
-    let remote_git_commit_hash = remote_git_commit_hash
+    // Get remote git commit hash
+    let repo =
+        Repository::open(&dman_repo_path).expect("Failed to open dotfile-manager repository");
+    let mut remote = repo
+        .find_remote("origin")
+        .expect("Failed to find remote for dotfile-manager repository");
+    let connection = remote
+        .connect_auth(git2::Direction::Fetch, None, None)
+        .unwrap();
+
+    let remote_git_commit_hash = connection
+        .list()
+        .unwrap()
+        .first()
+        .unwrap()
+        .oid()
         .to_string()
         .chars()
         .take(7)
@@ -58,12 +65,51 @@ pub fn check_updates() {
         println!("Dotfile-manager is up to date.");
     } else {
         println!("Dotfile-manager is not up to date.");
+        question_yes_no!("Do you want to update dotfile-manager?");
         println!("Updating dotfile-manager...");
-        update();
+        update(dman_repo_path);
     }
-
 }
 
-pub fn update() {
-    todo!();
+enum InstallFeatures {
+    Cli,
+    CliWithGui,
+}
+
+fn update(dman_repo_path: String) {
+    let remote_branch: Vec<String> = vec!["main".to_string()];
+    let result = pull_git::run(dman_repo_path.clone(), remote_branch);
+
+    match result {
+        Ok(_) => {}
+        Err(e) => {
+            pretty_panic!("Failed to update dotfile-manager: {e}");
+        }
+    }
+
+    // Install new version
+    println!("Installing new version...");
+    let answer = Question::new("Do you want to install dotfile-manager with gui?")
+        .yes_no()
+        .show_defaults()
+        .until_acceptable()
+        .ask()
+        .unwrap();
+
+    let install_features = match answer {
+        question::Answer::YES => InstallFeatures::CliWithGui,
+        question::Answer::NO => InstallFeatures::Cli,
+        question::Answer::RESPONSE(_) => unreachable!(),
+    };
+
+    Command::new("make")
+        .current_dir(dman_repo_path)
+        .arg(match install_features {
+            InstallFeatures::Cli => "install",
+            InstallFeatures::CliWithGui => "install-gui",
+        })
+        .spawn()
+        .expect("Failed to install dotfile-manager")
+        .wait()
+        .expect("Failed to install dotfile-manager");
 }

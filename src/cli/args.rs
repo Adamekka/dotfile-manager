@@ -25,7 +25,7 @@ use list::list_templates;
 use pull::{pull, pull_all};
 use remove::remove_template;
 use std::path::Path;
-use updater::{check_updates, update};
+use updater::check_updates;
 
 /// Get arguments from Clap
 fn arguments() -> Command {
@@ -178,7 +178,6 @@ fn arguments() -> Command {
                         .help("Git path to the template"),
                 ),
         )
-        .subcommand(Command::new("check-updates").about("Check for updates"))
         .subcommand(Command::new("update").about("Update dman to the latest version"))
 }
 
@@ -282,12 +281,8 @@ pub fn match_args() {
             todo!("push");
         }
 
-        Some(("check-updates", _set_matches)) => {
-            check_updates();
-        }
-
         Some(("update", _set_matches)) => {
-            update();
+            check_updates();
         }
 
         _ => unreachable!(),
