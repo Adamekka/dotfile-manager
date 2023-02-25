@@ -1,6 +1,5 @@
-#[path = "./libgit2-rs/clone_git.rs"]
-mod clone_git;
 
+use crate::args::create::clone_git;
 use crate::lib;
 use dotfile_manager::pretty_panic;
 use git2::Repository;

@@ -1,5 +1,5 @@
 #[path = "./libgit2-rs/clone_git.rs"]
-mod clone_git;
+pub mod clone_git;
 
 use crate::lib;
 use dotfile_manager::{pretty_panic, question_yes_no};
