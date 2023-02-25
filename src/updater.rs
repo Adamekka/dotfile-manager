@@ -1,7 +1,5 @@
-#[path = "./libgit2-rs/pull_git.rs"]
-mod pull_git;
-
 use crate::args::create::clone_git;
+use crate::args::pull::pull_git;
 use crate::lib;
 use dotfile_manager::{pretty_panic, question_yes_no};
 use git2::Repository;

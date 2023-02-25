@@ -1,5 +1,5 @@
 #[path = "./libgit2-rs/pull_git.rs"]
-mod pull_git;
+pub mod pull_git;
 
 use crate::lib;
 use lib::{
