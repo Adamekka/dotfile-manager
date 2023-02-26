@@ -29,6 +29,7 @@ clap = "4"
 clap_complete = "4"
 get-shell = "0"
 git2 = "0"
+mytools = { git = "https://github.com/Adamekka/mytools", branch = "main" }
 owo-colors = "3"
 question = "0"
 serde = { version = "1", features = ["derive"] }
