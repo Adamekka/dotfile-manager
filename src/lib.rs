@@ -1,12 +1,12 @@
 #![allow(dead_code)]
 
-use mytools::pretty_panic;
 use serde::Deserialize;
 use std::{
     env,
     fs::{self, ReadDir},
     path::Path,
 };
+use mytools::pretty_panic;
 use tabled::Tabled;
 
 #[derive(Clone, Debug, Default, Deserialize, Tabled)]
@@ -19,15 +19,6 @@ pub struct Template {
 #[derive(Debug, Deserialize)]
 struct Toml {
     template: Template,
-}
-
-#[macro_export]
-macro_rules! warn {
-    ($msg:expr) => {
-        use owo_colors::OwoColorize;
-        print!("{}", "Warning: ".yellow().bold());
-        println!("{}", format!($msg));
-    };
 }
 
 #[allow(dead_code)]
