@@ -3,7 +3,6 @@
 use mytools::{env::get_home_folder, pretty_panic};
 use serde::Deserialize;
 use std::{
-    env,
     fs::{self, ReadDir},
     path::Path,
 };
@@ -19,17 +18,6 @@ pub struct Template {
 #[derive(Debug, Deserialize)]
 struct Toml {
     template: Template,
-}
-
-#[allow(dead_code)]
-pub fn get_home_folder() -> String {
-    #[cfg(target_family = "unix")]
-    return env::var("HOME").expect("$HOME environment variable isn't set");
-
-    #[cfg(target_family = "windows")]
-    return env::var("USERPROFILE").expect("$USERPROFILE environment variable isn't set");
-    #[cfg(target_family = "wasm")]
-    pretty_panic!("WebAssembly isn't supported");
 }
 
 /// Check for config folder, else create one
