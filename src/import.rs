@@ -1,8 +1,8 @@
 use crate::args;
 use crate::lib;
 use args::create_template;
-use dotfile_manager::pretty_panic;
 use lib::{get_existing_templates, process_template_to_struct, Template};
+use mytools::pretty_panic;
 use std::path::Path;
 
 /// Import templates from a file

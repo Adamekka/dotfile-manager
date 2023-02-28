@@ -1,9 +1,10 @@
 use crate::args::create::clone_git;
 use crate::args::pull::pull_git;
 use crate::lib;
-use dotfile_manager::{pretty_panic, question_yes_no};
+use dotfile_manager::question_yes_no;
 use git2::Repository;
 use lib::get_home_folder;
+use mytools::pretty_panic;
 use question::Question;
 use std::{path::Path, process::Command};
 

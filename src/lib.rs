@@ -1,5 +1,6 @@
 #![allow(dead_code)]
 
+use mytools::pretty_panic;
 use serde::Deserialize;
 use std::{
     env,
@@ -18,19 +19,6 @@ pub struct Template {
 #[derive(Debug, Deserialize)]
 struct Toml {
     template: Template,
-}
-
-#[macro_export]
-macro_rules! pretty_panic {
-    ($msg:expr) => {
-        use owo_colors::OwoColorize;
-        print!("{}", "Error: ".red().bold());
-        println!("{}", format!($msg));
-        #[cfg(debug_assertions)]
-        panic!();
-        #[cfg(not(debug_assertions))]
-        std::process::exit(1);
-    };
 }
 
 #[macro_export]
@@ -315,7 +303,7 @@ macro_rules! question_yes_no {
         match answer {
             Some(question::Answer::YES) => {}
             Some(question::Answer::NO) => {
-                dotfile_manager::pretty_panic!("Aborting");
+                mytools::pretty_panic!("Aborting");
             }
             Some(question::Answer::RESPONSE(_)) => {
                 unreachable!("Something went wrong");
