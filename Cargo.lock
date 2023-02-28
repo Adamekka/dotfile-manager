@@ -1624,7 +1624,7 @@ dependencies = [
 [[package]]
 name = "mytools"
 version = "0.1.0"
-source = "git+https://github.com/Adamekka/mytools?branch=main#212efec57eb061c61616a6987c804365b394da60"
+source = "git+https://github.com/Adamekka/mytools?branch=main#d69f09d09e8aaf699dfea969f06c7579252bfe29"
 dependencies = [
  "owo-colors",
  "question",
