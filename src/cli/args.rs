@@ -13,15 +13,13 @@ mod remove;
 #[path = "../updater.rs"]
 mod updater;
 
-use crate::lib;
 use clap::{Arg, ArgAction, Command};
 use clap_complete::{generate, Generator, Shell};
 use create::create_template;
 use export::export_templates;
 use import::import_templates;
-use lib::get_home_folder;
 use list::list_templates;
-use mytools::pretty_panic;
+use mytools::{env::get_home_folder, pretty_panic};
 use pull::{pull, pull_all};
 use remove::remove_template;
 use std::path::Path;

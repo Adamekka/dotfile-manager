@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-use mytools::pretty_panic;
+use mytools::{env::get_home_folder, pretty_panic};
 use serde::Deserialize;
 use std::{
     env,

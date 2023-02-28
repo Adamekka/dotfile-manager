@@ -1,6 +1,5 @@
-use crate::lib;
-use lib::{get_existing_templates, get_home_folder, process_template_to_struct};
-use mytools::question_yes_no;
+use crate::lib::{get_existing_templates, process_template_to_struct};
+use mytools::{env::get_home_folder, question_yes_no};
 use std::{fs, path::Path};
 
 pub fn export_templates(export_file: String) {

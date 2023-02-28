@@ -13,12 +13,16 @@
  */
 
 use crate::lib::check_if_remote_exists;
-use git2::build::{CheckoutBuilder, RepoBuilder};
-use git2::{FetchOptions, Progress, RemoteCallbacks};
+use git2::{
+    build::{CheckoutBuilder, RepoBuilder},
+    FetchOptions, Progress, RemoteCallbacks,
+};
 use mytools::question_yes_no;
-use std::cell::RefCell;
-use std::io::{self, Write};
-use std::path::{Path, PathBuf};
+use std::{
+    cell::RefCell,
+    io::{self, Write},
+    path::{Path, PathBuf},
+};
 
 struct State {
     progress: Option<Progress<'static>>,
