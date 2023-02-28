@@ -1,12 +1,12 @@
 #![allow(dead_code)]
 
+use mytools::pretty_panic;
 use serde::Deserialize;
 use std::{
     env,
     fs::{self, ReadDir},
     path::Path,
 };
-use mytools::pretty_panic;
 use tabled::Tabled;
 
 #[derive(Clone, Debug, Default, Deserialize, Tabled)]
