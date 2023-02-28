@@ -280,32 +280,6 @@ fn match_user_input_with_template_data(
     }
 }
 
-#[macro_export]
-macro_rules! question_yes_no {
-    ($text:expr) => {
-        let answer: Option<question::Answer>;
-
-        answer = question::Question::new($text)
-            .yes_no()
-            .show_defaults()
-            .until_acceptable()
-            .ask();
-
-        match answer {
-            Some(question::Answer::YES) => {}
-            Some(question::Answer::NO) => {
-                mytools::pretty_panic!("Aborting");
-            }
-            Some(question::Answer::RESPONSE(_)) => {
-                unreachable!("Something went wrong");
-            }
-            None => {
-                unreachable!("Something went wrong");
-            }
-        }
-    };
-}
-
 /// Check if remote exists
 ///
 /// # Arguments

@@ -1,8 +1,7 @@
 use crate::args::remove::remove_template;
 use crate::lib;
-use dotfile_manager::question_yes_no;
 use lib::{get_existing_templates, process_template_to_struct, Template};
-use mytools::warn;
+use mytools::{question_yes_no, warn};
 use owo_colors::OwoColorize;
 use std::path::Path;
 use tabled::{

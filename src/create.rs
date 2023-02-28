@@ -2,9 +2,8 @@
 pub mod clone_git;
 
 use crate::lib;
-use dotfile_manager::question_yes_no;
 use lib::{check_if_remote_exists, set_folders};
-use mytools::pretty_panic;
+use mytools::{pretty_panic, question_yes_no};
 use serde::Serialize;
 use std::{env, fs, path::Path};
 

@@ -13,9 +13,9 @@
  */
 
 use crate::lib::check_if_remote_exists;
-use crate::question_yes_no;
 use git2::build::{CheckoutBuilder, RepoBuilder};
 use git2::{FetchOptions, Progress, RemoteCallbacks};
+use mytools::question_yes_no;
 use std::cell::RefCell;
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
