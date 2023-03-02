@@ -19,7 +19,7 @@ use create::create_template;
 use export::export_templates;
 use import::import_templates;
 use list::list_templates;
-use mytools::{env::get_home_folder, pretty_panic};
+use mytools::{env::get_home_folder, pretty_panic, warn};
 use pull::{pull, pull_all};
 use remove::remove_template;
 use std::path::Path;
@@ -220,18 +220,26 @@ pub fn match_args() {
     let args = arguments().get_matches();
 
     // Generate completion file
-    let shell = get_shell::get_shell().expect("Failed to get shell");
-    let generator = match shell {
-        get_shell::Shell::Bash => Shell::Bash,
-        get_shell::Shell::Fish => Shell::Fish,
-        get_shell::Shell::Zsh => Shell::Zsh,
-        get_shell::Shell::Elvish => Shell::Elvish,
-        _ => panic!("Shell not supported"),
-    };
+    let shell = get_shell::get_shell();
 
     #[cfg(debug_assertions)]
-    println!("Generating completion file for {generator}...");
-    print_completions(generator, &mut arguments(), generator);
+    println!("Generating completion file for {shell:?}...");
+
+    match shell {
+        Ok(get_shell::Shell::Bash) => print_completions(Shell::Bash, &mut arguments(), Shell::Bash),
+        Ok(get_shell::Shell::Fish) => print_completions(Shell::Fish, &mut arguments(), Shell::Fish),
+        Ok(get_shell::Shell::Zsh) => print_completions(Shell::Zsh, &mut arguments(), Shell::Zsh),
+        Ok(get_shell::Shell::Elvish) => {
+            print_completions(Shell::Elvish, &mut arguments(), Shell::Elvish)
+        }
+        Err(e) => {
+            warn!("Failed to get shell: {e}");
+            println!("Shell completions will not be generated");
+        }
+        _ => {
+            unreachable!("Shell not supported")
+        }
+    };
 
     match args.subcommand() {
         Some(("new", _set_matches)) => {
