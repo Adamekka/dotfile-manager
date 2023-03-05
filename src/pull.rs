@@ -4,7 +4,7 @@ pub mod pull_git;
 use crate::lib;
 use lib::{
     get_branches, get_existing_templates, match_user_input_with_existing_templates,
-    process_template_to_struct,
+    process_template_to_struct, Template,
 };
 
 pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>) {
@@ -18,11 +18,15 @@ pub fn pull(name: Option<String>, path: Option<String>, git_path: Option<String>
 
 /// Git pull every template
 pub fn pull_all() {
-    let templates = get_existing_templates();
+    // Put all templates in a vector
+    let mut templates: Vec<Template> = get_existing_templates()
+        .map(|x| process_template_to_struct(&x))
+        .collect();
 
-    for template_file in templates {
-        let template = process_template_to_struct(&template_file);
+    // Sort templates by name alphabetically
+    templates.sort_by(|a, b| a.name.cmp(&b.name));
 
+    for template in templates {
         println!("Pulling changes for: {}", template.name);
         #[cfg(debug_assertions)]
         {

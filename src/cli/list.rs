@@ -57,6 +57,9 @@ pub fn list_templates() {
         ));
     }
 
+    // Sort templates by name alphabetically
+    data.sort_by(|a, b| a.name.cmp(&b.name));
+
     let table_style = RawStyle::from(Style::rounded()).colored();
 
     let color = Color::try_from(" ".red().to_string()).unwrap();
