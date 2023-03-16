@@ -15,8 +15,10 @@ fn main() {
 /// Create a list of templates from the Templates folder
 #[tauri::command]
 fn reload_templates() -> Vec<[String; 3]> {
-    let templates = get_templates_to_vec();
+    let mut templates = get_templates_to_vec();
     let mut result: Vec<[String; 3]> = Vec::new();
+    // Sort templates by name alphabetically
+    templates.sort_by(|a, b| a.name.cmp(&b.name));
     for template in templates {
         result.push([template.name, template.path, template.git_path]);
     }

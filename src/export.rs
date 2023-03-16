@@ -7,21 +7,28 @@ pub fn export_templates(export_file: String) {
     let templates = get_existing_templates();
     let home_folder = get_home_folder();
 
-    let mut toml = String::new();
+    let mut toml: Vec<String> = Vec::new();
     for template in templates {
         let mut template = process_template_to_struct(&template);
 
         // Replace home directory with ~ so it is portable
         template.path = template.path.replace(&home_folder, "~");
 
-        toml.push_str(&format!(
+        toml.push(format!(
             "[{}]\nname = \"{}\"\npath = \"{}\"\ngit_path = \"{}\"\n\n",
             template.name, template.name, template.path, template.git_path
         ));
     }
 
+    // Sort templates by name alphabetically
+    toml.sort();
+
+    // Covert to string
+    // fs::write doesn't work with Vec<String>
+    let toml: String = toml.join("");
+
     // Remove last newline
-    toml.pop();
+    // toml.pop();
 
     // Check if file already exists
     let export_file_path = Path::new(&export_file);

@@ -6,9 +6,9 @@ use owo_colors::OwoColorize;
 use std::path::Path;
 use tabled::{
     color::Color,
-    object::Segment,
+    object::{Rows, Segment},
     style::{BorderColored, RawStyle},
-    Highlight, Style, Table,
+    Highlight, Modify, Style, Table, Width,
 };
 
 impl Template {
@@ -57,6 +57,9 @@ pub fn list_templates() {
         ));
     }
 
+    // Sort templates by name alphabetically
+    data.sort_by(|a, b| a.name.cmp(&b.name));
+
     let table_style = RawStyle::from(Style::rounded()).colored();
 
     let color = Color::try_from(" ".red().to_string()).unwrap();
@@ -67,6 +70,21 @@ pub fn list_templates() {
         .with(Highlight::colored(Segment::all(), BorderColored::default()))
         .with(color);
 
+    // Get terminal size
+    let term_size = termion::terminal_size().expect("Failed to get terminal size");
+    // Get table width
+    let table_width = table.total_width();
+
+    // If table is bigger than terminal, truncate words in it
+    if table_width > term_size.0 as usize {
+        table.with(
+            Modify::new(Rows::new(1..))
+                .with(Width::truncate(term_size.0 as usize / 3).suffix("..")),
+        );
+        warn!("Table is too big for terminal, so it's resized");
+    }
+
+    // Print table
     println!("{table}");
 
     if !non_existing_templates.is_empty() {
