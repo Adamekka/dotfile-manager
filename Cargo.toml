@@ -35,7 +35,7 @@ serde = { version = "1", features = ["derive"] }
 structopt = "0"
 tabled = { version = "0", features = ["color"] }
 tauri = { version = "1", features = ["shell-open"], optional = true }
-termion = "2"
+termsize = "0"
 toml = "0"
 which = "4"
 

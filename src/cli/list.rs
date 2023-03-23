@@ -71,15 +71,15 @@ pub fn list_templates() {
         .with(color);
 
     // Get terminal size
-    let term_size = termion::terminal_size().expect("Failed to get terminal size");
+    let term_size = termsize::get().expect("Failed to get terminal size");
     // Get table width
     let table_width = table.total_width();
 
     // If table is bigger than terminal, truncate words in it
-    if table_width > term_size.0 as usize {
+    if table_width > term_size.cols as usize {
         table.with(
             Modify::new(Rows::new(1..))
-                .with(Width::truncate(term_size.0 as usize / 3).suffix("..")),
+                .with(Width::truncate(term_size.cols as usize / 3).suffix("..")),
         );
         warn!("Table is too big for terminal, so it's resized");
     }
