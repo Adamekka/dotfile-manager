@@ -27,7 +27,6 @@ tauri-feat = ["tauri", "tauri/custom-protocol", "tauri-build"]
 [dependencies]
 clap = "4"
 clap_complete = "4"
-get-shell = "0"
 git2 = "0"
 mytools = { git = "https://github.com/Adamekka/mytools", branch = "main" }
 owo-colors = "3"
@@ -39,6 +38,9 @@ tauri = { version = "1", features = ["shell-open"], optional = true }
 termion = "2"
 toml = "0"
 which = "4"
+
+[target.family.unix.dependencies]
+get-shell = "0"
 
 [build-dependencies]
 tauri-build = { version = "1", features = [], optional = true }
