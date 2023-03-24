@@ -17,6 +17,8 @@
       });
     });
   }
+
+  reload_templates();
 </script>
 
 <button on:click={reload_templates}>Reload templates</button>
