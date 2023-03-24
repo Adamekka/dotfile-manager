@@ -1,7 +1,9 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
+  import SuccessAlert from "./SuccessAlert.svelte";
 
   let templates: { name: string; path: string; git_path: string }[] = [];
+  let success_alert_shown: boolean = false;
 
   function reload_templates() {
     invoke("reload_templates").then((result: Array<Array<string>>) => {
@@ -14,6 +16,7 @@
         let path = template[1];
         let git_path = template[2];
         templates.push({ name, path, git_path });
+        success_alert_shown = true;
       });
     });
   }
@@ -21,6 +24,10 @@
   reload_templates();
 </script>
 
+<SuccessAlert
+  success_message="Templates reloaded"
+  bind:shown={success_alert_shown}
+/>
 <button on:click={reload_templates}>Reload templates</button>
 {#each templates as template}
   <li>
