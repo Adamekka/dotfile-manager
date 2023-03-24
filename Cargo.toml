@@ -39,7 +39,7 @@ termsize = "0"
 toml = "0"
 which = "4"
 
-[target.family.unix.dependencies]
+[target."cfg(unix)".dependencies]
 get-shell = "0"
 
 [build-dependencies]
