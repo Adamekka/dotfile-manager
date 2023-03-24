@@ -14,15 +14,13 @@ mod remove;
 mod updater;
 
 use clap::{Arg, ArgAction, Command};
-use clap_complete::{generate, Generator, Shell};
 use create::create_template;
 use export::export_templates;
 use import::import_templates;
 use list::list_templates;
-use mytools::{env::get_home_folder, pretty_panic, warn};
+use mytools::pretty_panic;
 use pull::{pull, pull_all};
 use remove::remove_template;
-use std::path::Path;
 use updater::check_updates;
 
 /// Get arguments from Clap
@@ -179,14 +177,15 @@ fn arguments() -> Command {
         .subcommand(Command::new("update").about("Update dman to the latest version"))
 }
 
-fn print_completions<G: Generator + std::marker::Copy>(
+#[cfg(target_family = "unix")]
+fn print_completions<G: clap_complete::Generator + std::marker::Copy>(
     gen: G,
     cmd: &mut Command,
     shell: clap_complete::Shell,
 ) {
     // Binding is needed because of lifetime
-    let binding = get_home_folder();
-    let home = Path::new(&binding);
+    let binding = mytools::env::get_home_folder();
+    let home = std::path::Path::new(&binding);
 
     // Create directory for completion file if it doesn't exist
     let dir = match shell {
@@ -211,14 +210,11 @@ fn print_completions<G: Generator + std::marker::Copy>(
     };
 
     let mut file = std::fs::File::create(path).expect("Failed to create shell completion file");
-    generate(gen, cmd, cmd.get_name().to_string(), &mut file);
+    clap_complete::generate(gen, cmd, cmd.get_name().to_string(), &mut file);
 }
 
-/// Match arguments: new, pull, push, ...
-/// Then pass them to according function with their parameters
-pub fn match_args() {
-    let args = arguments().get_matches();
-
+#[cfg(target_family = "unix")]
+fn generate_shell_completions() {
     // Generate completion file
     let shell = get_shell::get_shell();
 
@@ -226,20 +222,43 @@ pub fn match_args() {
     println!("Generating completion file for {shell:?}...");
 
     match shell {
-        Ok(get_shell::Shell::Bash) => print_completions(Shell::Bash, &mut arguments(), Shell::Bash),
-        Ok(get_shell::Shell::Fish) => print_completions(Shell::Fish, &mut arguments(), Shell::Fish),
-        Ok(get_shell::Shell::Zsh) => print_completions(Shell::Zsh, &mut arguments(), Shell::Zsh),
-        Ok(get_shell::Shell::Elvish) => {
-            print_completions(Shell::Elvish, &mut arguments(), Shell::Elvish)
-        }
+        Ok(get_shell::Shell::Bash) => print_completions(
+            clap_complete::Shell::Bash,
+            &mut arguments(),
+            clap_complete::Shell::Bash,
+        ),
+        Ok(get_shell::Shell::Fish) => print_completions(
+            clap_complete::Shell::Fish,
+            &mut arguments(),
+            clap_complete::Shell::Fish,
+        ),
+        Ok(get_shell::Shell::Zsh) => print_completions(
+            clap_complete::Shell::Zsh,
+            &mut arguments(),
+            clap_complete::Shell::Zsh,
+        ),
+        Ok(get_shell::Shell::Elvish) => print_completions(
+            clap_complete::Shell::Elvish,
+            &mut arguments(),
+            clap_complete::Shell::Elvish,
+        ),
         Err(e) => {
-            warn!("Failed to get shell: {e}");
+            mytools::warn!("Failed to get shell: {e}");
             println!("Shell completions will not be generated");
         }
         _ => {
             unreachable!("Shell not supported")
         }
     };
+}
+
+/// Match arguments: new, pull, push, ...
+/// Then pass them to according function with their parameters
+pub fn match_args() {
+    let args = arguments().get_matches();
+
+    #[cfg(target_family = "unix")]
+    generate_shell_completions();
 
     match args.subcommand() {
         Some(("new", _set_matches)) => {
