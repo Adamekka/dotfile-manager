@@ -1,7 +1,7 @@
 <script lang="ts">
-  import TemplateBar from "./lib/TemplateBar.svelte";
+  import TemplateList from "./lib/TemplateList.svelte";
 </script>
 
 <main class="container">
-  <TemplateBar />
+  <TemplateList />
 </main>
