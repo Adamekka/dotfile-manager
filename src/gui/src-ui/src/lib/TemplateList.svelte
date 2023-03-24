@@ -4,7 +4,7 @@
   let templates: { name: string; path: string; git_path: string }[] = [];
 
   function reload_templates() {
-    invoke("reload_templates").then((result: Array<string>) => {
+    invoke("reload_templates").then((result: Array<Array<string>>) => {
       // Clear the array before adding new items to it to avoid duplicates
       templates = [];
       console.table(result);
