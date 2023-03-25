@@ -28,11 +28,28 @@
   success_message="Templates reloaded"
   bind:shown={success_alert_shown}
 />
-<button class="btn"on:click={reload_templates}>Reload templates</button>
-{#each templates as template}
-  <li>
-    <h1>{template.name}</h1>
-    <p>{template.path}</p>
-    <p>{template.git_path}</p>
-  </li>
-{/each}
+<div class="mt-4">
+  <button class="btn mx-4" on:click={reload_templates}>Reload templates</button>
+</div>
+<h2 class="font-bold text-center text-2xl">Select template:</h2>
+<div
+  class="grid grid-cols-1 border-4 border-blue-300 mx-4 my-4 px-4 py-4 rounded"
+>
+  {#each templates as template}
+    <div class="my-2">
+      <button class="btn w-full">
+        <h1 class="font-bold text-center text-lg">{template.name}</h1>
+        <!-- <div class="text-sm text-gray-300">
+        <div>
+          <p class="font-bold">Path:</p>
+          {template.path}
+        </div>
+        <div>
+          <p class="font-bold">URL:</p>
+          {template.git_path}
+        </div>
+      </div> -->
+      </button>
+    </div>
+  {/each}
+</div>
