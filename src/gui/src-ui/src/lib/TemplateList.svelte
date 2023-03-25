@@ -2,6 +2,11 @@
   import { invoke } from "@tauri-apps/api/tauri";
   import SuccessAlert from "./SuccessAlert.svelte";
 
+  export let selected_template: {
+    name: string;
+    path: string;
+    git_path: string;
+  };
   let templates: { name: string; path: string; git_path: string }[] = [];
   let success_alert_shown: boolean = false;
 
@@ -37,7 +42,13 @@
 >
   {#each templates as template}
     <div class="my-2">
-      <button class="btn w-full">
+      <button
+        on:click={() => {
+          selected_template = template;
+          console.table(selected_template);
+        }}
+        class="btn w-full"
+      >
         <h1 class="font-bold text-center text-lg">{template.name}</h1>
         <!-- <div class="text-sm text-gray-300">
         <div>
