@@ -3,7 +3,11 @@
 @tailwind utilities;
 
 @layer base {
-    :root {
-        @apply bg-gray-900 text-blue-200;
-    }
+  :root {
+    @apply bg-gray-900 text-blue-200;
+  }
+}
+
+.btn {
+  @apply bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 active:border-b-0 active:border-t-4 border-blue-700 hover:border-blue-500 active:border-none active:mt-1 rounded;
 }

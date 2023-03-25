@@ -28,7 +28,7 @@
   success_message="Templates reloaded"
   bind:shown={success_alert_shown}
 />
-<button on:click={reload_templates}>Reload templates</button>
+<button class="btn"on:click={reload_templates}>Reload templates</button>
 {#each templates as template}
   <li>
     <h1>{template.name}</h1>
