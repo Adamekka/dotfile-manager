@@ -3,6 +3,15 @@
 
   export let success_message: string = String();
   export let shown: boolean = true;
+  let timeout: number = 1000;
+
+  $: {
+    if (shown) {
+      setTimeout(() => {
+        shown = false;
+      }, timeout);
+    }
+  }
 </script>
 
 {#if shown}
