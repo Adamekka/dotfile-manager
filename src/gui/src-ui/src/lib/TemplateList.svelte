@@ -9,6 +9,7 @@
   };
   let templates: { name: string; path: string; git_path: string }[] = [];
   let success_alert_shown: boolean = false;
+  let success_message: string = String();
 
   function reload_templates() {
     invoke("reload_templates").then((result: Array<Array<string>>) => {
@@ -21,18 +22,22 @@
         let path = template[1];
         let git_path = template[2];
         templates.push({ name, path, git_path });
-        success_alert_shown = true;
       });
+
+      if (templates.length == 0) {
+        success_message = "No templates found";
+      } else {
+        success_message = `${templates.length} templates loaded`;
+      }
+
+      success_alert_shown = true;
     });
   }
 
   reload_templates();
 </script>
 
-<SuccessAlert
-  success_message="Templates reloaded"
-  bind:shown={success_alert_shown}
-/>
+<SuccessAlert {success_message} bind:shown={success_alert_shown} />
 <div class="mt-4">
   <button class="btn mx-4" on:click={reload_templates}>Reload templates</button>
 </div>
