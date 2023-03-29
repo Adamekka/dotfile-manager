@@ -6,7 +6,7 @@
 <div
   class="
   {shown ? 'block' : 'hidden'}
-  flex p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+  flex p-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 absolute top-2 left-2 right-2 w-screen"
   role="alert"
 >
   <svg
