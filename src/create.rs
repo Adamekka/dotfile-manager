@@ -3,9 +3,9 @@ pub mod clone_git;
 
 use crate::lib;
 use lib::{check_if_remote_exists, set_folders};
-use mytools::{pretty_panic, question_yes_no};
+use mytools::{env::get_home_folder, pretty_panic, question_yes_no};
 use serde::Serialize;
-use std::{env, fs, path::Path};
+use std::{fs, path::Path};
 
 #[derive(Clone, Serialize)]
 struct Template {
@@ -67,7 +67,7 @@ fn write_template_to_fs(template: Template, template_folder: String) {
     // Replace ~ with home path
     // this is needed because ~ is not expanded by the std::path::Path
     // and the toml crate does not expand it either
-    let home = env::var("HOME").expect("$HOME environment variable isn't set");
+    let home = get_home_folder();
     toml = toml.replace('~', home.as_str());
 
     // Create file path
