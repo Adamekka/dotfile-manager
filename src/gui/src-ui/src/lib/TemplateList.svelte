@@ -64,6 +64,7 @@
         btn w-full
         {selected_template.name == template.name ? 'underline' : ''}
         "
+        title="Select {template.name} template"
       >
         <h1 class="font-bold text-center text-lg">{template.name}</h1>
         <!-- <div class="text-sm text-gray-300">
