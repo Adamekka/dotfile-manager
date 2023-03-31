@@ -38,10 +38,12 @@
 </script>
 
 <SuccessAlert {success_message} bind:shown={success_alert_shown} />
-<div class="mt-4">
-  <button class="btn mx-4" on:click={reload_templates}>Reload templates</button>
+<div class="flex mt-4">
+  <button class="flex-shrink btn mx-4" on:click={reload_templates}>
+    <img src="../../icons/refresh.png" class="w-6 h-6" alt="refresh" />
+  </button>
+  <h2 class="flex-1 font-bold text-center text-2xl">Select template:</h2>
 </div>
-<h2 class="font-bold text-center text-2xl mt-4">Select template:</h2>
 <div
   class="grid grid-cols-1 border-4 border-blue-300 mx-4 my-4 px-4 py-4 rounded overflow-y-auto h-[calc(100vh-180px)]"
 >
