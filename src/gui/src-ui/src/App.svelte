@@ -14,11 +14,11 @@
 </script>
 
 <main class="container">
-  <div class="flex">
-    <div class="flex-1">
+  <div class="grid grid-cols-2 gap-4">
+    <div>
       <TemplateList bind:selected_template />
     </div>
-    <div class="flex-1">
+    <div>
       <TemplateInfo bind:selected_template />
     </div>
   </div>
