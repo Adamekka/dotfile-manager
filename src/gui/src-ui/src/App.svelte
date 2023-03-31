@@ -14,11 +14,11 @@
 </script>
 
 <main class="container">
-  <div class="grid grid-cols-2 gap-4">
-    <div>
+  <div class="grid grid-cols-2 gap-8">
+    <div class="mx-4">
       <TemplateList bind:selected_template />
     </div>
-    <div>
+    <div class="mx-4">
       <TemplateInfo bind:selected_template />
     </div>
   </div>
