@@ -33,7 +33,7 @@ owo-colors = "3"
 question = "0"
 serde = { version = "1", features = ["derive"] }
 structopt = "0"
-tabled = { version = "0.10", features = ["color"] }
+tabled = { version = "0.14", features = ["color"] }
 tauri = { version = "1", features = [
     "fs-read-file",
     "shell-open",
